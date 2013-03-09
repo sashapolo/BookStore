@@ -3,6 +3,8 @@
  */
 package business;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 /**
  * @author alexander
  *
@@ -12,7 +14,7 @@ public class Isbn10 {
 	// of internal representation is probably fucked up
 	private String isbn_;
 	
-	public Isbn10(final String isbn) throws IllegalArgumentException {
+	public Isbn10(@NonNull final String isbn) throws IllegalArgumentException {
 		if (isbn.length() != 10) {
 			throw new IllegalArgumentException("Trying to create 10-digit ISBN from non 10-digit number");
 		}

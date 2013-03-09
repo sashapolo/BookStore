@@ -3,6 +3,8 @@
  */
 package business;
 
+import org.eclipse.jdt.annotation.NonNull;
+
 /**
  * @author alexander
  *
@@ -15,8 +17,9 @@ public class User {
 	protected String familyName_;
 	protected String email_;
 	
-	public User(final String login, final String password, final String name,
-			final String secondName, final String familyName, final String email) {
+	public User(@NonNull final String login, @NonNull final String password, 
+			@NonNull final String name, final String secondName, 
+			@NonNull final String familyName, final String email) {
 		login_ = login;
 		passwordHash_ = password.hashCode();
 		name_ = name;
