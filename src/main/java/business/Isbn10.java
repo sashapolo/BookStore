@@ -3,18 +3,13 @@
  */
 package business;
 
-import org.eclipse.jdt.annotation.NonNull;
-
 /**
  * @author alexander
  *
  */
-public class Isbn10 {
-	// FIXME I don't know how this class is going to be used, so this form
-	// of internal representation is probably fucked up
-	private String isbn_;
-	
-	public Isbn10(@NonNull final String isbn) throws IllegalArgumentException {
+public class Isbn10 extends Isbn {
+	public Isbn10(final String isbn) throws IllegalArgumentException {
+		super(isbn);
 		if (isbn.length() != 10) {
 			throw new IllegalArgumentException("Trying to create 10-digit ISBN from non 10-digit number");
 		}
@@ -24,7 +19,8 @@ public class Isbn10 {
 		isbn_ = isbn;
 	}
 	
-	private boolean isValid(final String isbn) {
+	@Override
+	protected boolean isValid(final String isbn) {
 		int check = 0;
 		char digits[] = isbn.toCharArray();
 	    for (int i = 10; i > 1; i--) {
@@ -36,14 +32,5 @@ public class Isbn10 {
 	    	check += (digits[9] - '0');
 	    }
 	    return check % 11 == 0;
-	}
-	
-	public String getIsbn() {
-		return isbn_;
-	}
-	
-	@Override
-	public String toString() {
-		return isbn_;
 	}
 }

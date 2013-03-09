@@ -6,8 +6,6 @@ package business;
 import java.math.BigDecimal;
 import java.util.GregorianCalendar;
 
-import org.eclipse.jdt.annotation.NonNull;
-
 /**
  * @author alexander
  *
@@ -22,10 +20,16 @@ public class Book {
 	private BigDecimal price_;
 	private int discount_;
 	
-	public Book(@NonNull final String name, @NonNull final String genre, 
-			@NonNull final Publisher publisher,
-			@NonNull final GregorianCalendar dateOfPublish, final Isbn13 isbn13, 
-			final Isbn10 isbn10, @NonNull final BigDecimal price, int discount) {
+	public Book(final String name, final String genre, final Publisher publisher,
+			 final GregorianCalendar dateOfPublish, final Isbn13 isbn13, 
+			final Isbn10 isbn10,  final BigDecimal price, int discount) {
+		
+		assert(name != null);
+		assert(genre != null);
+		assert(publisher != null);
+		assert(dateOfPublish != null);
+		assert(price != null);
+		
 		if (discount > 100 || discount < 0) {
 			throw new IllegalArgumentException("Illegal discount settings");
 		}
