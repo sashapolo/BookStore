@@ -11,43 +11,64 @@ import java.util.GregorianCalendar;
  *
  */
 public class Book {
-	private String name_;
-	private String genre_;
-	private Publisher publisher_;
-	private GregorianCalendar dateOfPublish_;
-	private Isbn13 isbn13_;
-	private Isbn10 isbn10_;
+	private final String name_;
+	private final String genre_;
+	private final Publisher publisher_;
+	private final GregorianCalendar publicationDate_;
+	private final Isbn13 isbn13_;
 	private BigDecimal price_;
-	private int discount_;
-	
-	public Book(final String name, final String genre, final Publisher publisher,
-			 final GregorianCalendar dateOfPublish, final Isbn13 isbn13, 
-			final Isbn10 isbn10,  final BigDecimal price, int discount) {
-		
+	private Discount discount_;
+
+	public Book(String name, String genre, Publisher publisher,
+			 GregorianCalendar publicationDate, Isbn13 isbn13, BigDecimal price, 
+			 int discount) {
 		assert(name != null);
 		assert(genre != null);
 		assert(publisher != null);
-		assert(dateOfPublish != null);
+		assert(publicationDate != null);
 		assert(price != null);
+		assert(isbn13 != null);
 		
-		if (discount > 100 || discount < 0) {
-			throw new IllegalArgumentException("Illegal discount settings");
-		}
 		name_ = name;
 		genre_ = genre;
 		publisher_ = publisher;
-		dateOfPublish_ = dateOfPublish;
+		publicationDate_ = publicationDate;
 		isbn13_ = isbn13;
-		isbn10_ = isbn10;
 		price_ = price;
-		discount_ = discount;
+		discount_ = new Discount(discount);
+	}
+	
+	public Book(String name, String genre, Publisher publisher,
+			 GregorianCalendar publicationDate, Isbn10 isbn10, 
+			 BigDecimal price, int discount) {
+		this(name, genre, publisher, publicationDate, new Isbn13(isbn10), price, discount);
 	}
 	
 	public BigDecimal getPrice() {
-		BigDecimal newPrice = 
-				BigDecimal.valueOf(discount_).divide(BigDecimal.valueOf(100), 2, BigDecimal.ROUND_HALF_UP);
-		return price_.subtract(price_.multiply(newPrice));
+		return price_.multiply(discount_.getInverted());
 	}
 	
+	public BigDecimal getDisplayedPrice() {
+		return getPrice().setScale(2, BigDecimal.ROUND_HALF_UP);
+	}
 	
+	public String getName() {
+		return name_;
+	}
+
+	public String getGenre() {
+		return genre_;
+	}
+
+	public Publisher getPublisher() {
+		return publisher_;
+	}
+
+	public GregorianCalendar getPublicationDate() {
+		return publicationDate_;
+	}
+
+	public Isbn13 getIsbn() {
+		return isbn13_;
+	}
 }

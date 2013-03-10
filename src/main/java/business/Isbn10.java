@@ -8,8 +8,8 @@ package business;
  *
  */
 public class Isbn10 extends Isbn {
-	public Isbn10(final String isbn) throws IllegalArgumentException {
-		super(isbn);
+	public Isbn10(String isbn) throws IllegalArgumentException {
+		assert(isbn != null);
 		if (isbn.length() != 10) {
 			throw new IllegalArgumentException("Trying to create 10-digit ISBN from non 10-digit number");
 		}
@@ -20,10 +20,10 @@ public class Isbn10 extends Isbn {
 	}
 	
 	@Override
-	protected boolean isValid(final String isbn) {
+	protected boolean isValid(String isbn) {
 		int check = 0;
 		char digits[] = isbn.toCharArray();
-	    for (int i = 10; i > 1; i--) {
+	    for (int i = isbn.length(); i > 1; i--) {
 	        check += i * (digits[10 - i] - '0');
 	    }
 	    if (digits[9] == 'X') {
