@@ -8,7 +8,7 @@ import java.util.GregorianCalendar;
 
 /**
  * @author alexander
- *
+ * 
  */
 public class Book {
 	private final String name_;
@@ -20,15 +20,15 @@ public class Book {
 	private Discount discount_;
 
 	public Book(String name, String genre, Publisher publisher,
-			 GregorianCalendar publicationDate, Isbn13 isbn13, BigDecimal price, 
-			 int discount) {
-		assert(name != null);
-		assert(genre != null);
-		assert(publisher != null);
-		assert(publicationDate != null);
-		assert(price != null);
-		assert(isbn13 != null);
-		
+			GregorianCalendar publicationDate, Isbn13 isbn13, BigDecimal price,
+			int discount) {
+		assert (name != null);
+		assert (genre != null);
+		assert (publisher != null);
+		assert (publicationDate != null);
+		assert (price != null);
+		assert (isbn13 != null);
+
 		name_ = name;
 		genre_ = genre;
 		publisher_ = publisher;
@@ -37,21 +37,22 @@ public class Book {
 		price_ = price;
 		discount_ = new Discount(discount);
 	}
-	
+
 	public Book(String name, String genre, Publisher publisher,
-			 GregorianCalendar publicationDate, Isbn10 isbn10, 
-			 BigDecimal price, int discount) {
-		this(name, genre, publisher, publicationDate, new Isbn13(isbn10), price, discount);
+			GregorianCalendar publicationDate, Isbn10 isbn10, BigDecimal price,
+			int discount) {
+		this(name, genre, publisher, publicationDate, new Isbn13(isbn10),
+				price, discount);
 	}
-	
+
 	public BigDecimal getPrice() {
 		return price_.multiply(discount_.getInverted());
 	}
-	
+
 	public BigDecimal getDisplayedPrice() {
 		return getPrice().setScale(2, BigDecimal.ROUND_HALF_UP);
 	}
-	
+
 	public String getName() {
 		return name_;
 	}

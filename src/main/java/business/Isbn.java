@@ -5,17 +5,17 @@ package business;
 
 /**
  * @author alexander
- *
+ * 
  */
 public abstract class Isbn {
 	protected String isbn_;
-	
+
 	protected Isbn() {
 		isbn_ = "";
 	}
-	
+
 	abstract protected boolean isValid(String isbn);
-	
+
 	@Override
 	public String toString() {
 		return isbn_;
