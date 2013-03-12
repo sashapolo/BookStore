@@ -11,9 +11,9 @@ import java.util.GregorianCalendar;
  * 
  */
 public class Request {
-    private final long id_;
-    private final GregorianCalendar creationDate_;
-    private final Publisher owner_;
+    protected final long id_;
+    protected final GregorianCalendar creationDate_;
+    protected final Publisher owner_;
 
     public Request(long id, GregorianCalendar creationDate, Publisher owner) {
         assert (creationDate != null);

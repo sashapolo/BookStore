@@ -14,20 +14,20 @@ import java.util.GregorianCalendar;
 public class Order {
     private final long id_;
     private final GregorianCalendar dateCreated_;
-    private final Basket basket_;
+    private final Cart basket_;
     private final BigDecimal basketPrice_;
     private OrderStatus status_;
     private final Customer orderer_;
 
-    public Order(long id, GregorianCalendar dateCreated, Basket basket, Customer orderer) {
+    public Order(long id, GregorianCalendar dateCreated, Cart cart, Customer orderer) {
         assert (dateCreated != null);
-        assert (basket != null);
+        assert (cart != null);
         assert (orderer != null);
 
         id_ = id;
         dateCreated_ = dateCreated;
-        basket_ = basket;
-        basketPrice_ = basket.getPrice(orderer.getPersonalDiscount());
+        basket_ = cart;
+        basketPrice_ = cart.getPrice(orderer.getPersonalDiscount());
         orderer_ = orderer;
         status_ = OrderStatus.CREATED;
     }
@@ -40,7 +40,7 @@ public class Order {
         return dateCreated_;
     }
 
-    public Basket getBasket() {
+    public Cart getBasket() {
         return basket_;
     }
 

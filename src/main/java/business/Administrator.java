@@ -12,4 +12,8 @@ public class Administrator extends User {
             String email) {
         super(id, login, password, name, secondName, email);
     }
+    
+    public Request getLatestRequest() {
+        return RequestQueue.INSTANCE.pop();
+    }
 }

@@ -25,7 +25,7 @@ public class BasketTest {
 
     @Test
     public void testBasketGetPrice1() {
-        Basket tester = new Basket();
+        Cart tester = new Cart();
         tester.add(new OrderEntry(book, 2));
         tester.add(new OrderEntry(book, 2));
         tester.add(new OrderEntry(book, 2));
@@ -41,7 +41,7 @@ public class BasketTest {
 
     @Test
     public void testEmptyBasketGetPrice() {
-        Basket tester = new Basket();
+        Cart tester = new Cart();
         assertEquals(BigDecimal.valueOf(0).setScale(2, BigDecimal.ROUND_HALF_UP),
                 tester.getDisplayedPrice(new Discount(0)));
     }

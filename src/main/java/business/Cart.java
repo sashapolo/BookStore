@@ -13,10 +13,10 @@ import java.util.List;
  * @author alexander
  * 
  */
-public class Basket {
+public class Cart {
     private final List<OrderEntry> entries_;
 
-    public Basket() {
+    public Cart() {
         entries_ = new LinkedList<>();
     }
 
