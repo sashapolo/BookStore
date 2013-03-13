@@ -1,9 +1,11 @@
 /**
  * 
  */
-package business;
+package dbwrappers;
 
 import java.util.LinkedList;
+
+import business.Request;
 
 /**
  * @author alexander

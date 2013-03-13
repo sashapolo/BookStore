@@ -3,6 +3,8 @@
  */
 package business;
 
+import dbwrappers.RequestQueue;
+
 /**
  * @author alexander
  * 

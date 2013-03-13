@@ -10,14 +10,16 @@ package business;
 public class Isbn10 extends Isbn {
     public Isbn10(String isbn) throws IllegalArgumentException {
         assert (isbn != null);
-        if (isbn.length() != 10) {
+        
+        String tmp = isbn.replace("-", "");
+        if (tmp.length() != 10) {
             throw new IllegalArgumentException(
                     "Trying to create 10-digit ISBN from non 10-digit number");
         }
-        if (!isValid(isbn)) {
+        if (!isValid(tmp)) {
             throw new IllegalArgumentException("Invalid 10-digit ISBN number");
         }
-        isbn_ = isbn;
+        isbn_ = tmp;
     }
 
     @Override

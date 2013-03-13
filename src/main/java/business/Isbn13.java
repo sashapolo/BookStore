@@ -11,14 +11,15 @@ public class Isbn13 extends Isbn {
     public Isbn13(String isbn) throws IllegalArgumentException {
         assert (isbn != null);
 
-        if (isbn.length() != 13) {
+        String tmp = isbn.replace("-", "");
+        if (tmp.length() != 13) {
             throw new IllegalArgumentException(
                     "Trying to create 13-digit ISBN from non 13-digit number");
         }
-        if (!isValid(isbn)) {
+        if (!isValid(tmp)) {
             throw new IllegalArgumentException("Invalid 13-digit ISBN number");
         }
-        isbn_ = isbn;
+        isbn_ = tmp;
     }
 
     public Isbn13(Isbn10 isbn10) {

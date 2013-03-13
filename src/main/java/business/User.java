@@ -3,8 +3,6 @@
  */
 package business;
 
-import java.util.List;
-
 /**
  * @author alexander
  * 
@@ -48,9 +46,5 @@ public class User {
 
     public String getEmail() {
         return email_;
-    }
-    
-    public List<Book> findBook(String search) {
-        return BookCatalogue.INSTANCE.findBook(search);
     }
 }

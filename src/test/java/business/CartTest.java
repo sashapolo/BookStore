@@ -9,7 +9,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 
-public class BasketTest {
+public class CartTest {
     private Book book;
 
     @Before
@@ -24,7 +24,7 @@ public class BasketTest {
     }
 
     @Test
-    public void testBasketGetPrice1() {
+    public void testCartGetPrice1() {
         Cart tester = new Cart();
         tester.add(new OrderEntry(book, 2));
         tester.add(new OrderEntry(book, 2));
@@ -40,7 +40,7 @@ public class BasketTest {
     }
 
     @Test
-    public void testEmptyBasketGetPrice() {
+    public void testEmptyCartGetPrice() {
         Cart tester = new Cart();
         assertEquals(BigDecimal.valueOf(0).setScale(2, BigDecimal.ROUND_HALF_UP),
                 tester.getDisplayedPrice(new Discount(0)));

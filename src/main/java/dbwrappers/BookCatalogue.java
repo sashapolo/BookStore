@@ -1,12 +1,16 @@
 /**
  * 
  */
-package business;
+package dbwrappers;
 
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+
+import business.Book;
+import business.Isbn;
+import business.Isbn13;
 
 
 /**
@@ -26,7 +30,11 @@ public enum BookCatalogue {
         return catalogue_.put(book.getIsbn(), book);
     }
     
-    public List<Book> findBook(String search) {
+    public boolean containsValue(Book book) {
+		return catalogue_.containsValue(book);
+	}
+
+	public List<Book> findBook(String search) {
         assert (search != null);
         
         List<Book> result = new LinkedList<>();

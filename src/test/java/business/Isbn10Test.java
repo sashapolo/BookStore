@@ -23,6 +23,12 @@ public class Isbn10Test {
         Isbn10 tester = new Isbn10("097522980X");
         assertEquals("097522980X", tester.toString());
     }
+    
+    @Test
+    public void testIsbn10WithDashes() {
+        Isbn10 tester = new Isbn10("99921-58-10-7");
+        assertEquals("9992158107", tester.toString());
+    }
 
     @Test
     public void testIsbn10NotValid() {

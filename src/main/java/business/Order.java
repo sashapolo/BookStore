@@ -19,6 +19,11 @@ public class Order {
     private OrderStatus status_;
     private final Customer orderer_;
 
+    public enum OrderStatus {
+        // TODO add some statuses
+        CREATED
+    }
+    
     public Order(long id, GregorianCalendar dateCreated, Cart cart, Customer orderer) {
         assert (dateCreated != null);
         assert (cart != null);

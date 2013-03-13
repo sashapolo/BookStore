@@ -17,6 +17,12 @@ public class Isbn13Test {
         Isbn13 tester = new Isbn13("9783161484100");
         assertEquals("9783161484100", tester.toString());
     }
+    
+    @Test
+    public void testIsbn13WithDashes() {
+        Isbn13 tester = new Isbn13("978-3-16148-410-0");
+        assertEquals("9783161484100", tester.toString());
+    }
 
     @Test
     public void testIsbn13NotValid() {
