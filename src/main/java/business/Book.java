@@ -37,6 +37,12 @@ public class Book {
         price_ = price;
         discount_ = new Discount(discount);
     }
+    
+    public boolean matchesString(String match) {
+    	return name_.contains(match) || 
+    		   genre_.contains(match) || 
+    		   publisher_.getName().contains(match);   	
+    }
 
     public BigDecimal getPrice() {
         return price_.multiply(discount_.getInverted());
@@ -65,4 +71,28 @@ public class Book {
     public Isbn getIsbn() {
         return isbn13_;
     }
+    
+    public void setPrice(BigDecimal price) {
+    	price_ = price;
+    }
+
+    @Override
+    public int hashCode() {
+    	return isbn13_.hashCode();
+    }
+    
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Book other = (Book) obj;
+		if (isbn13_ == other.isbn13_) {
+			return true;
+		}
+		return false;
+	}
 }

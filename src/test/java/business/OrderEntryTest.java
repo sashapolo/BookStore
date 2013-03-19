@@ -19,8 +19,8 @@ public class OrderEntryTest {
 
     @Before
     public void init() {
-        book = new Book("", "", new Publisher(0, "", ""), new GregorianCalendar(), new Isbn13(
-                "9783161484100"), new BigDecimal(120.44), 50);
+        book = new Book("", "", new Publisher("", ""), new GregorianCalendar(), 
+        				new Isbn13("9783161484100"), new BigDecimal(120.44), 50);
     }
 
     @Test
@@ -28,7 +28,8 @@ public class OrderEntryTest {
         OrderEntry tester = new OrderEntry(book, 5);
         assertEquals(
                 BigDecimal.valueOf(120.44).multiply(BigDecimal.valueOf(0.5))
-                        .multiply(BigDecimal.valueOf(5)).setScale(2, BigDecimal.ROUND_HALF_UP),
+                          .multiply(BigDecimal.valueOf(5))
+                          .setScale(2, BigDecimal.ROUND_HALF_UP),
                 tester.getDisplayedPrice());
     }
 

@@ -3,11 +3,9 @@
  */
 package business;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import dbwrappers.BookCatalogue;
+import dbwrappers.OrderCatalogue;
 
 
 /**
@@ -16,12 +14,10 @@ import dbwrappers.BookCatalogue;
  */
 public class Customer extends User {
     private Discount personalDiscount_;
-    private final Map<Long, Order> orders_ = new HashMap<>();
     private Cart currentCart_ = null;
 
-    public Customer(long id, String login, String password, String name, String secondName,
-            String email, int discount) {
-        super(id, login, password, name, secondName, email);
+    public Customer(String login, String password, String name, String secondName, String email, int discount) {
+        super(login, password, name, secondName, email);
         personalDiscount_ = new Discount(discount);
     }
 
@@ -29,25 +25,40 @@ public class Customer extends User {
         return personalDiscount_;
     }
     
-    public List<Book> findBook(String search) {
-        return BookCatalogue.INSTANCE.findBook(search);
+    public List<Order> getOrders() {
+    	return OrderCatalogue.INSTANCE.getOrdersByUser(this);
     }
     
-    public OrderEntry buyBook(Book book, int amount) {
-    	assert (book != null);
-    	
-    	if (!BookCatalogue.INSTANCE.containsValue(book)) {
-    		throw new IllegalArgumentException("Book not found");
-    	}
-    	OrderEntry result = new OrderEntry(book, amount);
-    	if (currentCart_ == null) {
-    		currentCart_ = new Cart();
-    	}
-    	currentCart_.add(result);
-    	return result;
+    public void addOrderEntry(OrderEntry entry) {
+    	currentCart_.put(entry);
     }
     
-//    public Order placeOrder() {
+    //FIXME shouldn't this stuff be in the service layer?
+//    public List<Book> findBook(String search) {
+//        return BookCatalogue.INSTANCE.findBook(search);
+//    }
+//    
+//    public OrderEntry buyBook(Book book, int amount) {
+//    	assert (book != null);
 //    	
+//    	if (!BookCatalogue.INSTANCE.containsValue(book)) {
+//    		throw new IllegalArgumentException("Book not found");
+//    	}
+//    	OrderEntry result = new OrderEntry(book, amount);
+//    	if (currentCart_ == null) {
+//    		currentCart_ = new Cart();
+//    	}
+//    	currentCart_.add(result);
+//    	return result;
+//    }
+//    
+//    public void placeOrder() {
+//    	if (currentCart_ == null || currentCart_.isEmpty()) {
+//    		throw new IllegalArgumentException("Trying to place an order with empty cart");
+//    	}
+//    	Order order = new Order(currentCart_, this);
+//    	orders_.put(order.getId(), order);
+//    	OrderCatalogue.INSTANCE.addOrder(order);
+//    	currentCart_ = null;
 //    }
 }

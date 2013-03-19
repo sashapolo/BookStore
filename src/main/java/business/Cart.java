@@ -4,9 +4,8 @@
 package business;
 
 import java.math.BigDecimal;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
 
 /**
@@ -14,22 +13,24 @@ import java.util.List;
  * 
  */
 public class Cart {
-    private final List<OrderEntry> entries_;
+    private final Map<Book, OrderEntry> entries_ = new HashMap<>();
 
-    public Cart() {
-        entries_ = new LinkedList<>();
-    }
-
-    public boolean add(OrderEntry entry) {
+    public void put(OrderEntry entry) {
         assert (entry != null);
-        return entries_.add(entry);
+        
+        OrderEntry tmp = entries_.get(entry.getBook());
+        if (tmp != null) {
+        	entries_.put(entry.getBook(), entry.add(tmp));
+        } else {
+        	entries_.put(entry.getBook(), entry);
+        }
     }
 
     public BigDecimal getPrice(Discount userDiscount) {
         assert (userDiscount != null);
 
         BigDecimal result = new BigDecimal(0);
-        for (OrderEntry e : entries_) {
+        for (OrderEntry e : entries_.values()) {
             result = result.add(e.getPrice());
         }
         return result.multiply(userDiscount.getInverted());
@@ -39,36 +40,11 @@ public class Cart {
         return getPrice(userDiscount).setScale(2, BigDecimal.ROUND_HALF_UP);
     }
 
-    /**
-     * @return
-     * @see java.util.List#isEmpty()
-     */
     public boolean isEmpty() {
         return entries_.isEmpty();
     }
-
-    /**
-     * @return
-     * @see java.util.List#iterator()
-     */
-    public Iterator<OrderEntry> iterator() {
-        return entries_.iterator();
-    }
-
-    /**
-     * @return
-     * @see java.util.List#size()
-     */
+    
     public int size() {
-        return entries_.size();
+    	return entries_.size();
     }
-
-    /**
-     * 
-     * @see java.util.List#clear()
-     */
-    public void clear() {
-        entries_.clear();
-    }
-
 }

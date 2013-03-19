@@ -19,7 +19,7 @@ public class BookTest {
     public void testBookGetPrice1() {
         Book tester = new Book("", 
                                "", 
-                               new Publisher(0, "", ""), 
+                               new Publisher("", ""), 
                                new GregorianCalendar(),
                                new Isbn13("9783161484100"), 
                                new BigDecimal(120.44), 
@@ -32,7 +32,7 @@ public class BookTest {
     public void testBookGetPrice2() {
         Book tester = new Book("", 
                                "", 
-                               new Publisher(0, "", ""), 
+                               new Publisher("", ""), 
                                new GregorianCalendar(),
                                new Isbn13("9783161484100"), 
                                new BigDecimal(120.44), 
@@ -45,7 +45,7 @@ public class BookTest {
     public void testBookGetPrice3() {
         Book tester = new Book("", 
                                "", 
-                               new Publisher(0, "", ""), 
+                               new Publisher("", ""), 
                                new GregorianCalendar(),
                                new Isbn13("9783161484100"), 
                                new BigDecimal(120.44), 
@@ -62,7 +62,7 @@ public class BookTest {
         @SuppressWarnings("unused")
         Book tester = new Book("", 
                                "", 
-                               new Publisher(0, "", ""), 
+                               new Publisher("", ""), 
                                new GregorianCalendar(),
                                new Isbn13("9783161484100"), 
                                new BigDecimal(120.44), 

@@ -11,7 +11,7 @@ import java.math.BigDecimal;
  * 
  */
 public class Discount {
-    private int value_;
+    private final int value_;
 
     public Discount(int value) {
         if (value > 100 || value < 0) {

@@ -10,17 +10,19 @@ import java.util.GregorianCalendar;
  * @author alexander
  * 
  */
-public class Request {
-    protected final long id_;
-    protected final GregorianCalendar creationDate_;
+public abstract class Request {
+    protected final long id_ = IdDispatcher.INSTANCE.getNewRequestId();
+    protected final GregorianCalendar creationDate_ = new GregorianCalendar();
     protected final Publisher owner_;
+    protected RequestStatus status_ = RequestStatus.CREATED;
 
-    public Request(long id, GregorianCalendar creationDate, Publisher owner) {
-        assert (creationDate != null);
+    public enum RequestStatus {
+        // TODO add some statuses
+        CREATED, APPROVED, DECLINED
+    }
+    
+    public Request(Publisher owner) {
         assert (owner != null);
-
-        id_ = id;
-        creationDate_ = creationDate;
         owner_ = owner;
     }
 
@@ -35,4 +37,10 @@ public class Request {
     public Publisher getOwner() {
         return owner_;
     }
+    
+    public RequestStatus getStatus() {
+    	return status_;
+    }
+    
+    public abstract void approve();
 }

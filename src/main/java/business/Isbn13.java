@@ -38,7 +38,7 @@ public class Isbn13 extends Isbn {
         return this;
     }
 
-    private char getLastDigit(String isbn) {
+	private char getLastDigit(String isbn) {
         int result = 0;
         char digits[] = isbn.toCharArray();
         for (int i = 1; i < isbn.length(); i += 2) {

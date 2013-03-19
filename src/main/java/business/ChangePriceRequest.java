@@ -3,23 +3,34 @@
  */
 package business;
 
-import java.util.GregorianCalendar;
+import java.math.BigDecimal;
+
+import dbwrappers.BookCatalogue;
+
 
 /**
  * @author alexander
  *
  */
 public class ChangePriceRequest extends Request {
-    private final Book book_;
+    private final Isbn13 isbn_;
+    private final BigDecimal price_;
+
+    public ChangePriceRequest(Publisher owner, Isbn13 isbn, BigDecimal price) {
+        super(owner);
+        assert (isbn != null);
+        assert (price != null);
+        if (!BookCatalogue.INSTANCE.contains(isbn)) {
+        	throw new IllegalArgumentException("Trying to change price of a nonexisting book");
+        }
+        isbn_ = isbn;
+        price_ = price;
+    }
     
-    /**
-     * @param id
-     * @param creationDate
-     * @param owner
-     */
-    public ChangePriceRequest(long id, GregorianCalendar creationDate, Publisher owner, Book book) {
-        super(id, creationDate, owner);
-        assert (book != null);
-        book_ = book;
+    public void approve() {
+    	assert (BookCatalogue.INSTANCE.contains(isbn_));
+    	Book book = BookCatalogue.INSTANCE.getBook(isbn_);
+    	book.setPrice(price_);
+    	status_ = RequestStatus.APPROVED;
     }
 }

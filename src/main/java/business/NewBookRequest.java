@@ -3,7 +3,7 @@
  */
 package business;
 
-import java.util.GregorianCalendar;
+import dbwrappers.BookCatalogue;
 
 /**
  * @author alexander
@@ -12,14 +12,15 @@ import java.util.GregorianCalendar;
 public class NewBookRequest extends Request {
     private final Book book_;
     
-    /**
-     * @param id
-     * @param creationDate
-     * @param owner
-     */
-    public NewBookRequest(long id, GregorianCalendar creationDate, Publisher owner, Book book) {
-        super(id, creationDate, owner);
+    public NewBookRequest(Publisher owner, Book book) {
+        super(owner);
         assert (book != null);
         book_ = book;
+    }
+    
+    @Override
+    public void approve() {
+    	BookCatalogue.INSTANCE.addBook(book_);
+    	status_ = RequestStatus.APPROVED;
     }
 }

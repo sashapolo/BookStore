@@ -12,11 +12,11 @@ import java.util.GregorianCalendar;
  * 
  */
 public class Order {
-    private final long id_;
-    private final GregorianCalendar dateCreated_;
-    private final Cart basket_;
-    private final BigDecimal basketPrice_;
-    private OrderStatus status_;
+    private final long id_ = IdDispatcher.INSTANCE.getNewOrderId();
+    private final GregorianCalendar dateCreated_ = new GregorianCalendar();
+    private final Cart cart_;
+    private final BigDecimal cartPrice_;
+    private OrderStatus status_ = OrderStatus.CREATED;
     private final Customer orderer_;
 
     public enum OrderStatus {
@@ -24,15 +24,12 @@ public class Order {
         CREATED
     }
     
-    public Order(long id, GregorianCalendar dateCreated, Cart cart, Customer orderer) {
-        assert (dateCreated != null);
+    public Order(Cart cart, Customer orderer) {
         assert (cart != null);
         assert (orderer != null);
 
-        id_ = id;
-        dateCreated_ = dateCreated;
-        basket_ = cart;
-        basketPrice_ = cart.getPrice(orderer.getPersonalDiscount());
+        cart_ = cart;
+        cartPrice_ = cart.getPrice(orderer.getPersonalDiscount());
         orderer_ = orderer;
         status_ = OrderStatus.CREATED;
     }
@@ -45,16 +42,12 @@ public class Order {
         return dateCreated_;
     }
 
-    public Cart getBasket() {
-        return basket_;
-    }
-
     public BigDecimal getPrice() {
-        return basketPrice_;
+        return cartPrice_;
     }
 
     public BigDecimal getDisplayedPrice() {
-        return basketPrice_.setScale(2, BigDecimal.ROUND_HALF_UP);
+        return cartPrice_.setScale(2, BigDecimal.ROUND_HALF_UP);
     }
 
     public OrderStatus getStatus() {
@@ -65,4 +58,7 @@ public class Order {
         return orderer_;
     }
 
+    public Cart getCart() {
+    	return cart_;
+    }
 }
