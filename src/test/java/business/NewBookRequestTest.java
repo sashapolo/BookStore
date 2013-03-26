@@ -7,13 +7,19 @@ import java.util.GregorianCalendar;
 
 import org.junit.Test;
 
+import business.requests.NewBookRequest;
+import business.requests.Request;
+
 import dbwrappers.BookCatalogue;
+import dbwrappers.Stock;
 
 public class NewBookRequestTest {
 	private Book book;
 	private Request request;
 
 	public NewBookRequestTest() {
+		BookCatalogue.INSTANCE.clear();
+		Stock.INSTANCE.clear();
 		Publisher pub = new Publisher("foo", "bar");
 		book = new Book("", 
 		                "", 

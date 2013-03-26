@@ -1,8 +1,10 @@
 /**
  * 
  */
-package business;
+package business.requests;
 
+import business.Book;
+import business.Publisher;
 import dbwrappers.BookCatalogue;
 
 /**
@@ -15,6 +17,9 @@ public class NewBookRequest extends Request {
     public NewBookRequest(Publisher owner, Book book) {
         super(owner);
         assert (book != null);
+        if (BookCatalogue.INSTANCE.contains(book.getIsbn())) {
+        	throw new IllegalArgumentException("Trying to add a book that already exists");
+        }
         book_ = book;
     }
     

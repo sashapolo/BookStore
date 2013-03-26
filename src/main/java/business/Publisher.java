@@ -3,6 +3,7 @@
  */
 package business;
 
+import business.requests.Request;
 import dbwrappers.RequestQueue;
 
 /**

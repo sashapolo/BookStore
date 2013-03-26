@@ -1,9 +1,13 @@
 /**
  * 
  */
-package business;
+package business.requests;
 
 import java.math.BigDecimal;
+
+import business.Book;
+import business.Isbn13;
+import business.Publisher;
 
 import dbwrappers.BookCatalogue;
 

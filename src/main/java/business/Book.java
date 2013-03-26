@@ -19,6 +19,7 @@ public class Book {
     private final Isbn13 isbn13_;
     private BigDecimal price_;
     private Discount discount_;
+    private int numSold_ = 0;
 
     public Book(String name, String genre, Publisher publisher, GregorianCalendar publicationDate,
             Isbn isbn, BigDecimal price, int discount) {
@@ -70,6 +71,10 @@ public class Book {
 
     public Isbn getIsbn() {
         return isbn13_;
+    }
+    
+    public int getNumSold() {
+    	return numSold_;
     }
     
     public void setPrice(BigDecimal price) {

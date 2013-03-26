@@ -28,9 +28,14 @@ public enum BookCatalogue {
     }
 
     public Book addBook(Book book) {
+    	Stock.INSTANCE.createEntry(book.getIsbn(), 0);
         return catalogue_.put(book.getIsbn(), book);
     }
     
+	public void clear() {
+		catalogue_.clear();
+	}
+
 	public List<Book> getBooks(String search) {
         assert (search != null);
         

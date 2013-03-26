@@ -7,16 +7,16 @@ import java.util.GregorianCalendar;
 
 import org.junit.Test;
 
-import business.requests.ChangePriceRequest;
+import business.requests.AddBooksRequest;
 import business.requests.Request;
 import dbwrappers.BookCatalogue;
 import dbwrappers.Stock;
 
-public class ChangePriceRequestTest {
-	private Book book;
+public class AddBooksRequestTest {
 	private Publisher pub;
-
-	public ChangePriceRequestTest() {
+	private Book book;
+	
+	public AddBooksRequestTest() {
 		BookCatalogue.INSTANCE.clear();
 		Stock.INSTANCE.clear();
 		pub = new Publisher("foo", "bar");
@@ -32,18 +32,16 @@ public class ChangePriceRequestTest {
 	
 	@Test
 	public void testApprove() {
-		Request request  = new ChangePriceRequest(pub, new Isbn13("9783161484100"), BigDecimal.valueOf(69));
+		assertEquals(Stock.INSTANCE.get(book.getIsbn()).intValue(), 0);
+		Request request  = new AddBooksRequest(pub, book.getIsbn(), 69);
 		request.approve();
-		assertEquals(BookCatalogue.INSTANCE.size(), 1);
 		assertEquals(request.getStatus(), Request.RequestStatus.APPROVED);
-		assertEquals(BookCatalogue.INSTANCE.getBook(book.getIsbn()).getDisplayedPrice(), 
-					 BigDecimal.valueOf(69).setScale(2, BigDecimal.ROUND_HALF_UP));
+		assertEquals(Stock.INSTANCE.get(book.getIsbn()).intValue(), 69);
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void testApproveNonExisting() {
-		Request request  = new ChangePriceRequest(pub, new Isbn10("097522980X").toIsbn13(), 
-				BigDecimal.valueOf(69));
+		Request request  = new AddBooksRequest(pub, new Isbn10("097522980X").toIsbn13(), 69);
 		request.approve();
 	}
 }
