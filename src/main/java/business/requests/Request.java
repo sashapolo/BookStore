@@ -24,7 +24,7 @@ public abstract class Request {
         CREATED, APPROVED, DECLINED
     }
     
-    public Request(Publisher owner) {
+    protected Request(final Publisher owner) {
         assert (owner != null);
         owner_ = owner;
     }
@@ -34,7 +34,7 @@ public abstract class Request {
     }
 
     public GregorianCalendar getCreationDate() {
-        return creationDate_;
+        return (GregorianCalendar) creationDate_.clone();
     }
 
     public Publisher getOwner() {

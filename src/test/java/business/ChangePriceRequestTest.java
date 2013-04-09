@@ -13,8 +13,8 @@ import dbwrappers.BookCatalogue;
 import dbwrappers.Stock;
 
 public class ChangePriceRequestTest {
-	private Book book;
-	private Publisher pub;
+	private final Book book;
+	private final Publisher pub;
 
 	public ChangePriceRequestTest() {
 		BookCatalogue.INSTANCE.clear();
@@ -32,18 +32,22 @@ public class ChangePriceRequestTest {
 	
 	@Test
 	public void testApprove() {
-		Request request  = new ChangePriceRequest(pub, new Isbn13("9783161484100"), BigDecimal.valueOf(69));
+		final Request request  = new ChangePriceRequest(pub,
+                                                        new Isbn13("9783161484100"),
+                                                        BigDecimal.valueOf(69));
 		request.approve();
-		assertEquals(BookCatalogue.INSTANCE.size(), 1);
-		assertEquals(request.getStatus(), Request.RequestStatus.APPROVED);
-		assertEquals(BookCatalogue.INSTANCE.getBook(book.getIsbn()).getDisplayedPrice(), 
+		assertEquals("Size of catalogue changed", 1, BookCatalogue.INSTANCE.size());
+		assertEquals("Request was not approved", request.getStatus(), Request.RequestStatus.APPROVED);
+		assertEquals("Price didn't change after approval",
+                     BookCatalogue.INSTANCE.getBook(book.getIsbn()).getDisplayedPrice(),
 					 BigDecimal.valueOf(69).setScale(2, BigDecimal.ROUND_HALF_UP));
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void testApproveNonExisting() {
-		Request request  = new ChangePriceRequest(pub, new Isbn10("097522980X").toIsbn13(), 
-				BigDecimal.valueOf(69));
+		final Request request  = new ChangePriceRequest(pub,
+                                                        new Isbn10("097522980X").toIsbn13(),
+				                                        BigDecimal.valueOf(69));
 		request.approve();
 	}
 }

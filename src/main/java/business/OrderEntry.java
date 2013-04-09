@@ -14,7 +14,7 @@ public class OrderEntry {
     private final int amount_;
     private final Book book_;
 
-    public OrderEntry(Book book, int amount) {
+    public OrderEntry(final Book book, final int amount) {
         assert (book != null);
 
         if (amount <= 0) {
@@ -24,7 +24,7 @@ public class OrderEntry {
         book_ = book;
     }
     
-    public OrderEntry add(OrderEntry other) {
+    public OrderEntry add(final OrderEntry other) {
     	assert (other != null);
     	
     	if (!this.equals(other)) {
@@ -49,28 +49,23 @@ public class OrderEntry {
         return getPrice().setScale(2, BigDecimal.ROUND_HALF_UP);
     }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((book_ == null) ? 0 : book_.hashCode());
-		return result;
-	}
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) return true;
+        if (!(o instanceof OrderEntry)) return false;
 
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		OrderEntry other = (OrderEntry) obj;
-		if (book_ == null) {
-			if (other.book_ != null)
-				return false;
-		} else if (!book_.equals(other.book_))
-			return false;
-		return true;
-	}   
+        final OrderEntry that = (OrderEntry) o;
+
+        if (amount_ != that.amount_) return false;
+        if (book_.equals(that.book_)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = amount_;
+        result = 31 * result + book_.hashCode();
+        return result;
+    }
 }

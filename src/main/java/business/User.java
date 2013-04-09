@@ -7,7 +7,7 @@ package business;
  * @author alexander
  * 
  */
-public abstract class User {
+public class User {
     protected final long id_ = IdDispatcher.INSTANCE.getNewUserId();
     protected String login_;
     protected int passwordHash_;
@@ -15,7 +15,11 @@ public abstract class User {
     protected String secondName_;
     protected String email_;
 
-    public User(String login, String password, String name, String secondName, String email) {
+    public User(final String login,
+                final String password,
+                final String name,
+                final String secondName,
+                final String email) {
         assert (login != null);
         assert (password != null);
         assert (name != null);

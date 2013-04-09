@@ -20,7 +20,7 @@ public class ChangePriceRequest extends Request {
     private final Isbn13 isbn_;
     private final BigDecimal price_;
 
-    public ChangePriceRequest(Publisher owner, Isbn13 isbn, BigDecimal price) {
+    public ChangePriceRequest(final Publisher owner, final Isbn13 isbn, final BigDecimal price) {
         super(owner);
         assert (isbn != null);
         assert (price != null);
@@ -33,7 +33,7 @@ public class ChangePriceRequest extends Request {
     
     public void approve() {
     	assert (BookCatalogue.INSTANCE.contains(isbn_));
-    	Book book = BookCatalogue.INSTANCE.getBook(isbn_);
+    	final Book book = BookCatalogue.INSTANCE.getBook(isbn_);
     	book.setPrice(price_);
     	status_ = RequestStatus.APPROVED;
     }

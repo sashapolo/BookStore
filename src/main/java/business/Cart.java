@@ -15,28 +15,29 @@ import java.util.Map;
 public class Cart {
     private final Map<Book, OrderEntry> entries_ = new HashMap<>();
 
-    public void put(OrderEntry entry) {
+    public void put(final OrderEntry entry) {
         assert (entry != null);
-        
-        OrderEntry tmp = entries_.get(entry.getBook());
+
+        final Book book = entry.getBook();
+        final OrderEntry tmp = entries_.get(book);
         if (tmp != null) {
-        	entries_.put(entry.getBook(), entry.add(tmp));
+        	entries_.put(book, entry.add(tmp));
         } else {
-        	entries_.put(entry.getBook(), entry);
+        	entries_.put(book, entry);
         }
     }
 
-    public BigDecimal getPrice(Discount userDiscount) {
+    public BigDecimal getPrice(final Discount userDiscount) {
         assert (userDiscount != null);
 
         BigDecimal result = new BigDecimal(0);
-        for (OrderEntry e : entries_.values()) {
+        for (final OrderEntry e : entries_.values()) {
             result = result.add(e.getPrice());
         }
         return result.multiply(userDiscount.getInverted());
     }
 
-    public BigDecimal getDisplayedPrice(Discount userDiscount) {
+    public BigDecimal getDisplayedPrice(final Discount userDiscount) {
         return getPrice(userDiscount).setScale(2, BigDecimal.ROUND_HALF_UP);
     }
 

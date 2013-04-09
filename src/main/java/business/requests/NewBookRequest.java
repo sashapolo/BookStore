@@ -14,7 +14,7 @@ import dbwrappers.BookCatalogue;
 public class NewBookRequest extends Request {
     private final Book book_;
     
-    public NewBookRequest(Publisher owner, Book book) {
+    public NewBookRequest(final Publisher owner, final Book book) {
         super(owner);
         assert (book != null);
         if (BookCatalogue.INSTANCE.contains(book.getIsbn())) {

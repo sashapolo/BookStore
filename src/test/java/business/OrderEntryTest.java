@@ -15,22 +15,26 @@ public class OrderEntryTest {
     private Book book;
 
     @Rule
-    public ExpectedException exception = ExpectedException.none();
+    private final ExpectedException exception = ExpectedException.none();
 
     @Before
     public void init() {
-        book = new Book("", "", new Publisher("", ""), new GregorianCalendar(), 
-        				new Isbn13("9783161484100"), new BigDecimal(120.44), 50);
+        book = new Book("",
+                        "",
+                        new Publisher("", ""),
+                        new GregorianCalendar(),
+        				new Isbn13("9783161484100"),
+                        new BigDecimal(120.44), 50);
     }
 
     @Test
     public void testOrderEntryGetPrice1() {
-        OrderEntry tester = new OrderEntry(book, 5);
-        assertEquals(
-                BigDecimal.valueOf(120.44).multiply(BigDecimal.valueOf(0.5))
+        final OrderEntry tester = new OrderEntry(book, 5);
+        assertEquals("Incorrect entry price",
+                     BigDecimal.valueOf(120.44).multiply(BigDecimal.valueOf(0.5))
                           .multiply(BigDecimal.valueOf(5))
                           .setScale(2, BigDecimal.ROUND_HALF_UP),
-                tester.getDisplayedPrice());
+                     tester.getDisplayedPrice());
     }
 
     @Test
@@ -38,6 +42,6 @@ public class OrderEntryTest {
         exception.expect(IllegalArgumentException.class);
         exception.expectMessage("Amount must be of positive value");
         @SuppressWarnings("unused")
-        OrderEntry tester = new OrderEntry(book, -2);
+        final OrderEntry tester = new OrderEntry(book, -2);
     }
 }

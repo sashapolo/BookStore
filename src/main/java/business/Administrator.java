@@ -8,7 +8,11 @@ package business;
  * 
  */
 public class Administrator extends User {
-    public Administrator(String login, String password, String name, String secondName, String email) {
+    public Administrator(final String login,
+                         final String password,
+                         final String name,
+                         final String secondName,
+                         final String email) {
         super(login, password, name, secondName, email);
     }
 }

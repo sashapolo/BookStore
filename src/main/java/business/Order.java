@@ -24,7 +24,7 @@ public class Order {
         CREATED
     }
     
-    public Order(Cart cart, Customer orderer) {
+    public Order(final Cart cart, final Customer orderer) {
         assert (cart != null);
         assert (orderer != null);
 

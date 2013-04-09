@@ -16,13 +16,18 @@ public class Book {
     private final String genre_;
     private final Publisher publisher_;
     private final GregorianCalendar publicationDate_;
-    private final Isbn13 isbn13_;
+    private final Isbn isbn13_;
     private BigDecimal price_;
-    private Discount discount_;
-    private int numSold_ = 0;
+    private final Discount discount_;
+    private int numSold_;
 
-    public Book(String name, String genre, Publisher publisher, GregorianCalendar publicationDate,
-            Isbn isbn, BigDecimal price, int discount) {
+    public Book(final String name,
+                final String genre,
+                final Publisher publisher,
+                final GregorianCalendar publicationDate,
+                final Isbn isbn,
+                final BigDecimal price,
+                final int discount) {
         assert (name != null);
         assert (genre != null);
         assert (publisher != null);
@@ -39,7 +44,7 @@ public class Book {
         discount_ = new Discount(discount);
     }
     
-    public boolean matchesString(String match) {
+    public boolean matchesString(final String match) {
     	return name_.contains(match) || 
     		   genre_.contains(match) || 
     		   publisher_.getName().contains(match);   	
@@ -66,7 +71,7 @@ public class Book {
     }
 
     public GregorianCalendar getPublicationDate() {
-        return publicationDate_;
+        return (GregorianCalendar) publicationDate_.clone();
     }
 
     public Isbn getIsbn() {
@@ -77,7 +82,7 @@ public class Book {
     	return numSold_;
     }
     
-    public void setPrice(BigDecimal price) {
+    public void setPrice(final BigDecimal price) {
     	price_ = price;
     }
 
@@ -85,19 +90,23 @@ public class Book {
     public int hashCode() {
     	return isbn13_.hashCode();
     }
-    
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Book other = (Book) obj;
-		if (isbn13_ == other.isbn13_) {
-			return true;
-		}
-		return false;
-	}
+
+    @Override
+    public boolean equals(final Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Book)) return false;
+
+        final Book book = (Book) o;
+
+        if (numSold_ != book.numSold_) return false;
+        if (!discount_.equals(book.discount_)) return false;
+        if (!genre_.equals(book.genre_)) return false;
+        if (!isbn13_.equals(book.isbn13_)) return false;
+        if (!name_.equals(book.name_)) return false;
+        if (!price_.equals(book.price_)) return false;
+        if (!publicationDate_.equals(book.publicationDate_)) return false;
+        if (!publisher_.equals(book.publisher_)) return false;
+
+        return true;
+    }
 }

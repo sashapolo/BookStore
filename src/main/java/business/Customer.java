@@ -13,10 +13,15 @@ import dbwrappers.OrderCatalogue;
  * 
  */
 public class Customer extends User {
-    private Discount personalDiscount_;
-    private Cart currentCart_ = null;
+    private final Discount personalDiscount_;
+    private final Cart currentCart_ = null;
 
-    public Customer(String login, String password, String name, String secondName, String email, int discount) {
+    public Customer(final String login,
+                    final String password,
+                    final String name,
+                    final String secondName,
+                    final String email,
+                    final int discount) {
         super(login, password, name, secondName, email);
         personalDiscount_ = new Discount(discount);
     }
@@ -29,11 +34,11 @@ public class Customer extends User {
     	return OrderCatalogue.INSTANCE.getOrdersByUser(this);
     }
     
-    public void addOrderEntry(OrderEntry entry) {
+    public void addOrderEntry(final OrderEntry entry) {
     	currentCart_.put(entry);
     }
     
-    //FIXME shouldn't this stuff be in the service layer?
+    //TODO shouldn't this stuff be in the service layer?
 //    public List<Book> findBook(String search) {
 //        return BookCatalogue.INSTANCE.findBook(search);
 //    }

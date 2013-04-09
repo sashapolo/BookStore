@@ -12,10 +12,10 @@ import dbwrappers.RequestQueue;
  */
 public class Publisher {
     private final long id_ = IdDispatcher.INSTANCE.getNewPublisherId();
-    private String name_;
-    private String email_;
+    private final String name_;
+    private final String email_;
 
-    public Publisher(String name, String email) {
+    public Publisher(final String name, final String email) {
         assert (name != null);
 
         name_ = name;
@@ -34,7 +34,7 @@ public class Publisher {
         return email_;
     }
 
-    public void postRequest(Request request) {
+    public void postRequest(final Request request) {
         RequestQueue.INSTANCE.push(request);
     }
 }

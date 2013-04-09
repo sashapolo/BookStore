@@ -15,7 +15,7 @@ public class AddBooksRequest extends Request {
 	private final int amount_;
 	private final Isbn isbn_;
 	
-	public AddBooksRequest(Publisher owner, Isbn isbn, int amount) {
+	public AddBooksRequest(final Publisher owner, final Isbn isbn, final int amount) {
 		super(owner);
 		assert (isbn != null);
 		assert (amount > 0);

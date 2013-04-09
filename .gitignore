@@ -10,5 +10,9 @@
 .project
 .settings
 
+#Idea project settings
+.idea
+*.iml
+
 # Maven folder structure #
 target/

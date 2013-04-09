@@ -13,8 +13,8 @@ import dbwrappers.BookCatalogue;
 import dbwrappers.Stock;
 
 public class AddBooksRequestTest {
-	private Publisher pub;
-	private Book book;
+	private final Publisher pub;
+	private final Book book;
 	
 	public AddBooksRequestTest() {
 		BookCatalogue.INSTANCE.clear();
@@ -32,16 +32,20 @@ public class AddBooksRequestTest {
 	
 	@Test
 	public void testApprove() {
-		assertEquals(Stock.INSTANCE.get(book.getIsbn()).intValue(), 0);
-		Request request  = new AddBooksRequest(pub, book.getIsbn(), 69);
+		assertEquals("Stock is non-empty", 0, Stock.INSTANCE.get(book.getIsbn()).intValue());
+		final Request request  = new AddBooksRequest(pub, book.getIsbn(), 69);
 		request.approve();
-		assertEquals(request.getStatus(), Request.RequestStatus.APPROVED);
-		assertEquals(Stock.INSTANCE.get(book.getIsbn()).intValue(), 69);
+		assertEquals("Request not approved after approve() call",
+                     Request.RequestStatus.APPROVED,
+                     request.getStatus());
+		assertEquals("Wrong number of books added after",
+                     69,
+                     Stock.INSTANCE.get(book.getIsbn()).intValue());
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
 	public void testApproveNonExisting() {
-		Request request  = new AddBooksRequest(pub, new Isbn10("097522980X").toIsbn13(), 69);
+		final Request request  = new AddBooksRequest(pub, new Isbn10("097522980X").toIsbn13(), 69);
 		request.approve();
 	}
 }

@@ -14,8 +14,8 @@ import dbwrappers.BookCatalogue;
 import dbwrappers.Stock;
 
 public class NewBookRequestTest {
-	private Book book;
-	private Request request;
+	private final Book book;
+	private final Request request;
 
 	public NewBookRequestTest() {
 		BookCatalogue.INSTANCE.clear();
@@ -34,8 +34,12 @@ public class NewBookRequestTest {
 	@Test
 	public void testApprove() {
 		request.approve();
-		assertEquals(BookCatalogue.INSTANCE.size(), 1);
-		assertEquals(request.getStatus(), Request.RequestStatus.APPROVED);
-		assertEquals(book, BookCatalogue.INSTANCE.getBook(book.getIsbn()));
+		assertEquals("Catalogue size didn't change after approval", 1, BookCatalogue.INSTANCE.size());
+		assertEquals("Incorrect request status",
+                     Request.RequestStatus.APPROVED,
+                     request.getStatus());
+		assertEquals("Incorrect book in the catalogue after approval",
+                     book,
+                     BookCatalogue.INSTANCE.getBook(book.getIsbn()));
 	}
 }
