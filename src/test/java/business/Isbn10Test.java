@@ -10,7 +10,7 @@ import org.junit.rules.ExpectedException;
 public class Isbn10Test {
 
     @Rule
-    private final ExpectedException exception = ExpectedException.none();
+    public final ExpectedException exception = ExpectedException.none();
 
     @Test
     public void testIsbn10Normal() {

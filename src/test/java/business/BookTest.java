@@ -13,7 +13,7 @@ import org.junit.rules.ExpectedException;
 public class BookTest {
 
     @Rule
-    private final ExpectedException exception = ExpectedException.none();
+    public final ExpectedException exception = ExpectedException.none();
 
     @Test
     public void testBookGetPrice1() {

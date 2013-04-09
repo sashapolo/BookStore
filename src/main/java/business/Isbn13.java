@@ -34,7 +34,7 @@ public class Isbn13 extends Isbn {
     }
 
     @Override
-    public Isbn13 toIsbn13() {
+    public Isbn toIsbn13() {
         return this;
     }
 

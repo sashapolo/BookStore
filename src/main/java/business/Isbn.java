@@ -12,10 +12,24 @@ public abstract class Isbn {
 
     protected abstract boolean isValid(String isbn);
 
-    public abstract Isbn13 toIsbn13();
+    public abstract Isbn toIsbn13();
 
     @Override
     public String toString() {
         return isbn_;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Isbn)) return false;
+
+        final Isbn isbn = (Isbn) o;
+        return isbn_.equals(isbn.isbn_);
+    }
+
+    @Override
+    public int hashCode() {
+        return isbn_.hashCode();
     }
 }

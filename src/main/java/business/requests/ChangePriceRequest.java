@@ -6,7 +6,7 @@ package business.requests;
 import java.math.BigDecimal;
 
 import business.Book;
-import business.Isbn13;
+import business.Isbn;
 import business.Publisher;
 
 import dbwrappers.BookCatalogue;
@@ -17,10 +17,10 @@ import dbwrappers.BookCatalogue;
  *
  */
 public class ChangePriceRequest extends Request {
-    private final Isbn13 isbn_;
+    private final Isbn isbn_;
     private final BigDecimal price_;
 
-    public ChangePriceRequest(final Publisher owner, final Isbn13 isbn, final BigDecimal price) {
+    public ChangePriceRequest(final Publisher owner, final Isbn isbn, final BigDecimal price) {
         super(owner);
         assert (isbn != null);
         assert (price != null);

@@ -15,7 +15,7 @@ public class OrderEntryTest {
     private Book book;
 
     @Rule
-    private final ExpectedException exception = ExpectedException.none();
+    public final ExpectedException exception = ExpectedException.none();
 
     @Before
     public void init() {

@@ -22,7 +22,7 @@ public class Isbn10 extends Isbn {
     }
 
     @Override
-    public Isbn13 toIsbn13() {
+    public Isbn toIsbn13() {
         return new Isbn13(this);
     }
 

@@ -27,7 +27,7 @@ public class OrderEntry {
     public OrderEntry add(final OrderEntry other) {
     	assert (other != null);
     	
-    	if (!this.equals(other)) {
+    	if (!equals(other)) {
     		throw new IllegalArgumentException("Trying to add order entries containing different books");
     	}
     	return new OrderEntry(book_, amount_ + other.amount_);
@@ -55,11 +55,7 @@ public class OrderEntry {
         if (!(o instanceof OrderEntry)) return false;
 
         final OrderEntry that = (OrderEntry) o;
-
-        if (amount_ != that.amount_) return false;
-        if (book_.equals(that.book_)) return false;
-
-        return true;
+        return book_.equals(that.book_);
     }
 
     @Override

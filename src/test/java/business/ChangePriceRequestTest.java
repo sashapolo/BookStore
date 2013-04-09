@@ -37,7 +37,7 @@ public class ChangePriceRequestTest {
                                                         BigDecimal.valueOf(69));
 		request.approve();
 		assertEquals("Size of catalogue changed", 1, BookCatalogue.INSTANCE.size());
-		assertEquals("Request was not approved", request.getStatus(), Request.RequestStatus.APPROVED);
+		assertEquals("Request was not approved", Request.RequestStatus.APPROVED, request.getStatus());
 		assertEquals("Price didn't change after approval",
                      BookCatalogue.INSTANCE.getBook(book.getIsbn()).getDisplayedPrice(),
 					 BigDecimal.valueOf(69).setScale(2, BigDecimal.ROUND_HALF_UP));

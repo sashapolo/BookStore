@@ -97,16 +97,6 @@ public class Book {
         if (!(o instanceof Book)) return false;
 
         final Book book = (Book) o;
-
-        if (numSold_ != book.numSold_) return false;
-        if (!discount_.equals(book.discount_)) return false;
-        if (!genre_.equals(book.genre_)) return false;
-        if (!isbn13_.equals(book.isbn13_)) return false;
-        if (!name_.equals(book.name_)) return false;
-        if (!price_.equals(book.price_)) return false;
-        if (!publicationDate_.equals(book.publicationDate_)) return false;
-        if (!publisher_.equals(book.publisher_)) return false;
-
-        return true;
+        return isbn13_.equals(book.isbn13_);
     }
 }
