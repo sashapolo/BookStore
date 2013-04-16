@@ -3,7 +3,6 @@
  */
 package business;
 
-import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -27,18 +26,14 @@ public class Cart {
         }
     }
 
-    public BigDecimal getPrice(final Discount userDiscount) {
+    public double getPrice(final Discount userDiscount) {
         assert (userDiscount != null);
 
-        BigDecimal result = new BigDecimal(0);
+        double result = 0;
         for (final OrderEntry e : entries_.values()) {
-            result = result.add(e.getPrice());
+            result += e.getPrice();
         }
-        return result.multiply(userDiscount.getInverted());
-    }
-
-    public BigDecimal getDisplayedPrice(final Discount userDiscount) {
-        return getPrice(userDiscount).setScale(2, BigDecimal.ROUND_HALF_UP);
+        return result * userDiscount.getInvertedValue();
     }
 
     public boolean isEmpty() {

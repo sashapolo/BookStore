@@ -3,7 +3,6 @@
  */
 package business;
 
-import java.math.BigDecimal;
 import java.util.GregorianCalendar;
 
 
@@ -15,7 +14,7 @@ public class Order {
     private final int id_;
     private final GregorianCalendar dateCreated_ = new GregorianCalendar();
     private final Cart cart_;
-    private final BigDecimal cartPrice_;
+    private final double cartPrice_;
     private OrderStatus status_ = OrderStatus.CREATED;
     private final Customer orderer_;
 
@@ -43,12 +42,8 @@ public class Order {
         return dateCreated_;
     }
 
-    public BigDecimal getPrice() {
+    public double getPrice() {
         return cartPrice_;
-    }
-
-    public BigDecimal getDisplayedPrice() {
-        return cartPrice_.setScale(2, BigDecimal.ROUND_HALF_UP);
     }
 
     public OrderStatus getStatus() {

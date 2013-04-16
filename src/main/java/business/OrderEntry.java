@@ -3,8 +3,6 @@
  */
 package business;
 
-import java.math.BigDecimal;
-
 
 /**
  * @author alexander
@@ -41,12 +39,8 @@ public class OrderEntry {
         return book_;
     }
 
-    public BigDecimal getPrice() {
-        return book_.getPrice().multiply(BigDecimal.valueOf(amount_));
-    }
-
-    public BigDecimal getDisplayedPrice() {
-        return getPrice().setScale(2, BigDecimal.ROUND_HALF_UP);
+    public double getPrice() {
+        return book_.getPrice() * amount_;
     }
 
     @Override

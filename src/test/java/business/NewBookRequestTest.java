@@ -27,7 +27,7 @@ public class NewBookRequestTest {
 		                new Publisher(0, "", "", "", ""),
 		                new GregorianCalendar(), 
 		                new Isbn13("9783161484100"), 
-		                new BigDecimal(120.44), 
+		                120.44,
 		                50);
 		request  = new NewBookRequest(pub, book);
 	}

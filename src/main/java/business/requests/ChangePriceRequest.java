@@ -3,8 +3,6 @@
  */
 package business.requests;
 
-import java.math.BigDecimal;
-
 import business.Book;
 import business.Isbn;
 import business.Publisher;
@@ -18,12 +16,11 @@ import dbwrappers.BookCatalogue;
  */
 public class ChangePriceRequest extends Request {
     private final Isbn isbn_;
-    private final BigDecimal price_;
+    private final double price_;
 
-    public ChangePriceRequest(final Publisher owner, final Isbn isbn, final BigDecimal price) {
+    public ChangePriceRequest(final Publisher owner, final Isbn isbn, final double price) {
         super(owner);
         assert (isbn != null);
-        assert (price != null);
         if (!BookCatalogue.INSTANCE.contains(isbn)) {
         	throw new IllegalArgumentException("Trying to change price of a nonexisting book");
         }

@@ -2,7 +2,6 @@ package business;
 
 import static org.junit.Assert.*;
 
-import java.math.BigDecimal;
 import java.util.GregorianCalendar;
 
 import org.junit.Test;
@@ -26,7 +25,7 @@ public class AddBooksRequestTest {
                         new Publisher(0, "", "", "", ""),
 		                new GregorianCalendar(), 
 		                new Isbn13("9783161484100"), 
-		                new BigDecimal(120.44), 
+		                120.44,
 		                0);
 		BookCatalogue.INSTANCE.addBook(book);
 	}

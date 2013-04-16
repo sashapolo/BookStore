@@ -13,6 +13,7 @@ import org.junit.rules.ExpectedException;
 
 public class OrderEntryTest {
     private Book book;
+    public static final double EPSILON = 1e-15;
 
     @Rule
     public final ExpectedException exception = ExpectedException.none();
@@ -25,17 +26,17 @@ public class OrderEntryTest {
                         new Publisher(0, "", "", "", ""),
                         new GregorianCalendar(),
         				new Isbn13("9783161484100"),
-                        new BigDecimal(120.44), 50);
+                        120.44,
+                        50);
     }
 
     @Test
     public void testOrderEntryGetPrice1() {
         final OrderEntry tester = new OrderEntry(book, 5);
         assertEquals("Incorrect entry price",
-                     BigDecimal.valueOf(120.44).multiply(BigDecimal.valueOf(0.5))
-                          .multiply(BigDecimal.valueOf(5))
-                          .setScale(2, BigDecimal.ROUND_HALF_UP),
-                     tester.getDisplayedPrice());
+                     120.44 * 0.5 * 5,
+                     tester.getPrice(),
+                     EPSILON);
     }
 
     @Test

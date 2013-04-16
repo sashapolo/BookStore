@@ -2,7 +2,6 @@ package business;
 
 import static org.junit.Assert.assertEquals;
 
-import java.math.BigDecimal;
 import java.util.GregorianCalendar;
 
 import org.junit.Test;
@@ -10,6 +9,7 @@ import org.junit.Test;
 
 public class CartTest {
     private final Book book;
+    public static final double EPSILON = 1e-15;
 
     public CartTest() {
         book = new Book(0,
@@ -18,7 +18,7 @@ public class CartTest {
                         new Publisher(0, "", "", "", ""),
                         new GregorianCalendar(), 
                         new Isbn13("9783161484100"), 
-                        new BigDecimal(120.44), 
+                        120.44,
                         50);
     }
 
@@ -30,19 +30,17 @@ public class CartTest {
         tester.put(new OrderEntry(book, 2));
         assertEquals("Incorrect cart size after inserting identical books", 1, tester.size());
         assertEquals("Incorrect cart price",
-                     BigDecimal.valueOf(120.44)
-                        .multiply(BigDecimal.valueOf(0.5))
-                        .multiply(BigDecimal.valueOf(6))
-                        .multiply(BigDecimal.valueOf(0.8))
-                        .setScale(2, BigDecimal.ROUND_HALF_UP),
-                     tester.getDisplayedPrice(new Discount(20)));
+                     120.44 * 0.5 * 6 * 0.8,
+                     tester.getPrice(new Discount(20)),
+                     EPSILON);
     }
 
     @Test
     public void testEmptyCartGetPrice() {
         final Cart tester = new Cart();
         assertEquals("Non zero price of an empty cart",
-                     BigDecimal.valueOf(0).setScale(2, BigDecimal.ROUND_HALF_UP),
-                     tester.getDisplayedPrice(new Discount(0)));
+                     0,
+                     tester.getPrice(new Discount(0)),
+                     EPSILON);
     }
 }

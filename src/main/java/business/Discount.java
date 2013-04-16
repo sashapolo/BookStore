@@ -20,13 +20,11 @@ public class Discount {
         value_ = value;
     }
 
-    public BigDecimal getPercents() {
-        return BigDecimal.valueOf(value_).divide(BigDecimal.valueOf(100), 2,
-                BigDecimal.ROUND_HALF_UP);
+    public double getValue() {
+        return (double) value_ / 100;
     }
 
-    public BigDecimal getInverted() {
-        return BigDecimal.valueOf(100 - value_).divide(BigDecimal.valueOf(100), 2,
-                BigDecimal.ROUND_HALF_UP);
+    public double getInvertedValue() {
+        return (double) (100 - value_) / 100;
     }
 }

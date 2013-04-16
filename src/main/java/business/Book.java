@@ -3,7 +3,6 @@
  */
 package business;
 
-import java.math.BigDecimal;
 import java.util.GregorianCalendar;
 
 
@@ -18,7 +17,7 @@ public class Book {
     private final Publisher publisher_;
     private final GregorianCalendar publicationDate_;
     private final Isbn isbn13_;
-    private BigDecimal price_;
+    private double price_;
     private final Discount discount_;
     private int numSold_;
 
@@ -28,13 +27,12 @@ public class Book {
                 final Publisher publisher,
                 final GregorianCalendar publicationDate,
                 final Isbn isbn,
-                final BigDecimal price,
+                final double price,
                 final int discount) {
         assert (name != null);
         assert (genre != null);
         assert (publisher != null);
         assert (publicationDate != null);
-        assert (price != null);
         assert (isbn != null);
 
         id_ = id;
@@ -57,12 +55,8 @@ public class Book {
         return id_;
     }
 
-    public BigDecimal getPrice() {
-        return price_.multiply(discount_.getInverted());
-    }
-
-    public BigDecimal getDisplayedPrice() {
-        return getPrice().setScale(2, BigDecimal.ROUND_HALF_UP);
+    public double getPrice() {
+        return price_ * discount_.getInvertedValue();
     }
 
     public String getName() {
@@ -89,7 +83,7 @@ public class Book {
     	return numSold_;
     }
     
-    public void setPrice(final BigDecimal price) {
+    public void setPrice(final double price) {
     	price_ = price;
     }
 
