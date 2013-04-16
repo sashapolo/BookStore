@@ -10,9 +10,12 @@
 .project
 .settings
 
-#Idea project settings
+# Idea project settings #
 .idea
 *.iml
 
 # Maven folder structure #
 target/
+
+# Apache Derby source #
+db-derby/

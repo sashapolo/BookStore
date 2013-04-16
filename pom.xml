@@ -5,25 +5,30 @@
   <version>0.0.1-SNAPSHOT</version>
   <name>Book Store</name>
   <description>Магазин по продаже книг, разработанный в рамках курса "Проектирование архитектур ПО"</description>
+  <url>https://github.com/Snowball239/BookStore</url>
   <dependencies>
   	<dependency>
   		<groupId>junit</groupId>
   		<artifactId>junit</artifactId>
   		<version>4.11</version>
   	</dependency>
+    <dependency>
+        <groupId>org.apache.derby</groupId>
+        <artifactId>derby</artifactId>
+        <version>10.9.1.0</version>
+    </dependency>
   </dependencies>
-  <url>https://github.com/Snowball239/BookStore</url>
   <build>
-  	<plugins>
-  		<plugin>
-  			<groupId>org.apache.maven.plugins</groupId>
-  			<artifactId>maven-compiler-plugin</artifactId>
-  			<version>3.0</version>
-  			<configuration> 
-			    <source>1.7</source> 
-			    <target>1.7</target> 
-			</configuration>
-  		</plugin>
-  	</plugins>
+    <plugins>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.0</version>
+            <configuration>
+                <source>1.7</source>
+                <target>1.7</target>
+            </configuration>
+        </plugin>
+    </plugins>
   </build>
 </project>
