@@ -12,9 +12,10 @@ public class CartTest {
     private final Book book;
 
     public CartTest() {
-        book = new Book("", 
+        book = new Book(0,
+                        "",
                         "", 
-                        new Publisher("", ""), 
+                        new Publisher(0, "", "", "", ""),
                         new GregorianCalendar(), 
                         new Isbn13("9783161484100"), 
                         new BigDecimal(120.44), 

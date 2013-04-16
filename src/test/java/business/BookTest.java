@@ -17,9 +17,10 @@ public class BookTest {
 
     @Test
     public void testBookGetPrice1() {
-        final Book tester = new Book("",
+        final Book tester = new Book(0,
                                      "",
-                                     new Publisher("", ""),
+                                     "",
+                                     new Publisher(0, "", "", "", ""),
                                      new GregorianCalendar(),
                                      new Isbn13("9783161484100"),
                                      new BigDecimal(120.44),
@@ -31,9 +32,10 @@ public class BookTest {
 
     @Test
     public void testBookGetPrice2() {
-        final Book tester = new Book("",
+        final Book tester = new Book(0,
                                      "",
-                                     new Publisher("", ""),
+                                     "",
+                                     new Publisher(0, "", "", "", ""),
                                      new GregorianCalendar(),
                                      new Isbn13("9783161484100"),
                                      new BigDecimal(120.44),
@@ -45,9 +47,10 @@ public class BookTest {
 
     @Test
     public void testBookGetPrice3() {
-        final Book tester = new Book("",
+        final Book tester = new Book(0,
                                      "",
-                                     new Publisher("", ""),
+                                     "",
+                                     new Publisher(0, "", "", "", ""),
                                      new GregorianCalendar(),
                                      new Isbn13("9783161484100"),
                                      new BigDecimal(120.44),
@@ -64,9 +67,10 @@ public class BookTest {
         exception.expect(IllegalArgumentException.class);
         exception.expectMessage("Illegal discount settings");
         @SuppressWarnings("unused")
-        final Book tester = new Book("",
+        final Book tester = new Book(0,
                                      "",
-                                     new Publisher("", ""),
+                                     "",
+                                     new Publisher(0, "", "", "", ""),
                                      new GregorianCalendar(),
                                      new Isbn13("9783161484100"),
                                      new BigDecimal(120.44),

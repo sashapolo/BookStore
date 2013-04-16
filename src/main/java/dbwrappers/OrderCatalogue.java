@@ -18,7 +18,7 @@ import business.User;
 public enum OrderCatalogue {
 	INSTANCE;
 	
-	private Map<Long, Order> orders_ = new HashMap<>();
+	private Map<Integer, Order> orders_ = new HashMap<>();
 	
 	public void addOrder(Order order) {
 		assert (order != null);

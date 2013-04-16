@@ -10,20 +10,13 @@ import dbwrappers.RequestQueue;
  * @author alexander
  * 
  */
-public class Publisher {
-    private final long id_ = IdDispatcher.INSTANCE.getNewPublisherId();
-    private final String name_;
-    private final String email_;
-
-    public Publisher(final String name, final String email) {
-        assert (name != null);
-
-        name_ = name;
-        email_ = email;
-    }
-
-    public long getId() {
-        return id_;
+public class Publisher extends User {
+    public Publisher(final int id,
+                     final String login,
+                     final String password,
+                     final String name,
+                     final String email) {
+        super(id, login, password, name, email);
     }
 
     public String getName() {

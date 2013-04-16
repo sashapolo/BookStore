@@ -16,13 +16,13 @@ public class Customer extends User {
     private final Discount personalDiscount_;
     private final Cart currentCart_ = null;
 
-    public Customer(final String login,
+    public Customer(final int id,
+                    final String login,
                     final String password,
                     final String name,
-                    final String secondName,
                     final String email,
                     final int discount) {
-        super(login, password, name, secondName, email);
+        super(id, login, password, name, email);
         personalDiscount_ = new Discount(discount);
     }
 

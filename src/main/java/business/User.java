@@ -8,30 +8,29 @@ package business;
  * 
  */
 public class User {
-    protected final long id_ = IdDispatcher.INSTANCE.getNewUserId();
+    protected final int id_;
     protected String login_;
     protected int passwordHash_;
     protected String name_;
-    protected String secondName_;
     protected String email_;
 
-    public User(final String login,
+    public User(final int id,
+                final String login,
                 final String password,
                 final String name,
-                final String secondName,
                 final String email) {
         assert (login != null);
         assert (password != null);
         assert (name != null);
 
+        id_ = id;
         login_ = login;
         passwordHash_ = password.hashCode();
         name_ = name;
-        secondName_ = secondName;
         email_ = email;
     }
 
-    public long getId() {
+    public int getId() {
         return id_;
     }
 
@@ -41,10 +40,6 @@ public class User {
 
     public String getName() {
         return name_;
-    }
-
-    public String getSecondName() {
-        return secondName_;
     }
 
     public String getEmail() {

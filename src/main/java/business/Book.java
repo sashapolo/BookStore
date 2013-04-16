@@ -12,6 +12,7 @@ import java.util.GregorianCalendar;
  * 
  */
 public class Book {
+    private final int id_;
     private final String name_;
     private final String genre_;
     private final Publisher publisher_;
@@ -21,7 +22,8 @@ public class Book {
     private final Discount discount_;
     private int numSold_;
 
-    public Book(final String name,
+    public Book(final int id,
+                final String name,
                 final String genre,
                 final Publisher publisher,
                 final GregorianCalendar publicationDate,
@@ -35,6 +37,7 @@ public class Book {
         assert (price != null);
         assert (isbn != null);
 
+        id_ = id;
         name_ = name;
         genre_ = genre;
         publisher_ = publisher;
@@ -48,6 +51,10 @@ public class Book {
     	return name_.contains(match) || 
     		   genre_.contains(match) || 
     		   publisher_.getName().contains(match);   	
+    }
+
+    public int getId() {
+        return id_;
     }
 
     public BigDecimal getPrice() {

@@ -12,7 +12,7 @@ import java.util.GregorianCalendar;
  * 
  */
 public class Order {
-    private final long id_ = IdDispatcher.INSTANCE.getNewOrderId();
+    private final int id_;
     private final GregorianCalendar dateCreated_ = new GregorianCalendar();
     private final Cart cart_;
     private final BigDecimal cartPrice_;
@@ -24,17 +24,18 @@ public class Order {
         CREATED
     }
     
-    public Order(final Cart cart, final Customer orderer) {
+    public Order(final int id, final Cart cart, final Customer orderer) {
         assert (cart != null);
         assert (orderer != null);
 
+        id_ = id;
         cart_ = cart;
         cartPrice_ = cart.getPrice(orderer.getPersonalDiscount());
         orderer_ = orderer;
         status_ = OrderStatus.CREATED;
     }
 
-    public long getId() {
+    public int getId() {
         return id_;
     }
 

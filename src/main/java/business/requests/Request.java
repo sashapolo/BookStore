@@ -5,7 +5,6 @@ package business.requests;
 
 import java.util.GregorianCalendar;
 
-import business.IdDispatcher;
 import business.Publisher;
 
 
@@ -14,7 +13,6 @@ import business.Publisher;
  * 
  */
 public abstract class Request {
-    protected final long id_ = IdDispatcher.INSTANCE.getNewRequestId();
     protected final GregorianCalendar creationDate_ = new GregorianCalendar();
     protected final Publisher owner_;
     protected RequestStatus status_ = RequestStatus.CREATED;
@@ -27,10 +25,6 @@ public abstract class Request {
     protected Request(final Publisher owner) {
         assert (owner != null);
         owner_ = owner;
-    }
-
-    public long getId() {
-        return id_;
     }
 
     public GregorianCalendar getCreationDate() {

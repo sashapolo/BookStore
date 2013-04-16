@@ -19,10 +19,11 @@ public class AddBooksRequestTest {
 	public AddBooksRequestTest() {
 		BookCatalogue.INSTANCE.clear();
 		Stock.INSTANCE.clear();
-		pub = new Publisher("foo", "bar");
-		book = new Book("", 
-		                "", 
-		                new Publisher("", ""), 
+		pub = new Publisher(0, "", "", "foo", "bar");
+		book = new Book(0,
+                        "",
+		                "",
+                        new Publisher(0, "", "", "", ""),
 		                new GregorianCalendar(), 
 		                new Isbn13("9783161484100"), 
 		                new BigDecimal(120.44), 
