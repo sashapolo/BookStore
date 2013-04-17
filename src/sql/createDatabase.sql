@@ -36,7 +36,7 @@ CREATE TABLE Customers (
     Name varchar(20) NOT NULL,
     SecondName varchar(20),
     Email varchar(20) NOT NULL,
-    Personal_Discount int NOT NULL CHECK(Personal_Discount >= 0 AND Personal_Discount <= 100)
+    PersonalDiscount int NOT NULL CHECK(PersonalDiscount >= 0 AND PersonalDiscount <= 100)
 );
 -----------------------------------------------------------------
 
@@ -48,7 +48,7 @@ CREATE TABLE Books (
     PublicationDate date NOT NULL,
     Price double precision NOT NULL CHECK(Price >= 0),
     Discount int NOT NULL CHECK(Discount >= 0 AND Discount <= 100),
-    Publisher_Id int REFERENCES Publishers(Id)
+    PublisherId int REFERENCES Publishers(Id)
 );
 
 CREATE TABLE Orders (
