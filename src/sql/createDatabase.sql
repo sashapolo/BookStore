@@ -36,7 +36,7 @@ CREATE TABLE Customers (
     Name varchar(20) NOT NULL,
     SecondName varchar(20),
     Email varchar(20) NOT NULL,
-    Personal_Discount int NOT NULL CHECK(Personal_Discount >= 0 AND Personal_Discount <= 100)
+    Personal_Discount int NOT NULL CHECK (Personal_Discount >= 0 AND Personal_Discount <= 100)
 );
 -----------------------------------------------------------------
 
@@ -46,22 +46,22 @@ CREATE TABLE Books (
     Jenre varchar(20) NOT NULL,
     Isbn char(13) NOT NULL UNIQUE,
     PublicationDate date NOT NULL,
-    Price double precision NOT NULL CHECK(Price >= 0),
-    Discount int NOT NULL CHECK(Discount >= 0 AND Discount <= 100),
+    Price double precision NOT NULL CHECK (Price >= 0),
+    Discount int NOT NULL CHECK (Discount >= 0 AND Discount <= 100),
     Publisher_Id int REFERENCES Publishers(Id)
 );
 
 CREATE TABLE Orders (
     Id int NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     CreationDate date NOT NULL,
-    Price double precision NOT NULL CHECK(Price >= 0),
-    Status int NOT NULL CHECK(Status > 0)
+    Price double precision NOT NULL CHECK (Price >= 0),
+    Status int NOT NULL CHECK (Status > 0)
 );
 
 CREATE TABLE OrderEntries (
     Id int NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     BookId int REFERENCES Books(Id),
-    Amount int NOT NULL CHECK(Amount > 0)
+    Amount int NOT NULL CHECK (Amount > 0)
 );
 
 CREATE TABLE Cart (
