@@ -1,5 +1,5 @@
 /* --------------------------------------------------------
-    using Concrete Table Inheritance pattern here
+    using Single Table Inheritance pattern here
     to display User class inheritance structure
   -------------------------------------------------------- */
 CREATE TABLE Users (
@@ -8,36 +8,10 @@ CREATE TABLE Users (
     Password int NOT NULL,
     Name varchar(20) NOT NULL,
     SecondName varchar(20),
-    Email varchar(20) NOT NULL
-);
-
-CREATE TABLE Publishers (
-    Id int NOT NULL PRIMARY KEY,
-    Login varchar(20) NOT NULL UNIQUE,
-    Password int NOT NULL,
-    Name varchar(20) NOT NULL,
-    SecondName varchar(20),
-    Email varchar(20) NOT NULL
-);
-
-CREATE TABLE Administrators (
-    Id int NOT NULL PRIMARY KEY,
-    Login varchar(20) NOT NULL UNIQUE,
-    Password int NOT NULL,
-    Name varchar(20) NOT NULL,
-    SecondName varchar(20),
-    Email varchar(20) NOT NULL
-);
-
-CREATE TABLE Customers (
-    Id int NOT NULL PRIMARY KEY,
-    Login varchar(20) NOT NULL UNIQUE,
-    Password int NOT NULL,
-    Name varchar(20) NOT NULL,
-    SecondName varchar(20),
     Email varchar(20) NOT NULL,
     Personal_Discount int NOT NULL
 );
+
 -----------------------------------------------------------------
 
 CREATE TABLE Books (
