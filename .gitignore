@@ -17,5 +17,6 @@
 # Maven folder structure #
 target/
 
-# Apache Derby source #
+# Apache Derby #
 db-derby/
+derby.log
