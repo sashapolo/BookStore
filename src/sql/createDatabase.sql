@@ -4,6 +4,7 @@
   -------------------------------------------------------- */
 CREATE TABLE Users (
     Id int NOT NULL PRIMARY KEY,
+    Type int NOT NULL CHECK (Type >= 0)
     Login varchar(20) NOT NULL UNIQUE,
     Password int NOT NULL,
     Name varchar(20) NOT NULL,
@@ -21,8 +22,8 @@ CREATE TABLE Books (
     Isbn char(13) NOT NULL UNIQUE,
     PublicationDate date NOT NULL,
     Price double precision NOT NULL CHECK (Price >= 0),
-    Discount int NOT NULL CHECK,
-    Publisher_Id int REFERENCES Publishers(Id)
+    Discount int NOT NULL,
+    Publisher_Id int REFERENCES Users(Id)
 );
 
 CREATE TABLE Orders (
