@@ -26,8 +26,7 @@ public class UserMapper {
         connectionManager_ = manager;
     }
 
-    public User
-    findByLogin(final String login, final int passwordCheck) throws IllegalArgumentException, DataMapperException {
+    public User findByLogin(final String login) throws DataMapperException {
         assert(login != null);
 
         Connection conn = null;
@@ -40,12 +39,9 @@ public class UserMapper {
             ResultSet result = statement.executeQuery();
 
             while (result.next()) {
-                int password = result.getInt("Password");
-                if (password != passwordCheck) {
-                    throw new IllegalArgumentException("Incorrect password");
-                }
                 int id = result.getInt("Id");
                 int type = result.getInt("Type");
+                int password = result.getInt("Password");
                 String name = result.getString("Name");
                 String secondName = result.getString("SecondName");
                 String email = result.getString("Email");
@@ -74,6 +70,63 @@ public class UserMapper {
                                              name,
                                              secondName,
                                              email);
+                    default:
+                        throw new DataMapperException("Unknown user type");
+                }
+            }
+
+            return null;
+        } catch (SQLException e) {
+            throw new DataMapperException("Error occurred while searching for user", e);
+        } finally {
+            if (conn != null) {
+                try {
+                    connectionManager_.closeConnection(conn);
+                } catch (SQLException e2) {}
+            }
+        }
+    }
+
+    private User find (final PreparedStatement statement) throws SQLException, DataMapperException {
+        assert(statement != null);
+
+            ResultSet result = statement.executeQuery();
+
+            while (result.next()) {
+                int password = result.getInt("Password");
+                if (password != passwordCheck) {
+                    throw new IllegalArgumentException("Incorrect password");
+                }
+                int id = result.getInt("Id");
+                int type = result.getInt("Type");
+                String name = result.getString("Name");
+                String secondName = result.getString("SecondName");
+                String email = result.getString("Email");
+
+                switch (type) {
+                    case 0:
+                        int discount = result.getInt("PersonalDiscount");
+                        return new Customer(id,
+                                login,
+                                password,
+                                name,
+                                secondName,
+                                email,
+                                discount);
+                    case 1:
+                        return new Administrator(id,
+                                login,
+                                password,
+                                name,
+                                secondName,
+                                email);
+                    case 2:
+                        return new Publisher(id,
+                                login,
+                                password,
+                                name,
+                                secondName,
+                                email);
                     default:
                         throw new DataMapperException("Unknown user type");
                 }

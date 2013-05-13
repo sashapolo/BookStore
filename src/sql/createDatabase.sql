@@ -23,6 +23,7 @@ CREATE TABLE Books (
     PublicationDate date NOT NULL,
     Price double precision NOT NULL CHECK (Price >= 0),
     Discount int NOT NULL,
+    NumSold int NOT NULL,
     PublisherId int REFERENCES Users(Id)
 );
 
