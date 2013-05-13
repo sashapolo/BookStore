@@ -10,7 +10,7 @@ CREATE TABLE Users (
     Name varchar(20) NOT NULL,
     SecondName varchar(20),
     Email varchar(20) NOT NULL,
-    Personal_Discount int NOT NULL
+    PersonalDiscount int NOT NULL
 );
 
 -----------------------------------------------------------------
@@ -23,7 +23,7 @@ CREATE TABLE Books (
     PublicationDate date NOT NULL,
     Price double precision NOT NULL CHECK (Price >= 0),
     Discount int NOT NULL,
-    Publisher_Id int REFERENCES Users(Id)
+    PublisherId int REFERENCES Users(Id)
 );
 
 CREATE TABLE Orders (

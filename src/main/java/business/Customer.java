@@ -18,11 +18,12 @@ public class Customer extends User {
 
     public Customer(final int id,
                     final String login,
-                    final String password,
+                    final int password,
                     final String name,
+                    final String secondName,
                     final String email,
                     final int discount) {
-        super(id, login, password, name, email);
+        super(id, login, password, name, secondName, email);
         personalDiscount_ = new Discount(discount);
     }
 

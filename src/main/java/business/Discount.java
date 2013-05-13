@@ -27,4 +27,8 @@ public class Discount {
     public double getInvertedValue() {
         return (double) (100 - value_) / 100;
     }
+
+    public int integerValue() {
+        return value_;
+    }
 }
