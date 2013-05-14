@@ -120,7 +120,8 @@ public class UserMapper {
         try {
             conn = connectionManager_.getConnection();
 
-            String query = "INSERT into Users VALUES (?, ?, ?, ?, ?, ?, ?)";
+            String query = "INSERT into Users(Type, Login, Password, Name, SecondName, Email, PersonalDiscount) " +
+                           "VALUES (?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement statement = conn.prepareStatement(query);
 
             statement.setInt(1, 1);

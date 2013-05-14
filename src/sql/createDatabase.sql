@@ -3,8 +3,8 @@
     to display User class inheritance structure
   -------------------------------------------------------- */
 CREATE TABLE Users (
-    Id int NOT NULL PRIMARY KEY,
-    Type int NOT NULL CHECK (Type >= 0)
+    Id int NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    Type int NOT NULL CHECK (Type >= 0),
     Login varchar(20) NOT NULL UNIQUE,
     Password int NOT NULL,
     Name varchar(20) NOT NULL,
