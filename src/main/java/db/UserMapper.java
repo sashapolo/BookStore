@@ -22,11 +22,56 @@ public class UserMapper {
 
     public UserMapper(ConnectionManager manager) {
         assert(manager != null);
-
         connectionManager_ = manager;
     }
 
-    public User findByLogin(final String login) throws DataMapperException {
+    private User find(PreparedStatement statement) throws SQLException, DataMapperException {
+        assert(statement != null);
+
+        ResultSet result = statement.executeQuery();
+
+        if (result.next()) {
+            int password = result.getInt("Password");
+            int id = result.getInt("Id");
+            int type = result.getInt("Type");
+            String login = result.getString("Login");
+            String name = result.getString("Name");
+            String secondName = result.getString("SecondName");
+            String email = result.getString("Email");
+
+            switch (type) {
+                case 0:
+                    int discount = result.getInt("PersonalDiscount");
+                    return new Customer(id,
+                                        login,
+                                        password,
+                                        name,
+                                        secondName,
+                                        email,
+                                        discount);
+                case 1:
+                    return new Administrator(id,
+                                             login,
+                                             password,
+                                             name,
+                                             secondName,
+                                             email);
+                case 2:
+                    return new Publisher(id,
+                                         login,
+                                         password,
+                                         name,
+                                         secondName,
+                                         email);
+                default:
+                    throw new DataMapperException("Unknown user type");
+            }
+        }
+
+        return null;
+    }
+
+    public User findByLogin(String login) throws DataMapperException {
         assert(login != null);
 
         Connection conn = null;
@@ -36,46 +81,8 @@ public class UserMapper {
             String query = "SELECT * from USERS where Login=?";
             PreparedStatement statement = conn.prepareStatement(query);
             statement.setString(1, login);
-            ResultSet result = statement.executeQuery();
 
-            while (result.next()) {
-                int id = result.getInt("Id");
-                int type = result.getInt("Type");
-                int password = result.getInt("Password");
-                String name = result.getString("Name");
-                String secondName = result.getString("SecondName");
-                String email = result.getString("Email");
-
-                switch (type) {
-                    case 0:
-                        int discount = result.getInt("PersonalDiscount");
-                        return new Customer(id,
-                                            login,
-                                            password,
-                                            name,
-                                            secondName,
-                                            email,
-                                            discount);
-                    case 1:
-                        return new Administrator(id,
-                                                 login,
-                                                 password,
-                                                 name,
-                                                 secondName,
-                                                 email);
-                    case 2:
-                        return new Publisher(id,
-                                             login,
-                                             password,
-                                             name,
-                                             secondName,
-                                             email);
-                    default:
-                        throw new DataMapperException("Unknown user type");
-                }
-            }
-
-            return null;
+            return find(statement);
         } catch (SQLException e) {
             throw new DataMapperException("Error occurred while searching for user", e);
         } finally {
@@ -87,52 +94,16 @@ public class UserMapper {
         }
     }
 
-    private User find (final PreparedStatement statement) throws SQLException, DataMapperException {
-        assert(statement != null);
+    public User findById(int id) throws DataMapperException {
+        Connection conn = null;
+        try {
+            conn = connectionManager_.getConnection();
 
-            ResultSet result = statement.executeQuery();
+            String query = "SELECT * from USERS where Id=?";
+            PreparedStatement statement = conn.prepareStatement(query);
+            statement.setInt(1, id);
 
-            while (result.next()) {
-                int password = result.getInt("Password");
-                if (password != passwordCheck) {
-                    throw new IllegalArgumentException("Incorrect password");
-                }
-                int id = result.getInt("Id");
-                int type = result.getInt("Type");
-                String name = result.getString("Name");
-                String secondName = result.getString("SecondName");
-                String email = result.getString("Email");
-
-                switch (type) {
-                    case 0:
-                        int discount = result.getInt("PersonalDiscount");
-                        return new Customer(id,
-                                login,
-                                password,
-                                name,
-                                secondName,
-                                email,
-                                discount);
-                    case 1:
-                        return new Administrator(id,
-                                login,
-                                password,
-                                name,
-                                secondName,
-                                email);
-                    case 2:
-                        return new Publisher(id,
-                                login,
-                                password,
-                                name,
-                                secondName,
-                                email);
-                    default:
-                        throw new DataMapperException("Unknown user type");
-                }
-            }
-
-            return null;
+            return find(statement);
         } catch (SQLException e) {
             throw new DataMapperException("Error occurred while searching for user", e);
         } finally {

@@ -13,7 +13,7 @@ import java.math.BigDecimal;
 public class Discount {
     private final int value_;
 
-    public Discount(final int value) {
+    public Discount(int value) {
         if (value > 100 || value < 0) {
             throw new IllegalArgumentException("Illegal discount settings");
         }

@@ -18,7 +18,7 @@ CREATE TABLE Users (
 CREATE TABLE Books (
     Id int NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     Name varchar(20) NOT NULL,
-    Jenre varchar(20) NOT NULL,
+    Genre varchar(20) NOT NULL,
     Isbn char(13) NOT NULL UNIQUE,
     PublicationDate date NOT NULL,
     Price double precision NOT NULL CHECK (Price >= 0),

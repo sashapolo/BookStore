@@ -27,7 +27,7 @@ public class BookMapper {
     }
 
     public List<Book> findByName(final String bookName) throws DataMapperException {
-        assert(name != null);
+        assert(bookName != null);
 
         List<Book> result = new LinkedList<>();
         Connection conn = null;
@@ -42,14 +42,27 @@ public class BookMapper {
             while (rs.next()) {
                 int id = rs.getInt("Id");
                 String name = rs.getString("Name");
-                String jenre = rs.getString("Jenre");
+                String genre = rs.getString("Genre");
                 Isbn isbn = new Isbn13(rs.getString("Isbn"));
+
                 GregorianCalendar date = new GregorianCalendar();
                 date.setTime(rs.getDate("PublicationDate"));
+
                 double price = rs.getDouble("Price");
                 Discount discount = new Discount(rs.getInt("Discount"));
+
                 UserMapper userMapper = new UserMapper(connectionManager_);
-                Publisher publisher = (Publisher
+                User publisher = userMapper.findById(rs.getInt("PublisherId"));
+                if (!(publisher instanceof Publisher)) {
+                    throw new DataMapperException("Incorrect publisher type");
+                }
+
+                int numSold = rs.getInt("NumSold");
+
+                result.add(new Book.Builder(id, name, genre, (Publisher)publisher, date, isbn, price)
+                                        .discount(discount)
+                                        .numSold(numSold)
+                                        .build());
             }
 
             return null;
