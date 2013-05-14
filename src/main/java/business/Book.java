@@ -11,15 +11,7 @@ import java.util.GregorianCalendar;
  * 
  */
 public class Book {
-    private final int id_;
-    private final String name_;
-    private final String genre_;
-    private final Publisher publisher_;
-    private final GregorianCalendar publicationDate_;
-    private final Isbn isbn13_;
-    private double price_;
-    private final Discount discount_;
-    private int numSold_;
+    private final Builder builder_;
 
     public static class Builder {
         private final int id_;
@@ -77,62 +69,58 @@ public class Book {
 
     private Book(final Builder builder) {
         assert (builder != null);
-
-        id_ = builder.id_;
-        name_ = builder.name_;
-        genre_ = builder.genre_;
-        publisher_ = builder.publisher_;
-        publicationDate_ = builder.publicationDate_;
-        isbn13_ = builder.isbn13_;
-        discount_ = builder.discount_;
-        numSold_ = builder.numSold_;
+        builder_ = builder;
     }
     
     public boolean matchesString(final String match) {
-    	return name_.contains(match) || 
-    		   genre_.contains(match) || 
-    		   publisher_.getName().contains(match);   	
+    	return builder_.name_.contains(match) ||
+               builder_.genre_.contains(match) ||
+               builder_.publisher_.getName().contains(match);
     }
 
     public int getId() {
-        return id_;
+        return builder_.id_;
     }
 
     public double getPrice() {
-        return price_ * discount_.getInvertedValue();
+        return builder_.price_ * builder_.discount_.getInvertedValue();
     }
 
     public String getName() {
-        return name_;
+        return builder_.name_;
     }
 
     public String getGenre() {
-        return genre_;
+        return builder_.genre_;
+    }
+
+    public Discount getDiscount() {
+        return builder_.discount_;
     }
 
     public Publisher getPublisher() {
-        return publisher_;
+        return builder_.publisher_;
     }
 
     public GregorianCalendar getPublicationDate() {
-        return (GregorianCalendar) publicationDate_.clone();
+        return (GregorianCalendar) builder_.publicationDate_.clone();
     }
 
     public Isbn getIsbn() {
-        return isbn13_;
+        return builder_.isbn13_;
     }
     
     public int getNumSold() {
-    	return numSold_;
+    	return builder_.numSold_;
     }
     
     public void setPrice(double price) {
-    	price_ = price;
+        builder_.price_ = price;
     }
 
     @Override
     public int hashCode() {
-    	return isbn13_.hashCode();
+    	return builder_.isbn13_.hashCode();
     }
 
     @Override
@@ -141,6 +129,6 @@ public class Book {
         if (!(o instanceof Book)) return false;
 
         final Book book = (Book) o;
-        return isbn13_.equals(book.isbn13_);
+        return builder_.isbn13_.equals(book.builder_.isbn13_);
     }
 }

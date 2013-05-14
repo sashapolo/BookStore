@@ -9,15 +9,17 @@ package business;
  * 
  */
 public class OrderEntry {
+    private final int id_;
     private final int amount_;
     private final Book book_;
 
-    public OrderEntry(final Book book, final int amount) {
+    public OrderEntry(int id, final Book book, final int amount) {
         assert (book != null);
 
         if (amount <= 0) {
             throw new IllegalArgumentException("Amount must be of positive value");
         }
+        id_ = id;
         amount_ = amount;
         book_ = book;
     }
@@ -28,7 +30,11 @@ public class OrderEntry {
     	if (!equals(other)) {
     		throw new IllegalArgumentException("Trying to add order entries containing different books");
     	}
-    	return new OrderEntry(book_, amount_ + other.amount_);
+    	return new OrderEntry(id_, book_, amount_ + other.amount_);
+    }
+
+    public int getId() {
+        return id_;
     }
 
     public int getAmount() {

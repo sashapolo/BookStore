@@ -4,6 +4,7 @@
 package business;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -12,7 +13,17 @@ import java.util.Map;
  * 
  */
 public class Cart {
-    private final Map<Book, OrderEntry> entries_ = new HashMap<>();
+    private final Map<Book, OrderEntry> entries_;
+
+    public Cart() {
+        entries_ = new HashMap<>();
+    }
+    public Cart(final List<OrderEntry> orderList) {
+        entries_ = new HashMap<>();
+        for (OrderEntry entry : orderList) {
+            entries_.put(entry.getBook(), entry);
+        }
+    }
 
     public void put(final OrderEntry entry) {
         assert (entry != null);

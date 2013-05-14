@@ -18,14 +18,14 @@ import java.sql.SQLException;
  * To change this template use File | Settings | File Templates.
  */
 public class UserMapper {
-    private ConnectionManager connectionManager_;
+    private final ConnectionManager connectionManager_;
 
-    public UserMapper(ConnectionManager manager) {
+    public UserMapper(final ConnectionManager manager) {
         assert(manager != null);
         connectionManager_ = manager;
     }
 
-    private User find(PreparedStatement statement) throws SQLException, DataMapperException {
+    private User find(final PreparedStatement statement) throws SQLException, DataMapperException {
         assert(statement != null);
 
         ResultSet result = statement.executeQuery();
@@ -71,7 +71,7 @@ public class UserMapper {
         return null;
     }
 
-    public User findByLogin(String login) throws DataMapperException {
+    public User findByLogin(final String login) throws DataMapperException {
         assert(login != null);
 
         Connection conn = null;
@@ -115,7 +115,7 @@ public class UserMapper {
         }
     }
 
-    public void insert(Administrator user) throws DataMapperException {
+    public void insert(final Administrator user) throws DataMapperException {
         Connection conn = null;
         try {
             conn = connectionManager_.getConnection();
@@ -143,7 +143,7 @@ public class UserMapper {
         }
     }
 
-    public void insert(Publisher user) throws DataMapperException {
+    public void insert(final Publisher user) throws DataMapperException {
         Connection conn = null;
         try {
             conn = connectionManager_.getConnection();
@@ -171,7 +171,7 @@ public class UserMapper {
         }
     }
 
-    public void insert(Customer user) throws DataMapperException {
+    public void insert(final Customer user) throws DataMapperException {
         Connection conn = null;
         try {
             conn = connectionManager_.getConnection();
@@ -199,7 +199,7 @@ public class UserMapper {
         }
     }
 
-    public void update(Administrator user) throws DataMapperException {
+    public void update(final Administrator user) throws DataMapperException {
         Connection conn = null;
         try {
             conn = connectionManager_.getConnection();
@@ -228,7 +228,7 @@ public class UserMapper {
         }
     }
 
-    public void update(Publisher user) throws DataMapperException {
+    public void update(final Publisher user) throws DataMapperException {
         Connection conn = null;
         try {
             conn = connectionManager_.getConnection();
@@ -257,7 +257,7 @@ public class UserMapper {
         }
     }
 
-    public void update(Customer user) throws DataMapperException {
+    public void update(final Customer user) throws DataMapperException {
         Connection conn = null;
         try {
             conn = connectionManager_.getConnection();
@@ -286,15 +286,15 @@ public class UserMapper {
         }
     }
 
-    public void delete(User user) throws DataMapperException {
+    public void delete(final User user) throws DataMapperException {
         Connection conn = null;
         try {
             conn = connectionManager_.getConnection();
 
-            String query = "DELETE from Users where login=?";
+            String query = "DELETE from Users where Id=?";
             PreparedStatement statement = conn.prepareStatement(query);
 
-            statement.setString(1, user.getLogin());
+            statement.setInt(1, user.getId());
 
             statement.executeUpdate();
         } catch (SQLException e) {
