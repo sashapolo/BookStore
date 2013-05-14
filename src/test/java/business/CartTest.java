@@ -1,10 +1,10 @@
 package business;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.Test;
 
 import java.util.GregorianCalendar;
 
-import org.junit.Test;
+import static org.junit.Assert.assertEquals;
 
 
 public class CartTest {

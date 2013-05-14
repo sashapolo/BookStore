@@ -2,8 +2,6 @@ package db;
 
 import business.Book;
 import business.OrderEntry;
-import business.Publisher;
-import business.User;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -49,7 +47,62 @@ public class OrderEntryMapper {
 
             return null;
         } catch (SQLException e) {
-            throw new DataMapperException("Error occurred while searching for book", e);
+            throw new DataMapperException("Error occurred while searching for entry", e);
+        } finally {
+            if (conn != null) {
+                try {
+                    connectionManager_.closeConnection(conn);
+                } catch (SQLException e2) {}
+            }
+        }
+    }
+
+    public int insert(final OrderEntry entry) throws DataMapperException {
+        assert (entry != null);
+
+        Connection conn = null;
+        try {
+            conn = connectionManager_.getConnection();
+
+            String query = "INSERT into OrderEntries VALUES (?, ?)";
+            PreparedStatement statement = conn.prepareStatement(query);
+
+            statement.setInt(1, entry.getBook().getId());
+            statement.setInt(2, entry.getAmount());
+
+            statement.executeUpdate();
+
+            ResultSet keys = statement.getGeneratedKeys();
+            if (keys.next()) {
+                return keys.getInt(1);
+            }
+            throw new DataMapperException("Error occurred while retrieving primary key");
+        } catch (SQLException e) {
+            throw new DataMapperException("Error occurred while inserting an entry", e);
+        } finally {
+            if (conn != null) {
+                try {
+                    connectionManager_.closeConnection(conn);
+                } catch (SQLException e2) {}
+            }
+        }
+    }
+
+    public void delete(final OrderEntry entry) throws DataMapperException {
+        assert (entry != null);
+
+        Connection conn = null;
+        try {
+            conn = connectionManager_.getConnection();
+
+            String query = "DELETE from OrderEntries where Id=?";
+            PreparedStatement statement = conn.prepareStatement(query);
+
+            statement.setInt(1, entry.getId());
+
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DataMapperException("Error occurred while deleting an entry", e);
         } finally {
             if (conn != null) {
                 try {

@@ -16,7 +16,7 @@ public class Order {
     private final Builder builder_;
 
     public static class Builder {
-        private final int id_;
+        private int id_;
         private GregorianCalendar dateCreated_ = new GregorianCalendar();
         private final Cart cart_;
         private final double cartPrice_;
@@ -91,5 +91,9 @@ public class Order {
 
     public Cart getCart() {
     	return builder_.cart_;
+    }
+
+    public void setId(int id) {
+        builder_.id_ = id;
     }
 }

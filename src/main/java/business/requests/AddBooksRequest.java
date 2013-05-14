@@ -3,9 +3,9 @@
  */
 package business.requests;
 
-import dbwrappers.Stock;
 import business.Isbn;
 import business.Publisher;
+import dbwrappers.Stock;
 
 /**
  * @author alexander

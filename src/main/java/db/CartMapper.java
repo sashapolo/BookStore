@@ -1,12 +1,13 @@
 package db;
 
-import business.*;
+import business.Cart;
+import business.Order;
+import business.OrderEntry;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.GregorianCalendar;
 
 /**
  * Created with IntelliJ IDEA.
@@ -35,8 +36,8 @@ public class CartMapper {
 
             Cart result = new Cart();
 
+            OrderEntryMapper mapper = new OrderEntryMapper(connectionManager_);
             while (rs.next()) {
-                OrderEntryMapper mapper = new OrderEntryMapper(connectionManager_);
                 OrderEntry entry = mapper.findById(rs.getInt("OrderEntryId"));
                 if (entry == null) {
                     throw new DataMapperException("OrderEntry not found");
@@ -47,7 +48,64 @@ public class CartMapper {
 
             return result;
         } catch (SQLException e) {
-            throw new DataMapperException("Error occurred while searching for book", e);
+            throw new DataMapperException("Error occurred while searching for entry", e);
+        } finally {
+            if (conn != null) {
+                try {
+                    connectionManager_.closeConnection(conn);
+                } catch (SQLException e2) {}
+            }
+        }
+    }
+
+    public void insertOrder(final Order order) throws DataMapperException {
+        assert(order != null);
+
+        Connection conn = null;
+        try {
+            conn = connectionManager_.getConnection();
+
+            String query = "INSERT into Cart VALUES (?, ?)";
+            PreparedStatement statement = conn.prepareStatement(query);
+            statement.setInt(1, order.getId());
+
+            OrderEntryMapper mapper = new OrderEntryMapper(connectionManager_);
+            for (OrderEntry entry : order.getCart().values()) {
+                int entryId = mapper.insert(entry);
+                statement.setInt(2, entryId);
+                statement.executeUpdate();
+            }
+
+        } catch (SQLException e) {
+            throw new DataMapperException("Error occurred while inserting an order", e);
+        } finally {
+            if (conn != null) {
+                try {
+                    connectionManager_.closeConnection(conn);
+                } catch (SQLException e2) {}
+            }
+        }
+    }
+
+    public void deleteOrder(final Order order) throws DataMapperException {
+        assert(order != null);
+
+        Connection conn = null;
+        try {
+            conn = connectionManager_.getConnection();
+
+            String query = "DELETE from Cart where OrderId=?";
+            PreparedStatement statement = conn.prepareStatement(query);
+            statement.setInt(1, order.getId());
+            statement.executeUpdate();
+
+            OrderEntryMapper mapper = new OrderEntryMapper(connectionManager_);
+            for (OrderEntry entry : order.getCart().values()) {
+                mapper.delete(entry);
+            }
+
+        } catch (SQLException e) {
+            throw new DataMapperException("Error occurred while deleting an order", e);
         } finally {
             if (conn != null) {
                 try {

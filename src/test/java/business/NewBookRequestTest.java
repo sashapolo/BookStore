@@ -1,17 +1,14 @@
 package business;
 
-import static org.junit.Assert.assertEquals;
-
-import java.math.BigDecimal;
-import java.util.GregorianCalendar;
-
-import org.junit.Test;
-
 import business.requests.NewBookRequest;
 import business.requests.Request;
-
 import dbwrappers.BookCatalogue;
 import dbwrappers.Stock;
+import org.junit.Test;
+
+import java.util.GregorianCalendar;
+
+import static org.junit.Assert.assertEquals;
 
 public class NewBookRequestTest {
 	private final Book book;

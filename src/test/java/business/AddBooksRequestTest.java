@@ -1,15 +1,14 @@
 package business;
 
-import static org.junit.Assert.*;
-
-import java.util.GregorianCalendar;
-
-import org.junit.Test;
-
 import business.requests.AddBooksRequest;
 import business.requests.Request;
 import dbwrappers.BookCatalogue;
 import dbwrappers.Stock;
+import org.junit.Test;
+
+import java.util.GregorianCalendar;
+
+import static org.junit.Assert.assertEquals;
 
 public class AddBooksRequestTest {
 	private final Publisher pub;

@@ -3,9 +3,6 @@
  */
 package business;
 
-import java.math.BigDecimal;
-
-
 /**
  * @author alexander
  * 

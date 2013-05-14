@@ -1,12 +1,12 @@
 package business;
 
-import static org.junit.Assert.*;
-
-import java.util.GregorianCalendar;
-
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+
+import java.util.GregorianCalendar;
+
+import static org.junit.Assert.assertEquals;
 
 
 public class BookTest {

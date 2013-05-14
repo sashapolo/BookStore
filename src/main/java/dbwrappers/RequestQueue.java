@@ -3,9 +3,9 @@
  */
 package dbwrappers;
 
-import java.util.LinkedList;
-
 import business.requests.Request;
+
+import java.util.LinkedList;
 
 /**
  * @author alexander
