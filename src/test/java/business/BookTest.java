@@ -17,40 +17,37 @@ public class BookTest {
 
     @Test
     public void testBookGetPrice1() {
-        final Book tester = new Book(0,
-                                     "",
-                                     "",
-                                     new Publisher(0, "", "", "", ""),
-                                     new GregorianCalendar(),
-                                     new Isbn13("9783161484100"),
-                                     120.44,
-                                     0);
+        Book tester = new Book.Builder(0,
+                                       "",
+                                       "",
+                                       new Publisher(0, "", 0, "", "", ""),
+                                       new GregorianCalendar(),
+                                       new Isbn13("9783161484100"),
+                                       120.44).build();
         assertEquals("Incorrect price", 120.44, tester.getPrice(), EPSILON);
     }
 
     @Test
     public void testBookGetPrice2() {
-        final Book tester = new Book(0,
-                                     "",
-                                     "",
-                                     new Publisher(0, "", "", "", ""),
-                                     new GregorianCalendar(),
-                                     new Isbn13("9783161484100"),
-                                     120.44,
-                                     100);
+        Book tester = new Book.Builder(0,
+                                       "",
+                                       "",
+                                       new Publisher(0, "", 0, "", "", ""),
+                                       new GregorianCalendar(),
+                                       new Isbn13("9783161484100"),
+                                       120.44).discount(100).build();
         assertEquals("Incorrect price", 0, tester.getPrice(), EPSILON);
     }
 
     @Test
     public void testBookGetPrice3() {
-        final Book tester = new Book(0,
-                                     "",
-                                     "",
-                                     new Publisher(0, "", "", "", ""),
-                                     new GregorianCalendar(),
-                                     new Isbn13("9783161484100"),
-                                     120.44,
-                                     48);
+        Book tester = new Book.Builder(0,
+                                       "",
+                                       "",
+                                       new Publisher(0, "", 0, "", "", ""),
+                                       new GregorianCalendar(),
+                                       new Isbn13("9783161484100"),
+                                       120.44).discount(48).build();
         assertEquals("Incorrect price", 120.44 * 0.52, tester.getPrice(), EPSILON);
     }
 
@@ -59,13 +56,12 @@ public class BookTest {
         exception.expect(IllegalArgumentException.class);
         exception.expectMessage("Illegal discount settings");
         @SuppressWarnings("unused")
-        final Book tester = new Book(0,
-                                     "",
-                                     "",
-                                     new Publisher(0, "", "", "", ""),
-                                     new GregorianCalendar(),
-                                     new Isbn13("9783161484100"),
-                                     120.44,
-                                     -1);
+        Book tester = new Book.Builder(0,
+                                       "",
+                                       "",
+                                       new Publisher(0, "", 0, "", "", ""),
+                                       new GregorianCalendar(),
+                                       new Isbn13("9783161484100"),
+                                       120.44).discount(-1).build();
     }
 }

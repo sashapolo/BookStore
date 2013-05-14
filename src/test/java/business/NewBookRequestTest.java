@@ -17,15 +17,14 @@ public class NewBookRequestTest {
 	public NewBookRequestTest() {
 		BookCatalogue.INSTANCE.clear();
 		Stock.INSTANCE.clear();
-		Publisher pub = new Publisher(0, "", "", "foo", "bar");
-		book = new Book(0,
-                        "",
-		                "", 
-		                new Publisher(0, "", "", "", ""),
-		                new GregorianCalendar(), 
-		                new Isbn13("9783161484100"), 
-		                120.44,
-		                50);
+		Publisher pub = new Publisher(0, "", 0, "", "foo", "bar");
+        book = new Book.Builder(0,
+                                "",
+                                "",
+                                new Publisher(0, "", 0, "", "", ""),
+                                new GregorianCalendar(),
+                                new Isbn13("9783161484100"),
+                                120.44).discount(50).build();
 		request  = new NewBookRequest(pub, book);
 	}
 	

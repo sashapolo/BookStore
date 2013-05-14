@@ -19,19 +19,18 @@ public class OrderEntryTest {
 
     @Before
     public void init() {
-        book = new Book(0,
-                        "",
-                        "",
-                        new Publisher(0, "", "", "", ""),
-                        new GregorianCalendar(),
-        				new Isbn13("9783161484100"),
-                        120.44,
-                        50);
+        book = new Book.Builder(0,
+                "",
+                "",
+                new Publisher(0, "", 0, "", "", ""),
+                new GregorianCalendar(),
+                new Isbn13("9783161484100"),
+                120.44).discount(50).build();
     }
 
     @Test
     public void testOrderEntryGetPrice1() {
-        final OrderEntry tester = new OrderEntry(book, 5);
+        final OrderEntry tester = new OrderEntry(0, book, 5);
         assertEquals("Incorrect entry price",
                      120.44 * 0.5 * 5,
                      tester.getPrice(),
@@ -43,6 +42,6 @@ public class OrderEntryTest {
         exception.expect(IllegalArgumentException.class);
         exception.expectMessage("Amount must be of positive value");
         @SuppressWarnings("unused")
-        final OrderEntry tester = new OrderEntry(book, -2);
+        final OrderEntry tester = new OrderEntry(0, book, -2);
     }
 }
