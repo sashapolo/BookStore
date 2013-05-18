@@ -98,13 +98,15 @@ public class BookMapper {
         }
     }
 
-    public void insert(final Book book) throws DataMapperException {
+    public int insert(final Book book) throws DataMapperException {
         assert (book != null);
 
         PreparedStatement statement = null;
+        ResultSet keys = null;
         try {
-            final String query = "INSERT into Books VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-            statement = connection_.prepareStatement(query);
+            final String query = "INSERT into Books(Name, Genre, Isbn, PublicationDate, Price, Discount, NumSold, PublisherId)" +
+                                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            statement = connection_.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 
             statement.setString(1, book.getName());
             statement.setString(2, book.getGenre());
@@ -116,11 +118,18 @@ public class BookMapper {
             statement.setInt(8, book.getPublisher().getId());
 
             statement.executeUpdate();
+
+            keys = statement.getGeneratedKeys();
+            if (keys.next()) {
+                return keys.getInt(1);
+            }
+            throw new DataMapperException("Error occurred while retrieving primary key");
         } catch (SQLException e) {
             throw new DataMapperException("Error occurred while inserting a book", e);
         } finally {
             try {
                 if (statement != null) statement.close();
+                if (keys != null) keys.close();
             } catch (SQLException e) {}
         }
     }
@@ -144,6 +153,7 @@ public class BookMapper {
             statement.setInt(6, book.getDiscount().integerValue());
             statement.setInt(7, book.getNumSold());
             statement.setInt(8, book.getPublisher().getId());
+            statement.setInt(9, book.getId());
 
             statement.executeUpdate();
         } catch (SQLException e) {
@@ -155,14 +165,12 @@ public class BookMapper {
         }
     }
 
-    public void delete(final Book book) throws DataMapperException {
-        assert (book != null);
-
+    public void delete(final int id) throws DataMapperException {
         PreparedStatement statement = null;
         try {
             final String query = "DELETE from Books where Id=?";
             statement = connection_.prepareStatement(query);
-            statement.setInt(1, book.getId());
+            statement.setInt(1, id);
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new DataMapperException("Error occurred while deleting a book", e);

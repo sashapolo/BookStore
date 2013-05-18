@@ -139,7 +139,8 @@ public class UserMapper {
 
         PreparedStatement statement = null;
         try {
-            final String query = "INSERT into Users VALUES (?, ?, ?, ?, ?, ?, ?)";
+            final String query = "INSERT into Users(Type, Login, Password, Name, SecondName, Email, PersonalDiscount)" +
+                                 "VALUES (?, ?, ?, ?, ?, ?, ?)";
             statement = connection_.prepareStatement(query);
 
             statement.setInt(1, 2);
@@ -165,7 +166,8 @@ public class UserMapper {
 
         PreparedStatement statement = null;
         try {
-            final String query = "INSERT into Users VALUES (?, ?, ?, ?, ?, ?)";
+            final String query = "INSERT into Users(Type, Login, Password, Name, SecondName, Email, PersonalDiscount)" +
+                                 "VALUES (?, ?, ?, ?, ?, ?, ?)";
             statement = connection_.prepareStatement(query);
 
             statement.setInt(1, 0);

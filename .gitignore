@@ -20,4 +20,4 @@ target/
 # Apache Derby #
 db-derby/
 derby.log
-testdb/
+

@@ -14,7 +14,7 @@ public class Book {
     private final Builder builder_;
 
     public static class Builder {
-        private final int id_;
+        private int id_;
         private final String name_;
         private final String genre_;
         private final Publisher publisher_;
@@ -116,6 +116,10 @@ public class Book {
     
     public void setPrice(final double price) {
         builder_.price_ = price;
+    }
+
+    public void setId(final int id) {
+        builder_.id_ = id;
     }
 
     @Override

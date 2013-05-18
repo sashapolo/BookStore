@@ -74,7 +74,7 @@ public class OrderMapper {
         ResultSet keys = null;
         try {
             final String query = "INSERT into Orders VALUES (?, ?, ?)";
-            statement = connection_.prepareStatement(query);
+            statement = connection_.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 
             statement.setDate(1, new Date(order.getDateCreated().getTimeInMillis()));
             statement.setInt(2, order.getStatus().convert());

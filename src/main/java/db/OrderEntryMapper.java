@@ -3,10 +3,7 @@ package db;
 import business.Book;
 import business.OrderEntry;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -60,7 +57,7 @@ public class OrderEntryMapper {
         ResultSet keys = null;
         try {
             final String query = "INSERT into OrderEntries VALUES (?, ?)";
-            statement = connection_.prepareStatement(query);
+            statement = connection_.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 
             statement.setInt(1, entry.getBook().getId());
             statement.setInt(2, entry.getAmount());

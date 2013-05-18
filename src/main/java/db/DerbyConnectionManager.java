@@ -3,7 +3,6 @@ package db;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -18,7 +17,7 @@ public class DerbyConnectionManager implements ConnectionManager {
     private final String username_;
     private final String password_;
 
-    private static final Logger LOGGER = Logger.getLogger(DerbyConnectionManager.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ConnectionManager.class.getName());
 
     public DerbyConnectionManager(final String dbUrl, final String username, final String password) {
         assert(dbUrl != null);
