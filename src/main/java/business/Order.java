@@ -23,7 +23,7 @@ public class Order {
         private OrderStatus status_ = OrderStatus.CREATED;
         private final Customer orderer_;
 
-        public Builder(int id, final Cart cart, final Customer orderer) {
+        public Builder(final int id, final Cart cart, final Customer orderer) {
             assert (cart != null);
             assert (orderer != null);
 
@@ -38,7 +38,7 @@ public class Order {
             return this;
         }
 
-        public Builder status(OrderStatus status) {
+        public Builder status(final OrderStatus status) {
             status_ = status;
             return this;
         }
@@ -54,7 +54,7 @@ public class Order {
 
         private final int id_;
 
-        OrderStatus(int id) {
+        OrderStatus(final int id) {
             id_ = id;
         }
 
@@ -93,7 +93,7 @@ public class Order {
     	return builder_.cart_;
     }
 
-    public void setId(int id) {
+    public void setId(final int id) {
         builder_.id_ = id;
     }
 }

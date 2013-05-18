@@ -9,6 +9,6 @@ package db;
  */
 public class DataMapperException extends Exception {
     public DataMapperException() { super(); }
-    public DataMapperException(String message) { super(message); }
-    public DataMapperException(String message, Throwable cause) { super(message, cause); }
+    public DataMapperException(final String message) { super(message); }
+    public DataMapperException(final String message, final Throwable cause) { super(message, cause); }
 }

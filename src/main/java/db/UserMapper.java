@@ -18,30 +18,30 @@ import java.sql.SQLException;
  * To change this template use File | Settings | File Templates.
  */
 public class UserMapper {
-    private final ConnectionManager connectionManager_;
+    private final Connection connection_;
 
-    public UserMapper(final ConnectionManager manager) {
-        assert(manager != null);
-        connectionManager_ = manager;
+    public UserMapper(final Connection connection) {
+        assert(connection != null);
+        connection_ = connection;
     }
 
     private User find(final PreparedStatement statement) throws SQLException, DataMapperException {
         assert(statement != null);
 
-        ResultSet result = statement.executeQuery();
+        final ResultSet result = statement.executeQuery();
 
         if (result.next()) {
-            int password = result.getInt("Password");
-            int id = result.getInt("Id");
-            int type = result.getInt("Type");
-            String login = result.getString("Login");
-            String name = result.getString("Name");
-            String secondName = result.getString("SecondName");
-            String email = result.getString("Email");
+            final int password = result.getInt("Password");
+            final int id = result.getInt("Id");
+            final int type = result.getInt("Type");
+            final String login = result.getString("Login");
+            final String name = result.getString("Name");
+            final String secondName = result.getString("SecondName");
+            final String email = result.getString("Email");
 
             switch (type) {
                 case 0:
-                    int discount = result.getInt("PersonalDiscount");
+                    final int discount = result.getInt("PersonalDiscount");
                     return new Customer(id,
                                         login,
                                         password,
@@ -74,55 +74,47 @@ public class UserMapper {
     public User findByLogin(final String login) throws DataMapperException {
         assert(login != null);
 
-        Connection conn = null;
+        PreparedStatement statement = null;
         try {
-            conn = connectionManager_.getConnection();
-
-            String query = "SELECT * from USERS where Login=?";
-            PreparedStatement statement = conn.prepareStatement(query);
+            final String query = "SELECT * from USERS where Login=?";
+            statement = connection_.prepareStatement(query);
             statement.setString(1, login);
 
             return find(statement);
         } catch (SQLException e) {
             throw new DataMapperException("Error occurred while searching for user", e);
         } finally {
-            if (conn != null) {
-                try {
-                    connectionManager_.closeConnection(conn);
-                } catch (SQLException e2) {}
-            }
+            try {
+                if (statement != null) statement.close();
+            } catch (SQLException e) {}
         }
     }
 
-    public User findById(int id) throws DataMapperException {
-        Connection conn = null;
+    public User findById(final int id) throws DataMapperException {
+        PreparedStatement statement = null;
         try {
-            conn = connectionManager_.getConnection();
-
-            String query = "SELECT * from USERS where Id=?";
-            PreparedStatement statement = conn.prepareStatement(query);
+            final String query = "SELECT * from USERS where Id=?";
+            statement = connection_.prepareStatement(query);
             statement.setInt(1, id);
 
             return find(statement);
         } catch (SQLException e) {
             throw new DataMapperException("Error occurred while searching for user", e);
         } finally {
-            if (conn != null) {
-                try {
-                    connectionManager_.closeConnection(conn);
-                } catch (SQLException e2) {}
-            }
+            try {
+                if (statement != null) statement.close();
+            } catch (SQLException e) {}
         }
     }
 
     public void insert(final Administrator user) throws DataMapperException {
-        Connection conn = null;
-        try {
-            conn = connectionManager_.getConnection();
+        assert (user != null);
 
-            String query = "INSERT into Users(Type, Login, Password, Name, SecondName, Email, PersonalDiscount) " +
-                           "VALUES (?, ?, ?, ?, ?, ?, ?)";
-            PreparedStatement statement = conn.prepareStatement(query);
+        PreparedStatement statement = null;
+        try {
+            final String query = "INSERT into Users(Type, Login, Password, Name, SecondName, Email, PersonalDiscount) " +
+                                 "VALUES (?, ?, ?, ?, ?, ?, ?)";
+            statement = connection_.prepareStatement(query);
 
             statement.setInt(1, 1);
             statement.setString(2, user.getLogin());
@@ -136,21 +128,19 @@ public class UserMapper {
         } catch (SQLException e) {
             throw new DataMapperException("Error occurred while inserting a user", e);
         } finally {
-            if (conn != null) {
-                try {
-                    connectionManager_.closeConnection(conn);
-                } catch (SQLException e2) {}
-            }
+            try {
+                if (statement != null) statement.close();
+            } catch (SQLException e) {}
         }
     }
 
     public void insert(final Publisher user) throws DataMapperException {
-        Connection conn = null;
-        try {
-            conn = connectionManager_.getConnection();
+        assert (user != null);
 
-            String query = "INSERT into Users VALUES (?, ?, ?, ?, ?, ?, ?)";
-            PreparedStatement statement = conn.prepareStatement(query);
+        PreparedStatement statement = null;
+        try {
+            final String query = "INSERT into Users VALUES (?, ?, ?, ?, ?, ?, ?)";
+            statement = connection_.prepareStatement(query);
 
             statement.setInt(1, 2);
             statement.setString(2, user.getLogin());
@@ -164,21 +154,19 @@ public class UserMapper {
         } catch (SQLException e) {
             throw new DataMapperException("Error occurred while inserting a user", e);
         } finally {
-            if (conn != null) {
-                try {
-                    connectionManager_.closeConnection(conn);
-                } catch (SQLException e2) {}
-            }
+            try {
+                if (statement != null) statement.close();
+            } catch (SQLException e) {}
         }
     }
 
     public void insert(final Customer user) throws DataMapperException {
-        Connection conn = null;
-        try {
-            conn = connectionManager_.getConnection();
+        assert (user != null);
 
-            String query = "INSERT into Users VALUES (?, ?, ?, ?, ?, ?)";
-            PreparedStatement statement = conn.prepareStatement(query);
+        PreparedStatement statement = null;
+        try {
+            final String query = "INSERT into Users VALUES (?, ?, ?, ?, ?, ?)";
+            statement = connection_.prepareStatement(query);
 
             statement.setInt(1, 0);
             statement.setString(2, user.getLogin());
@@ -192,23 +180,21 @@ public class UserMapper {
         } catch (SQLException e) {
             throw new DataMapperException("Error occurred while inserting a user", e);
         } finally {
-            if (conn != null) {
-                try {
-                    connectionManager_.closeConnection(conn);
-                } catch (SQLException e2) {}
-            }
+            try {
+                if (statement != null) statement.close();
+            } catch (SQLException e) {}
         }
     }
 
     public void update(final Administrator user) throws DataMapperException {
-        Connection conn = null;
-        try {
-            conn = connectionManager_.getConnection();
+        assert (user != null);
 
-            String query = "UPDATE Users SET " +
-                           "Password=?, Name=?, SecondName=?, Email=?, PersonalDiscount=? " +
-                           "where Login=?";
-            PreparedStatement statement = conn.prepareStatement(query);
+        PreparedStatement statement = null;
+        try {
+            final String query = "UPDATE Users SET " +
+                                 "Password=?, Name=?, SecondName=?, Email=?, PersonalDiscount=? " +
+                                 "where Login=?";
+            statement = connection_.prepareStatement(query);
 
             statement.setInt(1, user.getPasswordHash());
             statement.setString(2, user.getName());
@@ -221,23 +207,21 @@ public class UserMapper {
         } catch (SQLException e) {
             throw new DataMapperException("Error occurred while updating a user", e);
         } finally {
-            if (conn != null) {
-                try {
-                    connectionManager_.closeConnection(conn);
-                } catch (SQLException e2) {}
-            }
+            try {
+                if (statement != null) statement.close();
+            } catch (SQLException e) {}
         }
     }
 
     public void update(final Publisher user) throws DataMapperException {
-        Connection conn = null;
-        try {
-            conn = connectionManager_.getConnection();
+        assert (user != null);
 
-            String query = "UPDATE Users SET " +
-                    "Password=?, Name=?, SecondName=?, Email=?, PersonalDiscount=? " +
-                    "where Login=?";
-            PreparedStatement statement = conn.prepareStatement(query);
+        PreparedStatement statement = null;
+        try {
+            final String query = "UPDATE Users SET " +
+                                 "Password=?, Name=?, SecondName=?, Email=?, PersonalDiscount=? " +
+                                 "where Login=?";
+            statement = connection_.prepareStatement(query);
 
             statement.setInt(1, user.getPasswordHash());
             statement.setString(2, user.getName());
@@ -250,23 +234,21 @@ public class UserMapper {
         } catch (SQLException e) {
             throw new DataMapperException("Error occurred while updating a user", e);
         } finally {
-            if (conn != null) {
-                try {
-                    connectionManager_.closeConnection(conn);
-                } catch (SQLException e2) {}
-            }
+            try {
+                if (statement != null) statement.close();
+            } catch (SQLException e) {}
         }
     }
 
     public void update(final Customer user) throws DataMapperException {
-        Connection conn = null;
-        try {
-            conn = connectionManager_.getConnection();
+        assert (user != null);
 
-            String query = "UPDATE Users SET " +
+        PreparedStatement statement = null;
+        try {
+            final String query = "UPDATE Users SET " +
                     "Password=?, Name=?, SecondName=?, Email=?, PersonalDiscount=? " +
                     "where Login=?";
-            PreparedStatement statement = conn.prepareStatement(query);
+            statement = connection_.prepareStatement(query);
 
             statement.setInt(1, user.getPasswordHash());
             statement.setString(2, user.getName());
@@ -279,21 +261,19 @@ public class UserMapper {
         } catch (SQLException e) {
             throw new DataMapperException("Error occurred while updating a user", e);
         } finally {
-            if (conn != null) {
-                try {
-                    connectionManager_.closeConnection(conn);
-                } catch (SQLException e2) {}
-            }
+            try {
+                if (statement != null) statement.close();
+            } catch (SQLException e) {}
         }
     }
 
     public void delete(final User user) throws DataMapperException {
-        Connection conn = null;
-        try {
-            conn = connectionManager_.getConnection();
+        assert (user != null);
 
-            String query = "DELETE from Users where Id=?";
-            PreparedStatement statement = conn.prepareStatement(query);
+        PreparedStatement statement = null;
+        try {
+            final String query = "DELETE from Users where Id=?";
+            statement = connection_.prepareStatement(query);
 
             statement.setInt(1, user.getId());
 
@@ -301,11 +281,9 @@ public class UserMapper {
         } catch (SQLException e) {
             throw new DataMapperException("Error occurred while deleting a user", e);
         } finally {
-            if (conn != null) {
-                try {
-                    connectionManager_.closeConnection(conn);
-                } catch (SQLException e2) {}
-            }
+            try {
+                if (statement != null) statement.close();
+            } catch (SQLException e) {}
         }
     }
 }

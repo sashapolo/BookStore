@@ -21,14 +21,6 @@ public class Publisher extends User {
         super(id, login, password, name, secondName, email);
     }
 
-    public String getName() {
-        return name_;
-    }
-
-    public String getEmail() {
-        return email_;
-    }
-
     public void postRequest(final Request request) {
         RequestQueue.INSTANCE.push(request);
     }

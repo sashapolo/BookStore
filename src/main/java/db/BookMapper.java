@@ -15,27 +15,27 @@ import java.util.List;
  * To change this template use File | Settings | File Templates.
  */
 public class BookMapper {
-    private ConnectionManager connectionManager_;
+    private final Connection connection_;
 
-    public BookMapper(ConnectionManager manager) {
-        assert(manager != null);
-        connectionManager_ = manager;
+    public BookMapper(final Connection connection) {
+        assert(connection != null);
+        connection_ = connection;
     }
 
     private Book createBook(final ResultSet rs) throws DataMapperException, SQLException {
-        int id = rs.getInt("Id");
-        String name = rs.getString("Name");
-        String genre = rs.getString("Genre");
-        Isbn isbn = new Isbn13(rs.getString("Isbn"));
+        final int id = rs.getInt("Id");
+        final String name = rs.getString("Name");
+        final String genre = rs.getString("Genre");
+        final Isbn isbn = new Isbn13(rs.getString("Isbn"));
 
-        GregorianCalendar date = new GregorianCalendar();
+        final GregorianCalendar date = new GregorianCalendar();
         date.setTime(rs.getDate("PublicationDate"));
 
-        double price = rs.getDouble("Price");
-        Discount discount = new Discount(rs.getInt("Discount"));
+        final double price = rs.getDouble("Price");
+        final Discount discount = new Discount(rs.getInt("Discount"));
 
-        UserMapper userMapper = new UserMapper(connectionManager_);
-        User publisher = userMapper.findById(rs.getInt("PublisherId"));
+        final UserMapper userMapper = new UserMapper(connection_);
+        final User publisher = userMapper.findById(rs.getInt("PublisherId"));
         if (publisher == null) {
             throw new DataMapperException("Publisher not found");
         }
@@ -43,7 +43,7 @@ public class BookMapper {
             throw new DataMapperException("Incorrect publisher type");
         }
 
-        int numSold = rs.getInt("NumSold");
+        final int numSold = rs.getInt("NumSold");
 
         return new Book.Builder(id, name, genre, (Publisher) publisher, date, isbn, price)
                             .discount(discount)
@@ -54,15 +54,13 @@ public class BookMapper {
     public List<Book> findByName(final String bookName) throws DataMapperException {
         assert(bookName != null);
 
-        List<Book> result = new LinkedList<>();
-        Connection conn = null;
+        PreparedStatement statement = null;
+        final List<Book> result = new LinkedList<>();
         try {
-            conn = connectionManager_.getConnection();
-
-            String query = "SELECT * from Books where Name=?";
-            PreparedStatement statement = conn.prepareStatement(query);
+            final String query = "SELECT * from Books where Name=?";
+            statement = connection_.prepareStatement(query);
             statement.setString(1, bookName);
-            ResultSet rs = statement.executeQuery();
+            final ResultSet rs = statement.executeQuery();
 
             while (rs.next()) {
                 result.add(createBook(rs));
@@ -72,23 +70,19 @@ public class BookMapper {
         } catch (SQLException e) {
             throw new DataMapperException("Error occurred while searching for book", e);
         } finally {
-            if (conn != null) {
-                try {
-                    connectionManager_.closeConnection(conn);
-                } catch (SQLException e2) {}
-            }
+            try {
+                if (statement != null) statement.close();
+            } catch (SQLException e) {}
         }
     }
 
-    public Book findById(int id) throws DataMapperException {
-        Connection conn = null;
+    public Book findById(final int id) throws DataMapperException {
+        PreparedStatement statement = null;
         try {
-            conn = connectionManager_.getConnection();
-
-            String query = "SELECT * from Books where Id=?";
-            PreparedStatement statement = conn.prepareStatement(query);
+            final String query = "SELECT * from Books where Id=?";
+            statement = connection_.prepareStatement(query);
             statement.setInt(1, id);
-            ResultSet rs = statement.executeQuery();
+            final ResultSet rs = statement.executeQuery();
 
             if (rs.next()) {
                 return createBook(rs);
@@ -98,21 +92,19 @@ public class BookMapper {
         } catch (SQLException e) {
             throw new DataMapperException("Error occurred while searching for book", e);
         } finally {
-            if (conn != null) {
-                try {
-                    connectionManager_.closeConnection(conn);
-                } catch (SQLException e2) {}
-            }
+            try {
+                if (statement != null) statement.close();
+            } catch (SQLException e) {}
         }
     }
 
     public void insert(final Book book) throws DataMapperException {
-        Connection conn = null;
-        try {
-            conn = connectionManager_.getConnection();
+        assert (book != null);
 
-            String query = "INSERT into Books VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-            PreparedStatement statement = conn.prepareStatement(query);
+        PreparedStatement statement = null;
+        try {
+            final String query = "INSERT into Books VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            statement = connection_.prepareStatement(query);
 
             statement.setString(1, book.getName());
             statement.setString(2, book.getGenre());
@@ -127,24 +119,22 @@ public class BookMapper {
         } catch (SQLException e) {
             throw new DataMapperException("Error occurred while inserting a book", e);
         } finally {
-            if (conn != null) {
-                try {
-                    connectionManager_.closeConnection(conn);
-                } catch (SQLException e2) {}
-            }
+            try {
+                if (statement != null) statement.close();
+            } catch (SQLException e) {}
         }
     }
 
     public void update(final Book book) throws DataMapperException {
-        Connection conn = null;
-        try {
-            conn = connectionManager_.getConnection();
+        assert (book != null);
 
-            String query = "UPDATE Books SET " +
-                           "Name=?, Genre=?, Isbn=?, PublicationDate=?, Price=?, Discount=?, " +
-                           "NumSold=?, PublisherId=?" +
-                           "where Id=?";
-            PreparedStatement statement = conn.prepareStatement(query);
+        PreparedStatement statement = null;
+        try {
+            final String query = "UPDATE Books SET " +
+                                 "Name=?, Genre=?, Isbn=?, PublicationDate=?, Price=?, Discount=?, " +
+                                 "NumSold=?, PublisherId=?" +
+                                 "where Id=?";
+            statement = connection_.prepareStatement(query);
 
             statement.setString(1, book.getName());
             statement.setString(2, book.getGenre());
@@ -159,33 +149,27 @@ public class BookMapper {
         } catch (SQLException e) {
             throw new DataMapperException("Error occurred while updating a book", e);
         } finally {
-            if (conn != null) {
-                try {
-                    connectionManager_.closeConnection(conn);
-                } catch (SQLException e2) {}
-            }
+            try {
+                if (statement != null) statement.close();
+            } catch (SQLException e) {}
         }
     }
 
     public void delete(final Book book) throws DataMapperException {
-        Connection conn = null;
+        assert (book != null);
+
+        PreparedStatement statement = null;
         try {
-            conn = connectionManager_.getConnection();
-
-            String query = "DELETE from Books where Id=?";
-            PreparedStatement statement = conn.prepareStatement(query);
-
+            final String query = "DELETE from Books where Id=?";
+            statement = connection_.prepareStatement(query);
             statement.setInt(1, book.getId());
-
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new DataMapperException("Error occurred while deleting a book", e);
         } finally {
-            if (conn != null) {
-                try {
-                    connectionManager_.closeConnection(conn);
-                } catch (SQLException e2) {}
-            }
+            try {
+                if (statement != null) statement.close();
+            } catch (SQLException e) {}
         }
     }
 }

@@ -17,32 +17,30 @@ import java.util.GregorianCalendar;
  * To change this template use File | Settings | File Templates.
  */
 public class OrderMapper {
-    private ConnectionManager connectionManager_;
+    private final Connection connection_;
 
-    public OrderMapper(ConnectionManager manager) {
-        assert(manager != null);
-        connectionManager_ = manager;
+    public OrderMapper(final Connection connection) {
+        assert(connection != null);
+        connection_ = connection;
     }
 
-    public Order findById(int id) throws DataMapperException {
-        Connection conn = null;
+    public Order findById(final int id) throws DataMapperException {
+        PreparedStatement statement = null;
         try {
-            conn = connectionManager_.getConnection();
-
-            String query = "SELECT * from Orders where OrderId=?";
-            PreparedStatement statement = conn.prepareStatement(query);
+            final String query = "SELECT * from Orders where OrderId=?";
+            statement = connection_.prepareStatement(query);
             statement.setInt(1, id);
-            ResultSet rs = statement.executeQuery();
+            final ResultSet rs = statement.executeQuery();
 
             if (rs.next()) {
-                GregorianCalendar date = new GregorianCalendar();
+                final GregorianCalendar date = new GregorianCalendar();
                 date.setTime(rs.getDate("CreationDate"));
 
-                ReverseEnumMap<Order.OrderStatus> reverse = new ReverseEnumMap<>(Order.OrderStatus.class);
-                Order.OrderStatus status = reverse.get(rs.getInt("Status"));
+                final ReverseEnumMap<Order.OrderStatus> reverse = new ReverseEnumMap<>(Order.OrderStatus.class);
+                final Order.OrderStatus status = reverse.get(rs.getInt("Status"));
 
-                UserMapper userMapper = new UserMapper(connectionManager_);
-                User orderer = userMapper.findById(rs.getInt("CustomerId"));
+                final UserMapper userMapper = new UserMapper(connection_);
+                final User orderer = userMapper.findById(rs.getInt("CustomerId"));
                 if (orderer == null) {
                     throw new DataMapperException("Orderer not found");
                 }
@@ -50,8 +48,8 @@ public class OrderMapper {
                     throw new DataMapperException("Incorrect orderer type");
                 }
 
-                CartMapper cartMapper = new CartMapper(connectionManager_);
-                Cart cart = cartMapper.findByOrderId(id);
+                final CartMapper cartMapper = new CartMapper(connection_);
+                final Cart cart = cartMapper.findByOrderId(id);
 
                 return new Order.Builder(id, cart, (Customer)orderer)
                                     .status(status)
@@ -63,23 +61,20 @@ public class OrderMapper {
         } catch (SQLException e) {
             throw new DataMapperException("Error occurred while searching for order", e);
         } finally {
-            if (conn != null) {
-                try {
-                    connectionManager_.closeConnection(conn);
-                } catch (SQLException e2) {}
-            }
+            try {
+                if (statement != null) statement.close();
+            } catch (SQLException e) {}
         }
     }
 
     public void insert(final Order order) throws DataMapperException {
         assert(order != null);
 
-        Connection conn = null;
+        PreparedStatement statement = null;
+        ResultSet keys = null;
         try {
-            conn = connectionManager_.getConnection();
-
-            String query = "INSERT into Orders VALUES (?, ?, ?)";
-            PreparedStatement statement = conn.prepareStatement(query);
+            final String query = "INSERT into Orders VALUES (?, ?, ?)";
+            statement = connection_.prepareStatement(query);
 
             statement.setDate(1, new Date(order.getDateCreated().getTimeInMillis()));
             statement.setInt(2, order.getStatus().convert());
@@ -87,45 +82,42 @@ public class OrderMapper {
 
             statement.executeUpdate();
 
-            ResultSet keys = statement.getGeneratedKeys();
+            keys = statement.getGeneratedKeys();
             if (keys.next()) {
                 order.setId(keys.getInt(1));
-                CartMapper mapper = new CartMapper(connectionManager_);
+                final CartMapper mapper = new CartMapper(connection_);
                 mapper.insertOrder(order);
             }
             throw new DataMapperException("Error occurred while retrieving primary key");
         } catch (SQLException e) {
             throw new DataMapperException("Error occurred while inserting an order", e);
         } finally {
-            if (conn != null) {
-                try {
-                    connectionManager_.closeConnection(conn);
-                } catch (SQLException e2) {}
-            }
+            try {
+                if (statement != null) statement.close();
+                if (keys != null) keys.close();
+            } catch (SQLException e) {}
         }
     }
 
     public void delete(final Order order) throws DataMapperException {
-        Connection conn = null;
-        try {
-            conn = connectionManager_.getConnection();
+        assert(order != null);
 
-            String query = "DELETE from Orders where Id=?";
-            PreparedStatement statement = conn.prepareStatement(query);
+        PreparedStatement statement = null;
+        try {
+            final String query = "DELETE from Orders where Id=?";
+            statement = connection_.prepareStatement(query);
 
             statement.setInt(1, order.getId());
 
             statement.executeUpdate();
-            CartMapper mapper = new CartMapper(connectionManager_);
+            final CartMapper mapper = new CartMapper(connection_);
             mapper.deleteOrder(order);
         } catch (SQLException e) {
             throw new DataMapperException("Error occurred while deleting an order", e);
         } finally {
-            if (conn != null) {
-                try {
-                    connectionManager_.closeConnection(conn);
-                } catch (SQLException e2) {}
-            }
+            try {
+                if (statement != null) statement.close();
+            } catch (SQLException e) {}
         }
     }
 }

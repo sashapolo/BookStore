@@ -10,7 +10,7 @@ package business;
 public class Discount {
     private final int value_;
 
-    public Discount(int value) {
+    public Discount(final int value) {
         if (value > 100 || value < 0) {
             throw new IllegalArgumentException("Illegal discount settings");
         }

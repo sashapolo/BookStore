@@ -24,13 +24,13 @@ public class Book {
         private Discount discount_ = new Discount(0);
         private int numSold_ = 0;
 
-        public Builder(int id,
+        public Builder(final int id,
                        final String name,
                        final String genre,
                        final Publisher publisher,
                        final GregorianCalendar publicationDate,
                        final Isbn isbn,
-                       double price) {
+                       final double price) {
             assert (name != null);
             assert (genre != null);
             assert (publisher != null);
@@ -46,7 +46,7 @@ public class Book {
             price_ = price;
         }
 
-        public Builder discount(int discount) {
+        public Builder discount(final int discount) {
             discount_ = new Discount(discount);
             return this;
         }
@@ -57,7 +57,7 @@ public class Book {
             return this;
         }
 
-        public Builder numSold(int numSold) {
+        public Builder numSold(final int numSold) {
             numSold_ = numSold;
             return this;
         }
@@ -114,7 +114,7 @@ public class Book {
     	return builder_.numSold_;
     }
     
-    public void setPrice(double price) {
+    public void setPrice(final double price) {
         builder_.price_ = price;
     }
 

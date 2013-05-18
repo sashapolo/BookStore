@@ -11,6 +11,6 @@ import java.sql.SQLException;
  * To change this template use File | Settings | File Templates.
  */
 public interface ConnectionManager {
-    public Connection getConnection() throws SQLException;
-    public void closeConnection(Connection conn) throws SQLException;
+    Connection getConnection() throws SQLException;
+    void closeConnection(Connection conn) throws SQLException;
 }

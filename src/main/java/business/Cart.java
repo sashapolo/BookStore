@@ -19,9 +19,9 @@ public class Cart {
     public Cart() {
         entries_ = new HashMap<>();
     }
-    public Cart(final List<OrderEntry> orderList) {
+    public Cart(final Iterable<OrderEntry> orderList) {
         entries_ = new HashMap<>();
-        for (OrderEntry entry : orderList) {
+        for (final OrderEntry entry : orderList) {
             entries_.put(entry.getBook(), entry);
         }
     }
