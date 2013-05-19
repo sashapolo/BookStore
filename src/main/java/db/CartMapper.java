@@ -16,6 +16,8 @@ import java.sql.SQLException;
  * Time: 4:28 PM
  * To change this template use File | Settings | File Templates.
  */
+
+// TODO: this class is really fucked up because I can't find the way to implement it in terms of Mapper<Cart>.
 public class CartMapper {
     private final Connection connection_;
 
@@ -24,7 +26,7 @@ public class CartMapper {
         connection_ = connection;
     }
 
-    public Cart findByOrderId(final int id) throws DataMapperException {
+    public Cart find(final int id) throws DataMapperException {
         PreparedStatement statement = null;
         try {
             final String query = "SELECT * from Cart where OrderId=?";
@@ -33,14 +35,12 @@ public class CartMapper {
             final ResultSet rs = statement.executeQuery();
 
             final Cart result = new Cart();
-
-            final OrderEntryMapper mapper = new OrderEntryMapper(connection_);
+            final Mapper<OrderEntry> mapper = new OrderEntryMapper(connection_);
             while (rs.next()) {
-                final OrderEntry entry = mapper.findById(rs.getInt("OrderEntryId"));
+                final OrderEntry entry = mapper.find(rs.getInt("OrderEntryId"));
                 if (entry == null) {
                     throw new DataMapperException("OrderEntry not found");
                 }
-
                 result.put(entry);
             }
 
@@ -54,7 +54,7 @@ public class CartMapper {
         }
     }
 
-    public void insertOrder(final Order order) throws DataMapperException {
+    public void insert(final Order order) throws DataMapperException {
         assert(order != null);
 
         PreparedStatement statement = null;
@@ -63,7 +63,7 @@ public class CartMapper {
             statement = connection_.prepareStatement(query);
             statement.setInt(1, order.getId());
 
-            final OrderEntryMapper mapper = new OrderEntryMapper(connection_);
+            final Mapper<OrderEntry> mapper = new OrderEntryMapper(connection_);
             for (final OrderEntry entry : order.getCart().values()) {
                 final int entryId = mapper.insert(entry);
                 statement.setInt(2, entryId);
@@ -78,7 +78,7 @@ public class CartMapper {
         }
     }
 
-    public void deleteOrder(final Order order) throws DataMapperException {
+    public void delete(final Order order) throws DataMapperException {
         assert(order != null);
 
         PreparedStatement statement = null;
@@ -88,7 +88,7 @@ public class CartMapper {
             statement.setInt(1, order.getId());
             statement.executeUpdate();
 
-            final OrderEntryMapper mapper = new OrderEntryMapper(connection_);
+            final Mapper<OrderEntry> mapper = new OrderEntryMapper(connection_);
             for (final OrderEntry entry : order.getCart().values()) {
                 mapper.delete(entry);
             }

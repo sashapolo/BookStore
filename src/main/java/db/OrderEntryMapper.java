@@ -12,31 +12,28 @@ import java.sql.*;
  * Time: 4:49 PM
  * To change this template use File | Settings | File Templates.
  */
-public class OrderEntryMapper {
-    private Connection connection_;
+public class OrderEntryMapper extends Mapper<OrderEntry> {
 
     public OrderEntryMapper(final Connection connection) {
-        assert(connection != null);
-        connection_ = connection;
+        super(connection);
     }
 
-    public OrderEntry findById(final int id) throws DataMapperException {
+    @Override
+    public OrderEntry find(final int id) throws DataMapperException {
         PreparedStatement statement = null;
         try {
             final String query = "SELECT * from OrderEntries where Id=?";
             statement = connection_.prepareStatement(query);
             statement.setInt(1, id);
-            final ResultSet rs = statement.executeQuery();
 
+            final ResultSet rs = statement.executeQuery();
             if (rs.next()) {
                 final int amount = rs.getInt("Amount");
-
-                final BookMapper bookMapper = new BookMapper(connection_);
-                final Book book = bookMapper.findById(rs.getInt("BookId"));
+                final Mapper<Book> bookMapper = new BookMapper(connection_);
+                final Book book = bookMapper.find(rs.getInt("BookId"));
                 if (book == null) {
                     throw new DataMapperException("Book not found");
                 }
-
                 return new OrderEntry(id, book, amount);
             }
 
@@ -50,43 +47,61 @@ public class OrderEntryMapper {
         }
     }
 
+    @Override
     public int insert(final OrderEntry entry) throws DataMapperException {
         assert (entry != null);
 
         PreparedStatement statement = null;
-        ResultSet keys = null;
         try {
-            final String query = "INSERT into OrderEntries VALUES (?, ?)";
+            final String query = "INSERT into OrderEntries (BookId, Amount) VALUES (?, ?)";
             statement = connection_.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-
             statement.setInt(1, entry.getBook().getId());
             statement.setInt(2, entry.getAmount());
-
             statement.executeUpdate();
-
-            keys = statement.getGeneratedKeys();
-            if (keys.next()) {
-                return keys.getInt(1);
-            }
-            throw new DataMapperException("Error occurred while retrieving primary key");
+            return getId(statement);
         } catch (SQLException e) {
             throw new DataMapperException("Error occurred while inserting an entry", e);
         } finally {
             try {
                 if (statement != null) statement.close();
-                if (keys != null) keys.close();
             } catch (SQLException e) {}
         }
     }
 
+    @Override
+    public void update(final OrderEntry entry) throws DataMapperException {
+        assert (entry != null);
+        throw new DataMapperException("Orders should never be updated!");
+//
+//        PreparedStatement statement = null;
+//        try {
+//            final String query = "UPDATE OrderEntries SET BookId=?, Amount=? where Id=?";
+//            statement = connection_.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+//            statement.setInt(1, entry.getBook().getId());
+//            statement.setInt(2, entry.getAmount());
+//            statement.setInt(3, entry.getId());
+//            statement.executeUpdate();
+//        } catch (SQLException e) {
+//            throw new DataMapperException("Error occurred while inserting an entry", e);
+//        } finally {
+//            try {
+//                if (statement != null) statement.close();
+//            } catch (SQLException e) {}
+//        }
+    }
+
+    @Override
     public void delete(final OrderEntry entry) throws DataMapperException {
         assert (entry != null);
+        delete(entry.getId());
+    }
 
+    public void delete(final int id) throws DataMapperException {
         PreparedStatement statement = null;
         try {
             final String query = "DELETE from OrderEntries where Id=?";
             statement = connection_.prepareStatement(query);
-            statement.setInt(1, entry.getId());
+            statement.setInt(1, id);
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new DataMapperException("Error occurred while deleting an entry", e);

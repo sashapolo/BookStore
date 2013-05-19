@@ -14,44 +14,13 @@ import java.util.List;
  * Time: 7:01 PM
  * To change this template use File | Settings | File Templates.
  */
-public class BookMapper {
-    private final Connection connection_;
+public class BookMapper extends Mapper<Book>{
 
     public BookMapper(final Connection connection) {
-        assert(connection != null);
-        connection_ = connection;
+        super(connection);
     }
 
-    private Book createBook(final ResultSet rs) throws DataMapperException, SQLException {
-        final int id = rs.getInt("Id");
-        final String name = rs.getString("Name");
-        final String genre = rs.getString("Genre");
-        final Isbn isbn = new Isbn13(rs.getString("Isbn"));
-
-        final GregorianCalendar date = new GregorianCalendar();
-        date.setTime(rs.getDate("PublicationDate"));
-
-        final double price = rs.getDouble("Price");
-        final Discount discount = new Discount(rs.getInt("Discount"));
-
-        final UserMapper userMapper = new UserMapper(connection_);
-        final User publisher = userMapper.findById(rs.getInt("PublisherId"));
-        if (publisher == null) {
-            throw new DataMapperException("Publisher not found");
-        }
-        if (!(publisher instanceof Publisher)) {
-            throw new DataMapperException("Incorrect publisher type");
-        }
-
-        final int numSold = rs.getInt("NumSold");
-
-        return new Book.Builder(id, name, genre, (Publisher) publisher, date, isbn, price)
-                            .discount(discount)
-                            .numSold(numSold)
-                            .build();
-    }
-
-    public List<Book> findByName(final String bookName) throws DataMapperException {
+    public List<Book> find(final String bookName) throws DataMapperException {
         assert(bookName != null);
 
         PreparedStatement statement = null;
@@ -60,12 +29,11 @@ public class BookMapper {
             final String query = "SELECT * from Books where Name=?";
             statement = connection_.prepareStatement(query);
             statement.setString(1, bookName);
-            final ResultSet rs = statement.executeQuery();
 
+            final ResultSet rs = statement.executeQuery();
             while (rs.next()) {
                 result.add(createBook(rs));
             }
-
             return result;
         } catch (SQLException e) {
             throw new DataMapperException("Error occurred while searching for book", e);
@@ -76,18 +44,18 @@ public class BookMapper {
         }
     }
 
-    public Book findById(final int id) throws DataMapperException {
+    @Override
+    public Book find(final int id) throws DataMapperException {
         PreparedStatement statement = null;
         try {
             final String query = "SELECT * from Books where Id=?";
             statement = connection_.prepareStatement(query);
             statement.setInt(1, id);
-            final ResultSet rs = statement.executeQuery();
 
+            final ResultSet rs = statement.executeQuery();
             if (rs.next()) {
                 return createBook(rs);
             }
-
             return null;
         } catch (SQLException e) {
             throw new DataMapperException("Error occurred while searching for book", e);
@@ -98,11 +66,11 @@ public class BookMapper {
         }
     }
 
+    @Override
     public int insert(final Book book) throws DataMapperException {
         assert (book != null);
 
         PreparedStatement statement = null;
-        ResultSet keys = null;
         try {
             final String query = "INSERT into Books(Name, Genre, Isbn, PublicationDate, Price, Discount, NumSold, PublisherId)" +
                                  "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
@@ -116,24 +84,19 @@ public class BookMapper {
             statement.setInt(6, book.getDiscount().integerValue());
             statement.setInt(7, book.getNumSold());
             statement.setInt(8, book.getPublisher().getId());
-
             statement.executeUpdate();
 
-            keys = statement.getGeneratedKeys();
-            if (keys.next()) {
-                return keys.getInt(1);
-            }
-            throw new DataMapperException("Error occurred while retrieving primary key");
+            return getId(statement);
         } catch (SQLException e) {
             throw new DataMapperException("Error occurred while inserting a book", e);
         } finally {
             try {
                 if (statement != null) statement.close();
-                if (keys != null) keys.close();
             } catch (SQLException e) {}
         }
     }
 
+    @Override
     public void update(final Book book) throws DataMapperException {
         assert (book != null);
 
@@ -154,7 +117,6 @@ public class BookMapper {
             statement.setInt(7, book.getNumSold());
             statement.setInt(8, book.getPublisher().getId());
             statement.setInt(9, book.getId());
-
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new DataMapperException("Error occurred while updating a book", e);
@@ -163,6 +125,12 @@ public class BookMapper {
                 if (statement != null) statement.close();
             } catch (SQLException e) {}
         }
+    }
+
+    @Override
+    public void delete(final Book book) throws DataMapperException {
+        assert (book != null);
+        delete(book.getId());
     }
 
     public void delete(final int id) throws DataMapperException {
@@ -179,5 +147,32 @@ public class BookMapper {
                 if (statement != null) statement.close();
             } catch (SQLException e) {}
         }
+    }
+
+    private Book createBook(final ResultSet rs) throws DataMapperException, SQLException {
+        final int id = rs.getInt("Id");
+        final String name = rs.getString("Name");
+        final String genre = rs.getString("Genre");
+        final Isbn isbn = new Isbn13(rs.getString("Isbn"));
+
+        final GregorianCalendar date = new GregorianCalendar();
+        date.setTime(rs.getDate("PublicationDate"));
+
+        final double price = rs.getDouble("Price");
+        final Discount discount = new Discount(rs.getInt("Discount"));
+
+        final Mapper<User> userMapper = new UserMapper(connection_);
+        final User publisher = userMapper.find(rs.getInt("PublisherId"));
+        if (publisher == null) {
+            throw new DataMapperException("Publisher not found");
+        }
+
+        assert (publisher instanceof Publisher);
+
+        final int numSold = rs.getInt("NumSold");
+        return new Book.Builder(id, name, genre, (Publisher) publisher, date, isbn, price)
+                            .discount(discount)
+                            .numSold(numSold)
+                            .build();
     }
 }

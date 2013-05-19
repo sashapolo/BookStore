@@ -9,6 +9,7 @@ import java.util.List;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 
 /**
  * Created with IntelliJ IDEA.
@@ -21,13 +22,25 @@ public class BookMapperTest {
     private static int publisherId_;
     public static final double EPSILON = 1e-15;
 
+    private static int getPrimaryKey(final Statement statement) throws Exception {
+        ResultSet keys = null;
+        try {
+            keys = statement.getGeneratedKeys();
+            if (keys.next()) {
+                return keys.getInt(1);
+            } else {
+                throw new Exception("Can't get primary key id");
+            }
+        } finally {
+            if (keys != null) keys.close();
+        }
+    }
+
     @BeforeClass
     public static void setUpDatabase() throws Exception {
         final TestConnectionManager manager = new TestConnectionManager();
         Statement statement = null;
-        PreparedStatement prepStatement = null;
         Connection connection = null;
-        ResultSet keys = null;
         try {
             connection = manager.getConnection();
             String query = "INSERT into Users(Type, Login, Password, Name, SecondName, Email, PersonalDiscount)" +
@@ -35,44 +48,34 @@ public class BookMapperTest {
             statement = connection.createStatement();
             statement.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
 
-            keys = statement.getGeneratedKeys();
-            if (keys.next()) {
-                publisherId_ = keys.getInt(1);
-            } else {
-                throw new Exception("Can't get publisher id");
-            }
+            publisherId_ = getPrimaryKey(statement);
 
             query = "INSERT into Books(Name, Genre, Isbn, PublicationDate, Price, Discount, NumSold, PublisherId)" +
-                    "VALUES ('foo', 'bar', '9783161484100', '2012-01-01', 200, 10, 0, ?)";
-            prepStatement = connection.prepareStatement(query);
-            prepStatement.setInt(1, publisherId_);
-            prepStatement.executeUpdate();
+                    "VALUES ('foo', 'bar', '9783161484100', '2012-01-01', 200, 10, 0, " + publisherId_ + ')';
+            statement = connection.createStatement();
+            statement.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
         } finally {
             if (connection != null) connection.close();
-            if (prepStatement != null) prepStatement.close();
             if (statement != null) statement.close();
-            if (keys != null) keys.close();
         }
     }
 
     @AfterClass
     public static void clearDatabase() throws SQLException {
         final TestConnectionManager manager = new TestConnectionManager();
-        Statement statement1 = null;
-        Statement statement2 = null;
+        Statement statement = null;
         Connection connection = null;
         try {
             connection = manager.getConnection();
-            final String query1 = "DELETE from Books";
-            statement1 = connection.createStatement();
-            statement1.executeUpdate(query1);
-            final String query2 = "DELETE from Users";
-            statement2 = connection.createStatement();
-            statement2.executeUpdate(query2);
+            String query = "DELETE from Books";
+            statement = connection.createStatement();
+            statement.executeUpdate(query);
+            query = "DELETE from Users";
+            statement = connection.createStatement();
+            statement.executeUpdate(query);
         } finally {
             if (connection != null) connection.close();
-            if (statement1 != null) statement1.close();
-            if (statement2 != null) statement2.close();
+            if (statement != null) statement.close();
         }
     }
 
@@ -83,13 +86,15 @@ public class BookMapperTest {
         try {
             connection = manager.getConnection();
             final BookMapper mapper = new BookMapper(connection);
-            final List<Book> books = mapper.findByName("foo");
+            final List<Book> books = mapper.find("foo");
             assertEquals("Found incorrect number of books", 1, books.size());
             for (final Book book : books) {
                 assertEquals("Wrong name", "foo", book.getName());
                 assertEquals("Wrong genre", "bar", book.getGenre());
                 assertEquals("Wrong isbn", "9783161484100", book.getIsbn().toString());
                 assertEquals("Wrong price", 180, book.getPrice(), EPSILON);
+                assertNotNull("Publisher not found", book.getPublisher());
+                assertEquals("Incorrect publisher", publisherId_, book.getPublisher().getId());
             }
         } finally {
             if (connection != null) connection.close();
@@ -103,7 +108,7 @@ public class BookMapperTest {
         try {
             connection = manager.getConnection();
             final UserMapper userMapper = new UserMapper(connection);
-            final User publisher = userMapper.findById(publisherId_);
+            final User publisher = userMapper.find(publisherId_);
             assertNotNull("Publisher not found", publisher);
             assertThat("Retrieved wrong user type", publisher, instanceOf(Publisher.class));
 
@@ -116,7 +121,7 @@ public class BookMapperTest {
                                                120.44).build();
             final BookMapper bookMapper = new BookMapper(connection);
             final int id = bookMapper.insert(book);
-            final Book check = bookMapper.findById(id);
+            final Book check = bookMapper.find(id);
             assertNotNull("Inserted book not found", check);
             assertEquals("Wrong name of inserted book", "test", book.getName());
         } finally {
@@ -131,7 +136,7 @@ public class BookMapperTest {
         try {
             connection = manager.getConnection();
             final UserMapper userMapper = new UserMapper(connection);
-            final User publisher = userMapper.findById(publisherId_);
+            final User publisher = userMapper.find(publisherId_);
             assertNotNull("Publisher not found", publisher);
             assertThat("Retrieved wrong user type", publisher, instanceOf(Publisher.class));
 
@@ -152,7 +157,7 @@ public class BookMapperTest {
                                                new Isbn10("9992158107").toIsbn13(),
                                                120.44).build();
             bookMapper.update(test);
-            final Book check = bookMapper.findById(id);
+            final Book check = bookMapper.find(id);
             assertNotNull("Updated book not found", check);
             assertEquals("Wrong name of updated book", "test69", check.getName());
             assertEquals("Wrong genre of updated book", "horror", check.getGenre());
@@ -168,7 +173,7 @@ public class BookMapperTest {
         try {
             connection = manager.getConnection();
             final UserMapper userMapper = new UserMapper(connection);
-            final User publisher = userMapper.findById(publisherId_);
+            final User publisher = userMapper.find(publisherId_);
             assertNotNull("Publisher not found", publisher);
             assertThat("Retrieved wrong user type", publisher, instanceOf(Publisher.class));
 
@@ -183,9 +188,9 @@ public class BookMapperTest {
             final int id = bookMapper.insert(book);
 
             bookMapper.delete(id + 1);
-            assertNotNull("Book was deleted", bookMapper.findById(id));
+            assertNotNull("Book was deleted", bookMapper.find(id));
             bookMapper.delete(id);
-            assertNull("Book was not deleted", bookMapper.findById(id));
+            assertNull("Book was not deleted", bookMapper.find(id));
         } finally {
             if (connection != null) connection.close();
         }

@@ -16,22 +16,21 @@ import java.util.GregorianCalendar;
  * Time: 1:57 PM
  * To change this template use File | Settings | File Templates.
  */
-public class OrderMapper {
-    private final Connection connection_;
+public class OrderMapper extends Mapper<Order> {
 
     public OrderMapper(final Connection connection) {
-        assert(connection != null);
-        connection_ = connection;
+        super(connection);
     }
 
-    public Order findById(final int id) throws DataMapperException {
+    @Override
+    public Order find(final int id) throws DataMapperException {
         PreparedStatement statement = null;
         try {
             final String query = "SELECT * from Orders where OrderId=?";
             statement = connection_.prepareStatement(query);
             statement.setInt(1, id);
-            final ResultSet rs = statement.executeQuery();
 
+            final ResultSet rs = statement.executeQuery();
             if (rs.next()) {
                 final GregorianCalendar date = new GregorianCalendar();
                 date.setTime(rs.getDate("CreationDate"));
@@ -39,18 +38,16 @@ public class OrderMapper {
                 final ReverseEnumMap<Order.OrderStatus> reverse = new ReverseEnumMap<>(Order.OrderStatus.class);
                 final Order.OrderStatus status = reverse.get(rs.getInt("Status"));
 
-                final UserMapper userMapper = new UserMapper(connection_);
-                final User orderer = userMapper.findById(rs.getInt("CustomerId"));
+                final Mapper<User> userMapper = new UserMapper(connection_);
+                final User orderer = userMapper.find(rs.getInt("CustomerId"));
                 if (orderer == null) {
                     throw new DataMapperException("Orderer not found");
                 }
-                if (!(orderer instanceof Customer)) {
-                    throw new DataMapperException("Incorrect orderer type");
-                }
+
+                assert (orderer instanceof Customer);
 
                 final CartMapper cartMapper = new CartMapper(connection_);
-                final Cart cart = cartMapper.findByOrderId(id);
-
+                final Cart cart = cartMapper.find(id);
                 return new Order.Builder(id, cart, (Customer)orderer)
                                     .status(status)
                                     .dateCreated(date)
@@ -67,11 +64,11 @@ public class OrderMapper {
         }
     }
 
-    public void insert(final Order order) throws DataMapperException {
+    @Override
+    public int insert(final Order order) throws DataMapperException {
         assert(order != null);
 
         PreparedStatement statement = null;
-        ResultSet keys = null;
         try {
             final String query = "INSERT into Orders VALUES (?, ?, ?)";
             statement = connection_.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
@@ -79,39 +76,33 @@ public class OrderMapper {
             statement.setDate(1, new Date(order.getDateCreated().getTimeInMillis()));
             statement.setInt(2, order.getStatus().convert());
             statement.setInt(3, order.getOrderer().getId());
-
             statement.executeUpdate();
 
-            keys = statement.getGeneratedKeys();
-            if (keys.next()) {
-                order.setId(keys.getInt(1));
-                final CartMapper mapper = new CartMapper(connection_);
-                mapper.insertOrder(order);
-            }
-            throw new DataMapperException("Error occurred while retrieving primary key");
+            int id = getId(statement);
+            order.setId(id);
+            final CartMapper mapper = new CartMapper(connection_);
+            mapper.insert(order);
+            return id;
         } catch (SQLException e) {
             throw new DataMapperException("Error occurred while inserting an order", e);
         } finally {
             try {
                 if (statement != null) statement.close();
-                if (keys != null) keys.close();
             } catch (SQLException e) {}
         }
     }
 
+    @Override
     public void delete(final Order order) throws DataMapperException {
-        assert(order != null);
-
         PreparedStatement statement = null;
         try {
             final String query = "DELETE from Orders where Id=?";
             statement = connection_.prepareStatement(query);
-
             statement.setInt(1, order.getId());
 
             statement.executeUpdate();
             final CartMapper mapper = new CartMapper(connection_);
-            mapper.deleteOrder(order);
+            mapper.delete(order);
         } catch (SQLException e) {
             throw new DataMapperException("Error occurred while deleting an order", e);
         } finally {
@@ -119,5 +110,10 @@ public class OrderMapper {
                 if (statement != null) statement.close();
             } catch (SQLException e) {}
         }
+    }
+
+    @Override
+    public void update(final Order order) throws DataMapperException {
+        throw new DataMapperException("Orders should never be updated!");
     }
 }
