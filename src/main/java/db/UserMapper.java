@@ -5,10 +5,7 @@ import business.Customer;
 import business.Publisher;
 import business.User;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -112,12 +109,15 @@ public class UserMapper extends Mapper<User>{
     @Override
     public void delete(final User user) throws DataMapperException {
         assert (user != null);
+        delete(user.getId());
+    }
 
+    public void delete(final int id) throws DataMapperException {
         PreparedStatement statement = null;
         try {
             final String query = "DELETE from Users where Id=?";
             statement = connection_.prepareStatement(query);
-            statement.setInt(1, user.getId());
+            statement.setInt(1, id);
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new DataMapperException("Error occurred while deleting a user", e);
@@ -127,6 +127,7 @@ public class UserMapper extends Mapper<User>{
             } catch (SQLException e) {}
         }
     }
+
     private User createUser(final PreparedStatement statement) throws SQLException, DataMapperException {
         assert(statement != null);
 
@@ -158,7 +159,7 @@ public class UserMapper extends Mapper<User>{
     private PreparedStatement getInsertQuery(final Administrator user) throws SQLException {
         final String query = "INSERT into Users(Type, Login, Password, Name, SecondName, Email, PersonalDiscount) " +
                              "VALUES (?, ?, ?, ?, ?, ?, ?)";
-        final PreparedStatement statement = connection_.prepareStatement(query);
+        final PreparedStatement statement = connection_.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
         statement.setInt(1, 1);
         statement.setString(2, user.getLogin());
         statement.setInt(3, user.getPasswordHash());
@@ -172,7 +173,7 @@ public class UserMapper extends Mapper<User>{
     private PreparedStatement getInsertQuery(final Publisher user) throws SQLException {
         final String query = "INSERT into Users(Type, Login, Password, Name, SecondName, Email, PersonalDiscount) " +
                              "VALUES (?, ?, ?, ?, ?, ?, ?)";
-        final PreparedStatement statement = connection_.prepareStatement(query);
+        final PreparedStatement statement = connection_.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
         statement.setInt(1, 2);
         statement.setString(2, user.getLogin());
         statement.setInt(3, user.getPasswordHash());
@@ -186,7 +187,7 @@ public class UserMapper extends Mapper<User>{
     private PreparedStatement getInsertQuery(final Customer user) throws SQLException {
         final String query = "INSERT into Users(Type, Login, Password, Name, SecondName, Email, PersonalDiscount) " +
                 "VALUES (?, ?, ?, ?, ?, ?, ?)";
-        final PreparedStatement statement = connection_.prepareStatement(query);
+        final PreparedStatement statement = connection_.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
         statement.setInt(1, 0);
         statement.setString(2, user.getLogin());
         statement.setInt(3, user.getPasswordHash());
@@ -199,43 +200,46 @@ public class UserMapper extends Mapper<User>{
 
     private PreparedStatement getUpdateQuery(final Administrator user) throws SQLException {
         final String query = "UPDATE Users SET " +
-                             "Password=?, Name=?, SecondName=?, Email=?, PersonalDiscount=? " +
-                             "where Login=?";
+                             "Login=?, Password=?, Name=?, SecondName=?, Email=?, PersonalDiscount=? " +
+                             "where Id=?";
         final PreparedStatement statement = connection_.prepareStatement(query);
-        statement.setInt(1, user.getPasswordHash());
-        statement.setString(2, user.getName());
-        statement.setString(3, user.getSecondName());
-        statement.setString(4, user.getEmail());
-        statement.setInt(5, 0);
-        statement.setString(6, user.getLogin());
+        statement.setString(1, user.getLogin());
+        statement.setInt(2, user.getPasswordHash());
+        statement.setString(3, user.getName());
+        statement.setString(4, user.getSecondName());
+        statement.setString(5, user.getEmail());
+        statement.setInt(6, 0);
+        statement.setInt(7, user.getId());
         return statement;
     }
 
     private PreparedStatement getUpdateQuery(final Publisher user) throws SQLException {
         final String query = "UPDATE Users SET " +
-                             "Password=?, Name=?, SecondName=?, Email=?, PersonalDiscount=? " +
-                             "where Login=?";
+                             "Login=?, Password=?, Name=?, SecondName=?, Email=?, PersonalDiscount=? " +
+                             "where Id=?";
         final PreparedStatement statement = connection_.prepareStatement(query);
-        statement.setInt(1, user.getPasswordHash());
-        statement.setString(2, user.getName());
-        statement.setString(3, user.getSecondName());
-        statement.setString(4, user.getEmail());
-        statement.setInt(5, 0);
-        statement.setString(6, user.getLogin());
+        statement.setString(1, user.getLogin());
+        statement.setInt(2, user.getPasswordHash());
+        statement.setString(3, user.getName());
+        statement.setString(4, user.getSecondName());
+        statement.setString(5, user.getEmail());
+        statement.setInt(6, 0);
+        statement.setInt(7, user.getId());
         return statement;
     }
 
     private PreparedStatement getUpdateQuery(final Customer user) throws SQLException {
         final String query = "UPDATE Users SET " +
-                             "Password=?, Name=?, SecondName=?, Email=?, PersonalDiscount=? " +
-                             "where Login=?";
+                             "Login=?, Password=?, Name=?, SecondName=?, Email=?, PersonalDiscount=? " +
+                             "where Id=?";
         final PreparedStatement statement = connection_.prepareStatement(query);
-        statement.setInt(1, user.getPasswordHash());
-        statement.setString(2, user.getName());
-        statement.setString(3, user.getSecondName());
-        statement.setString(4, user.getEmail());
-        statement.setInt(5, user.getPersonalDiscount().integerValue());
-        statement.setString(6, user.getLogin());
+        statement.setString(1, user.getLogin());
+        statement.setInt(2, user.getPasswordHash());
+        statement.setString(3, user.getName());
+        statement.setString(4, user.getSecondName());
+        statement.setString(5, user.getEmail());
+        statement.setInt(6, user.getPersonalDiscount().integerValue());
+        statement.setInt(7, user.getId());
         return statement;
     }
 }
