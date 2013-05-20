@@ -16,7 +16,7 @@ import java.sql.Statement;
 public abstract class Mapper<T> {
     protected Connection connection_;
 
-    protected int getId(final Statement statement) throws SQLException, DataMapperException {
+    public static int getId(final Statement statement) throws SQLException, DataMapperException {
         ResultSet keys = null;
         try {
             keys = statement.getGeneratedKeys();

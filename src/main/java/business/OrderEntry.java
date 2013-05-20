@@ -13,7 +13,7 @@ public class OrderEntry {
     private final int amount_;
     private final Book book_;
 
-    public OrderEntry(int id, final Book book, final int amount) {
+    public OrderEntry(final int id, final Book book, final int amount) {
         assert (book != null);
 
         if (amount <= 0) {

@@ -1,17 +1,18 @@
 package db;
 
-import business.*;
+import business.Book;
+import business.OrderEntry;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
-import java.sql.*;
-import java.util.GregorianCalendar;
-import java.util.List;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
-import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.junit.Assert.*;
 
 /**
@@ -24,20 +25,6 @@ import static org.junit.Assert.*;
 public class OrderEntryMapperTest {
     private static int bookId_;
     private static int entryId_;
-
-    private static int getPrimaryKey(final Statement statement) throws Exception {
-        ResultSet keys = null;
-        try {
-            keys = statement.getGeneratedKeys();
-            if (keys.next()) {
-                return keys.getInt(1);
-            } else {
-                throw new Exception("Can't get primary key id");
-            }
-        } finally {
-            if (keys != null) keys.close();
-        }
-    }
 
     @Rule
     public final ExpectedException exception = ExpectedException.none();
@@ -55,21 +42,21 @@ public class OrderEntryMapperTest {
             statement = connection.createStatement();
             statement.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
 
-            final int id = getPrimaryKey(statement);
+            final int id = Mapper.getId(statement);
 
             query = "INSERT into Books(Name, Genre, Isbn, PublicationDate, Price, Discount, NumSold, PublisherId)" +
                     "VALUES ('foo', 'bar', '9783161484100', '2012-01-01', 200, 10, 0, " + id + ')';
             statement = connection.createStatement();
             statement.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
 
-            bookId_ = getPrimaryKey(statement);
+            bookId_ = Mapper.getId(statement);
 
             query = "INSERT into OrderEntries(BookId, Amount)" +
                     "VALUES (" + bookId_+ ", 10)";
             statement = connection.createStatement();
             statement.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
 
-            entryId_ = getPrimaryKey(statement);
+            entryId_ = Mapper.getId(statement);
         } finally {
             if (connection != null) connection.close();
             if (statement != null) statement.close();

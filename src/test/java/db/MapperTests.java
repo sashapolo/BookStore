@@ -11,7 +11,8 @@ import org.junit.runners.Suite;
  * To change this template use File | Settings | File Templates.
  */
 @RunWith(Suite.class)
-@Suite.SuiteClasses({ BookMapperTest.class, OrderEntryMapperTest.class, UserMapperTest.class })
+@Suite.SuiteClasses({ BookMapperTest.class, OrderEntryMapperTest.class, UserMapperTest.class,
+                      OrderMapperTest.class })
 public class MapperTests {
     /*
      * Test suite for all Mapper classes

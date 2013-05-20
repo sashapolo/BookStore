@@ -1,6 +1,9 @@
 package db;
 
-import business.*;
+import business.Administrator;
+import business.Customer;
+import business.Publisher;
+import business.User;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -9,7 +12,6 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.List;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.junit.Assert.*;
@@ -26,20 +28,6 @@ public class UserMapperTest {
     private static int customerId_;
     private static int administratorId_;
 
-    private static int getPrimaryKey(final Statement statement) throws Exception {
-        ResultSet keys = null;
-        try {
-            keys = statement.getGeneratedKeys();
-            if (keys.next()) {
-                return keys.getInt(1);
-            } else {
-                throw new Exception("Can't get primary key id");
-            }
-        } finally {
-            if (keys != null) keys.close();
-        }
-    }
-
     @BeforeClass
     public static void setUpDatabase() throws Exception {
         final TestConnectionManager manager = new TestConnectionManager();
@@ -51,19 +39,19 @@ public class UserMapperTest {
                            "VALUES (2, 'foo', 0, 'Mad', 'Jack', 'The pirate', 0)";
             statement = connection.createStatement();
             statement.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
-            publisherId_ = getPrimaryKey(statement);
+            publisherId_ = Mapper.getId(statement);
 
             query = "INSERT into Users(Type, Login, Password, Name, SecondName, Email, PersonalDiscount)" +
                     "VALUES (1, 'bar', 0, 'Led', 'Zeppelin', 'IV', 0)";
             statement = connection.createStatement();
             statement.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
-            administratorId_ = getPrimaryKey(statement);
+            administratorId_ = Mapper.getId(statement);
 
             query = "INSERT into Users(Type, Login, Password, Name, SecondName, Email, PersonalDiscount)" +
                     "VALUES (0, 'baz', 0, 'Elvis', 'Presley', 'Baby', 0)";
             statement = connection.createStatement();
             statement.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
-            customerId_ = getPrimaryKey(statement);
+            customerId_ = Mapper.getId(statement);
         } finally {
             if (connection != null) connection.close();
             if (statement != null) statement.close();

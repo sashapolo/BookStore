@@ -26,7 +26,7 @@ public class OrderMapper extends Mapper<Order> {
     public Order find(final int id) throws DataMapperException {
         PreparedStatement statement = null;
         try {
-            final String query = "SELECT * from Orders where OrderId=?";
+            final String query = "SELECT * from Orders where Id=?";
             statement = connection_.prepareStatement(query);
             statement.setInt(1, id);
 
@@ -70,7 +70,8 @@ public class OrderMapper extends Mapper<Order> {
 
         PreparedStatement statement = null;
         try {
-            final String query = "INSERT into Orders VALUES (?, ?, ?)";
+            final String query = "INSERT into Orders (CreationDate, Status, CustomerId) " +
+                                 "VALUES (?, ?, ?)";
             statement = connection_.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 
             statement.setDate(1, new Date(order.getDateCreated().getTimeInMillis()));
@@ -78,7 +79,7 @@ public class OrderMapper extends Mapper<Order> {
             statement.setInt(3, order.getOrderer().getId());
             statement.executeUpdate();
 
-            int id = getId(statement);
+            final int id = getId(statement);
             order.setId(id);
             final CartMapper mapper = new CartMapper(connection_);
             mapper.insert(order);

@@ -30,7 +30,7 @@ CREATE TABLE Books (
 CREATE TABLE Orders (
     Id int NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     CreationDate date NOT NULL,
-    Status int NOT NULL CHECK (Status > 0),
+    Status int NOT NULL,
     CustomerId int REFERENCES Users(Id)
 );
 

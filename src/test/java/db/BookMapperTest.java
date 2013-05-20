@@ -1,15 +1,22 @@
 package db;
 
-import business.*;
-import org.junit.*;
+import business.Book;
+import business.Isbn10;
+import business.Publisher;
+import business.User;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.GregorianCalendar;
 import java.util.List;
 
 import static org.hamcrest.CoreMatchers.instanceOf;
 import static org.junit.Assert.*;
-import static org.junit.Assert.assertEquals;
 
 /**
  * Created with IntelliJ IDEA.
@@ -21,20 +28,6 @@ import static org.junit.Assert.assertEquals;
 public class BookMapperTest {
     private static int publisherId_;
     public static final double EPSILON = 1e-15;
-
-    private static int getPrimaryKey(final Statement statement) throws Exception {
-        ResultSet keys = null;
-        try {
-            keys = statement.getGeneratedKeys();
-            if (keys.next()) {
-                return keys.getInt(1);
-            } else {
-                throw new Exception("Can't get primary key id");
-            }
-        } finally {
-            if (keys != null) keys.close();
-        }
-    }
 
     @BeforeClass
     public static void setUpDatabase() throws Exception {
@@ -48,7 +41,7 @@ public class BookMapperTest {
             statement = connection.createStatement();
             statement.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
 
-            publisherId_ = getPrimaryKey(statement);
+            publisherId_ = Mapper.getId(statement);
 
             query = "INSERT into Books(Name, Genre, Isbn, PublicationDate, Price, Discount, NumSold, PublisherId)" +
                     "VALUES ('foo', 'bar', '9783161484100', '2012-01-01', 200, 10, 0, " + publisherId_ + ')';
