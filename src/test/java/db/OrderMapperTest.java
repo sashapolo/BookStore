@@ -12,6 +12,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 /**
@@ -23,6 +24,7 @@ import static org.junit.Assert.assertNotNull;
  */
 public class OrderMapperTest {
     private static int orderId_;
+    public static final double EPSILON = 1e-15;
 
     @BeforeClass
     public static void setUpDatabase() throws Exception {
@@ -109,6 +111,10 @@ public class OrderMapperTest {
             final Mapper<Order> mapper = new OrderMapper(connection);
             final Order test = mapper.find(orderId_);
             assertNotNull("Order not found", test);
+            assertEquals("Incorrect customer", "Elvis", test.getOrderer().getName());
+            assertEquals("Incorrect status", Order.OrderStatus.CREATED, test.getStatus());
+            assertEquals("Incorrect cart size", 1, test.getCart().size());
+            assertEquals("Incorrect price", 200 * 10 * 0.9, test.getPrice(), EPSILON);
         } finally {
             if (connection != null) connection.close();
         }

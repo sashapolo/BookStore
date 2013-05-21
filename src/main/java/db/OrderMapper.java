@@ -1,9 +1,6 @@
 package db;
 
-import business.Cart;
-import business.Customer;
-import business.Order;
-import business.User;
+import business.*;
 import util.ReverseEnumMap;
 
 import java.sql.*;
@@ -46,8 +43,7 @@ public class OrderMapper extends Mapper<Order> {
 
                 assert (orderer instanceof Customer);
 
-                final CartMapper cartMapper = new CartMapper(connection_);
-                final Cart cart = cartMapper.find(id);
+                final Cart cart = getCart(id);
                 return new Order.Builder(id, cart, (Customer)orderer)
                                     .status(status)
                                     .dateCreated(date)
@@ -80,9 +76,7 @@ public class OrderMapper extends Mapper<Order> {
             statement.executeUpdate();
 
             final int id = getId(statement);
-            order.setId(id);
-            final CartMapper mapper = new CartMapper(connection_);
-            mapper.insert(order);
+            insertCart(order.getCart(), id);
             return id;
         } catch (SQLException e) {
             throw new DataMapperException("Error occurred while inserting an order", e);
@@ -94,16 +88,15 @@ public class OrderMapper extends Mapper<Order> {
     }
 
     @Override
-    public void delete(final Order order) throws DataMapperException {
+    public void delete(final int id) throws DataMapperException {
         PreparedStatement statement = null;
         try {
             final String query = "DELETE from Orders where Id=?";
             statement = connection_.prepareStatement(query);
-            statement.setInt(1, order.getId());
+            statement.setInt(1, id);
 
             statement.executeUpdate();
-            final CartMapper mapper = new CartMapper(connection_);
-            mapper.delete(order);
+            deleteCart(id);
         } catch (SQLException e) {
             throw new DataMapperException("Error occurred while deleting an order", e);
         } finally {
@@ -116,5 +109,74 @@ public class OrderMapper extends Mapper<Order> {
     @Override
     public void update(final Order order) throws DataMapperException {
         throw new DataMapperException("Orders should never be updated!");
+    }
+
+    private Cart getCart(final int id) throws DataMapperException {
+        PreparedStatement statement = null;
+        try {
+            final String query = "SELECT * from OrderEntries " +
+                                 "INNER JOIN Cart on " +
+                                 "Cart.OrderId=? AND Cart.OrderEntryId=OrderEntries.Id";
+            statement = connection_.prepareStatement(query);
+            statement.setInt(1, id);
+            final ResultSet rs = statement.executeQuery();
+
+            final Mapper<Book> bookMapper = new BookMapper(connection_);
+            final Cart result = new Cart();
+            while (rs.next()) {
+                final int bookId = rs.getInt("BookId");
+                final int amount = rs.getInt("Amount");
+                final int entryId = rs.getInt("Id");
+                final Book book = bookMapper.find(bookId);
+                assert (book != null);
+                result.put(new OrderEntry(entryId, book, amount));
+            }
+
+            return result;
+        } catch (SQLException e) {
+            throw new DataMapperException("Error occurred while acquiring the cart", e);
+        } finally {
+            try {
+                if (statement != null) statement.close();
+            } catch (SQLException e) {}
+        }
+    }
+
+    private void insertCart(final Cart cart, final int id) throws DataMapperException {
+        PreparedStatement statement = null;
+        try {
+            final String query = "INSERT INTO Cart VALUES (?, ?)";
+            statement = connection_.prepareStatement(query);
+            statement.setInt(1, id);
+
+            Mapper<OrderEntry> entryMapper = new OrderEntryMapper(connection_);
+            for (final OrderEntry entry : cart.values()) {
+                final int entryId = entryMapper.insert(entry);
+                statement.setInt(2, entryId);
+                statement.executeUpdate();
+            }
+        } catch (SQLException e) {
+            throw new DataMapperException("Error occurred while inserting the cart", e);
+        } finally {
+            try {
+                if (statement != null) statement.close();
+            } catch (SQLException e) {}
+        }
+    }
+
+    private void deleteCart(final int id) throws DataMapperException {
+        PreparedStatement statement = null;
+        try {
+            final String query = "DELETE FROM Cart WHERE OrderId=?";
+            statement = connection_.prepareStatement(query);
+            statement.setInt(1, id);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DataMapperException("Error occurred while deleting the cart", e);
+        } finally {
+            try {
+                if (statement != null) statement.close();
+            } catch (SQLException e) {}
+        }
     }
 }

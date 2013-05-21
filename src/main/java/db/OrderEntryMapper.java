@@ -91,11 +91,6 @@ public class OrderEntryMapper extends Mapper<OrderEntry> {
     }
 
     @Override
-    public void delete(final OrderEntry entry) throws DataMapperException {
-        assert (entry != null);
-        delete(entry.getId());
-    }
-
     public void delete(final int id) throws DataMapperException {
         PreparedStatement statement = null;
         try {
