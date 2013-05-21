@@ -41,7 +41,7 @@ CREATE TABLE OrderEntries (
 );
 
 CREATE TABLE Cart (
-    OrderId int NOT NULL REFERENCES Orders(Id),
+    OrderId int NOT NULL REFERENCES Orders(Id) ON DELETE CASCADE,
     OrderEntryId int NOT NULL REFERENCES OrderEntries(Id) ON DELETE CASCADE,
     PRIMARY KEY (OrderId, OrderEntryId)
 );

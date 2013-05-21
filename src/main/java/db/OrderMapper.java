@@ -91,12 +91,12 @@ public class OrderMapper extends Mapper<Order> {
     public void delete(final int id) throws DataMapperException {
         PreparedStatement statement = null;
         try {
+            deleteEntries(id);
             final String query = "DELETE from Orders where Id=?";
             statement = connection_.prepareStatement(query);
             statement.setInt(1, id);
 
             statement.executeUpdate();
-            deleteCart(id);
         } catch (SQLException e) {
             throw new DataMapperException("Error occurred while deleting an order", e);
         } finally {
@@ -164,10 +164,13 @@ public class OrderMapper extends Mapper<Order> {
         }
     }
 
-    private void deleteCart(final int id) throws DataMapperException {
+    private void deleteEntries(final int id) throws DataMapperException {
         PreparedStatement statement = null;
         try {
-            final String query = "DELETE FROM Cart WHERE OrderId=?";
+            final String query = "DELETE FROM OrderEntries " +
+                                 "WHERE Id IN " +
+                                 "(SELECT OrderEntryId FROM " +
+                                 "Cart WHERE OrderId=?)";
             statement = connection_.prepareStatement(query);
             statement.setInt(1, id);
             statement.executeUpdate();

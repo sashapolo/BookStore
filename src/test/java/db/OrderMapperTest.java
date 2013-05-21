@@ -1,19 +1,18 @@
 package db;
 
-import business.Book;
-import business.Order;
-import business.OrderEntry;
+import business.*;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 import java.sql.Connection;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.GregorianCalendar;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -24,7 +23,13 @@ import static org.junit.Assert.assertNotNull;
  */
 public class OrderMapperTest {
     private static int orderId_;
+    private static int bookId_;
+    private static int userId_;
+    private static int pubId_;
     public static final double EPSILON = 1e-15;
+
+    @Rule
+    public final ExpectedException exception = ExpectedException.none();
 
     @BeforeClass
     public static void setUpDatabase() throws Exception {
@@ -38,28 +43,28 @@ public class OrderMapperTest {
                     "VALUES (2, 'foo', 0, 'Mad', 'Jack', 'The pirate', 0)";
             statement = connection.createStatement();
             statement.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
-            final int pubId = Mapper.getId(statement);
+            pubId_ = Mapper.getId(statement);
 
             query = "INSERT into Users(Type, Login, Password, Name, SecondName, Email, PersonalDiscount) " +
                     "VALUES (0, 'baz', 0, 'Elvis', 'Presley', 'Baby', 0)";
             statement = connection.createStatement();
             statement.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
-            final int userId = Mapper.getId(statement);
+            userId_ = Mapper.getId(statement);
 
             query = "INSERT into Books(Name, Genre, Isbn, PublicationDate, Price, Discount, NumSold, PublisherId) " +
-                    "VALUES ('foo', 'bar', '9783161484100', '2012-01-01', 200, 10, 0, " + pubId + ')';
+                    "VALUES ('foo', 'bar', '9783161484100', '2012-01-01', 200, 10, 0, " + pubId_ + ')';
             statement = connection.createStatement();
             statement.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
-            final int bookId = Mapper.getId(statement);
+            bookId_ = Mapper.getId(statement);
 
             query = "INSERT into Orders (CreationDate, Status, CustomerId) " +
-                    "VALUES ('2012-01-01', 0, " + userId + ')';
+                    "VALUES ('2012-01-01', 0, " + userId_ + ')';
             statement = connection.createStatement();
             statement.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
             orderId_ = Mapper.getId(statement);
 
             query = "INSERT into OrderEntries(BookId, Amount) " +
-                    "VALUES (" + bookId + ", 10)";
+                    "VALUES (" + bookId_ + ", 10)";
             statement = connection.createStatement();
             statement.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
             final int entryId = Mapper.getId(statement);
@@ -118,5 +123,99 @@ public class OrderMapperTest {
         } finally {
             if (connection != null) connection.close();
         }
+    }
+
+    @Test
+    public void updateTest() throws Exception {
+        exception.expect(DataMapperException.class);
+        exception.expectMessage("Orders should never be updated!");
+
+        final TestConnectionManager manager = new TestConnectionManager();
+        Connection connection = null;
+        try {
+            connection = manager.getConnection();
+            final Mapper<Order> mapper = new OrderMapper(connection);
+            final Order test = mapper.find(orderId_);
+            mapper.update(test);
+        } finally {
+            if (connection != null) connection.close();
+        }
+    }
+
+    @Test
+    public void insertTest() throws Exception {
+        final TestConnectionManager manager = new TestConnectionManager();
+        Connection connection = null;
+        try {
+            connection = manager.getConnection();
+            final Mapper<Order> orderMapper = new OrderMapper(connection);
+            final int id = orderMapper.insert(createOrder(connection, "9992158107"));
+            Order test = orderMapper.find(id);
+            assertNotNull("Order not found", test);
+            assertEquals("Incorrect customer", "Elvis", test.getOrderer().getName());
+            assertEquals("Incorrect cart size", 2, test.getCart().size());
+            assertEquals("Incorrect price", 200 * 0.9 * 100 + 50 * 120.44, test.getPrice(), EPSILON);
+        } finally {
+            if (connection != null) connection.close();
+        }
+    }
+
+    @Test
+    public void deleteTest() throws Exception {
+        final TestConnectionManager manager = new TestConnectionManager();
+        Connection connection = null;
+        Statement statement = null;
+        try {
+            connection = manager.getConnection();
+            String query = "INSERT into OrderEntries(BookId, Amount) " +
+                           "VALUES (" + bookId_ + ", 15)";
+            statement = connection.createStatement();
+            statement.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
+            final int entryId = Mapper.getId(statement);
+
+            final Mapper<Order> orderMapper = new OrderMapper(connection);
+            final Mapper<OrderEntry> entryMapper = new OrderEntryMapper(connection);
+            final int id = orderMapper.insert(createOrder(connection, "097522980X"));
+
+            query = "INSERT into Cart " +
+                    "VALUES (" + id + ", " + entryId + ')';
+            statement = connection.createStatement();
+            statement.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
+
+
+            orderMapper.delete(id);
+            final Order test = orderMapper.find(id);
+            assertNull("Order was not deleted", test);
+            final OrderEntry entryTest = entryMapper.find(entryId);
+            assertNull("Entry was not deleted", entryTest);
+        } finally {
+            if (connection != null) connection.close();
+            if (statement != null) statement.close();
+        }
+    }
+
+    private Order createOrder(final Connection connection, final String isbn10) throws DataMapperException {
+        final Mapper<User> userMapper = new UserMapper(connection);
+        final Mapper<Book> bookMapper = new BookMapper(connection);
+
+        User user = userMapper.find(userId_);
+        User pub = userMapper.find(pubId_);
+        Book book1 = bookMapper.find(bookId_);
+        final Book book2 = new Book.Builder(-1,
+                "test",
+                "",
+                (Publisher)pub,
+                new GregorianCalendar(),
+                new Isbn10(isbn10).toIsbn13(),
+                120.44).build();
+        book2.setId(bookMapper.insert(book2));
+
+        OrderEntry entry1 = new OrderEntry(-1, book1, 100);
+        OrderEntry entry2 = new OrderEntry(-1, book2, 50);
+        Cart cart = new Cart();
+        cart.put(entry1);
+        cart.put(entry2);
+
+        return new Order.Builder(-1, cart, (Customer)user).build();
     }
 }
