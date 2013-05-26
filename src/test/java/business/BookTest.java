@@ -1,12 +1,10 @@
 package business;
 
+import java.util.GregorianCalendar;
+import static org.junit.Assert.assertEquals;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-
-import java.util.GregorianCalendar;
-
-import static org.junit.Assert.assertEquals;
 
 
 public class BookTest {
@@ -16,7 +14,7 @@ public class BookTest {
     public final ExpectedException exception = ExpectedException.none();
 
     @Test
-    public void testBookGetPrice1() {
+    public void testBookGetPrice1() throws WrongFormatException {
         Book tester = new Book.Builder(0,
                                        "",
                                        "",
@@ -28,7 +26,7 @@ public class BookTest {
     }
 
     @Test
-    public void testBookGetPrice2() {
+    public void testBookGetPrice2() throws WrongFormatException {
         Book tester = new Book.Builder(0,
                                        "",
                                        "",
@@ -40,7 +38,7 @@ public class BookTest {
     }
 
     @Test
-    public void testBookGetPrice3() {
+    public void testBookGetPrice3() throws WrongFormatException {
         Book tester = new Book.Builder(0,
                                        "",
                                        "",
@@ -52,7 +50,7 @@ public class BookTest {
     }
 
     @Test
-    public void testBookIllegalArg() {
+    public void testBookIllegalArg() throws WrongFormatException {
         exception.expect(IllegalArgumentException.class);
         exception.expectMessage("Illegal discount settings");
         @SuppressWarnings("unused")

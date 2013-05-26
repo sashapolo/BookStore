@@ -1,11 +1,12 @@
 package dbwrappers;
 
 import business.BookStore;
+import business.Customer;
 import business.User;
 import db.*;
-
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -15,33 +16,44 @@ import java.util.logging.Logger;
  * Time: 3:20 PM
  * To change this template use File | Settings | File Templates.
  */
-public class UserCatalogue {
+public final class UserCatalogue {
     private static final Logger LOGGER = Logger.getLogger(BookStore.class.getName());
 
-    public User getUser(final String login, final String password) throws UserNotFoundException, IncorrectPasswordException {
-        assert (login != null);
-        assert (password != null);
-
+    public static User getUser(final String login, final String password) throws EntryNotFoundException, IncorrectPasswordException {
         final ConnectionManager manager = new DerbyConnectionManager();
-        Connection connection = null;
-        try {
-            connection = manager.getConnection();
+        try (Connection connection = manager.getConnection()) {
             final UserMapper mapper = new UserMapper(connection);
             final User result = mapper.find(login);
 
             if (result == null)
-                throw new UserNotFoundException("user not found");
+                throw new EntryNotFoundException("user not found");
             if (password.hashCode() != result.getPasswordHash())
                 throw new IncorrectPasswordException("incorrect password");
 
             return result;
         } catch (SQLException | DataMapperException e) {
-            LOGGER.severe("Error while finding user: " + e.getMessage());
+            LOGGER.log(Level.SEVERE, e.getMessage());
             throw new IllegalStateException("something is very wrong :(", e);
-        } finally {
-            try {
-                if (connection != null) manager.closeConnection(connection);
-            } catch (SQLException e) {}
+        }
+    }
+    
+    public static void createUser(final String login, 
+                                  final String password,
+                                  final String name,
+                                  final String secondName,
+                                  final String email) throws EntryRedefinitionException {
+        final ConnectionManager manager = new DerbyConnectionManager();
+        try (Connection connection = manager.getConnection()) {
+            final UserMapper mapper = new UserMapper(connection);
+            
+            final User test = mapper.find(login);
+            if (test != null) throw new EntryRedefinitionException("user already exists");
+            
+            final User user = new Customer(-1, login, password.hashCode(), name, secondName, email);
+            mapper.insert(user);
+        } catch (SQLException | DataMapperException e) {
+            LOGGER.log(Level.SEVERE, e.getMessage());
+            throw new IllegalStateException("something is very wrong :(", e);
         }
     }
 }

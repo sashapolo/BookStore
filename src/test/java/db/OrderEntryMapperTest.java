@@ -2,17 +2,15 @@ package db;
 
 import business.Book;
 import business.OrderEntry;
+import java.sql.Connection;
+import java.sql.SQLException;
+import java.sql.Statement;
 import org.junit.AfterClass;
+import static org.junit.Assert.*;
 import org.junit.BeforeClass;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-
-import java.sql.Connection;
-import java.sql.SQLException;
-import java.sql.Statement;
-
-import static org.junit.Assert.*;
 
 /**
  * Created with IntelliJ IDEA.

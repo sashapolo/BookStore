@@ -1,18 +1,16 @@
 package db;
 
 import business.*;
-import org.junit.AfterClass;
-import org.junit.BeforeClass;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.GregorianCalendar;
-
+import org.junit.AfterClass;
 import static org.junit.Assert.*;
+import org.junit.BeforeClass;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
 
 /**
  * Created with IntelliJ IDEA.
@@ -35,10 +33,7 @@ public class OrderMapperTest {
     public static void setUpDatabase() throws Exception {
         final TestConnectionManager manager = new TestConnectionManager();
         Statement statement = null;
-        Connection connection = null;
-        try {
-            connection = manager.getConnection();
-
+        try (Connection connection = manager.getConnection()) {
             String query = "INSERT into Users(Type, Login, Password, Name, SecondName, Email, PersonalDiscount) " +
                     "VALUES (2, 'foo', 0, 'Mad', 'Jack', 'The pirate', 0)";
             statement = connection.createStatement();
@@ -74,7 +69,6 @@ public class OrderMapperTest {
             statement = connection.createStatement();
             statement.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
         } finally {
-            if (connection != null) connection.close();
             if (statement != null) statement.close();
         }
     }
@@ -83,9 +77,7 @@ public class OrderMapperTest {
     public static void clearDatabase() throws SQLException {
         final TestConnectionManager manager = new TestConnectionManager();
         Statement statement = null;
-        Connection connection = null;
-        try {
-            connection = manager.getConnection();
+        try (Connection connection = manager.getConnection()) {
             String query = "DELETE from Cart";
             statement = connection.createStatement();
             statement.executeUpdate(query);
@@ -102,7 +94,6 @@ public class OrderMapperTest {
             statement = connection.createStatement();
             statement.executeUpdate(query);
         } finally {
-            if (connection != null) connection.close();
             if (statement != null) statement.close();
         }
     }
@@ -110,9 +101,7 @@ public class OrderMapperTest {
     @Test
     public void selectTest() throws Exception {
         final TestConnectionManager manager = new TestConnectionManager();
-        Connection connection = null;
-        try {
-            connection = manager.getConnection();
+        try (Connection connection = manager.getConnection()) {
             final Mapper<Order> mapper = new OrderMapper(connection);
             final Order test = mapper.find(orderId_);
             assertNotNull("Order not found", test);
@@ -120,8 +109,6 @@ public class OrderMapperTest {
             assertEquals("Incorrect status", Order.OrderStatus.CREATED, test.getStatus());
             assertEquals("Incorrect cart size", 1, test.getCart().size());
             assertEquals("Incorrect price", 200 * 10 * 0.9, test.getPrice(), EPSILON);
-        } finally {
-            if (connection != null) connection.close();
         }
     }
 
@@ -131,23 +118,17 @@ public class OrderMapperTest {
         exception.expectMessage("Orders should never be updated!");
 
         final TestConnectionManager manager = new TestConnectionManager();
-        Connection connection = null;
-        try {
-            connection = manager.getConnection();
+        try (Connection connection = manager.getConnection()) {
             final Mapper<Order> mapper = new OrderMapper(connection);
             final Order test = mapper.find(orderId_);
             mapper.update(test);
-        } finally {
-            if (connection != null) connection.close();
         }
     }
 
     @Test
     public void insertTest() throws Exception {
         final TestConnectionManager manager = new TestConnectionManager();
-        Connection connection = null;
-        try {
-            connection = manager.getConnection();
+        try (Connection connection = manager.getConnection()) {
             final Mapper<Order> orderMapper = new OrderMapper(connection);
             final int id = orderMapper.insert(createOrder(connection, "9992158107"));
             Order test = orderMapper.find(id);
@@ -155,18 +136,14 @@ public class OrderMapperTest {
             assertEquals("Incorrect customer", "Elvis", test.getOrderer().getName());
             assertEquals("Incorrect cart size", 2, test.getCart().size());
             assertEquals("Incorrect price", 200 * 0.9 * 100 + 50 * 120.44, test.getPrice(), EPSILON);
-        } finally {
-            if (connection != null) connection.close();
         }
     }
 
     @Test
     public void deleteTest() throws Exception {
         final TestConnectionManager manager = new TestConnectionManager();
-        Connection connection = null;
         Statement statement = null;
-        try {
-            connection = manager.getConnection();
+        try (Connection connection = manager.getConnection()) {
             String query = "INSERT into OrderEntries(BookId, Amount) " +
                            "VALUES (" + bookId_ + ", 15)";
             statement = connection.createStatement();
@@ -189,12 +166,11 @@ public class OrderMapperTest {
             final OrderEntry entryTest = entryMapper.find(entryId);
             assertNull("Entry was not deleted", entryTest);
         } finally {
-            if (connection != null) connection.close();
             if (statement != null) statement.close();
         }
     }
 
-    private Order createOrder(final Connection connection, final String isbn10) throws DataMapperException {
+    private Order createOrder(final Connection connection, final String isbn10) throws DataMapperException, WrongFormatException {
         final Mapper<User> userMapper = new UserMapper(connection);
         final Mapper<Book> bookMapper = new BookMapper(connection);
 
@@ -202,12 +178,12 @@ public class OrderMapperTest {
         User pub = userMapper.find(pubId_);
         Book book1 = bookMapper.find(bookId_);
         final Book book2 = new Book.Builder(-1,
-                "test",
-                "",
-                (Publisher)pub,
-                new GregorianCalendar(),
-                new Isbn10(isbn10).toIsbn13(),
-                120.44).build();
+                                            "test",
+                                            "",
+                                            (Publisher)pub,
+                                            new GregorianCalendar(),
+                                            new Isbn10(isbn10).toIsbn13(),
+                                            120.44).build();
         book2.setId(bookMapper.insert(book2));
 
         OrderEntry entry1 = new OrderEntry(-1, book1, 100);

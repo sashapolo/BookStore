@@ -4,7 +4,6 @@ import business.Administrator;
 import business.Customer;
 import business.Publisher;
 import business.User;
-
 import java.sql.*;
 
 /**

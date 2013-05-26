@@ -4,7 +4,6 @@
 package dbwrappers;
 
 import business.requests.Request;
-
 import java.util.LinkedList;
 
 /**

@@ -8,16 +8,15 @@ package business;
  * 
  */
 public class Isbn13 extends Isbn {
-    public Isbn13(final String isbn) {
+    public Isbn13(final String isbn) throws WrongFormatException {
         assert (isbn != null);
 
         final String tmp = isbn.replace("-", "");
         if (tmp.length() != 13) {
-            throw new IllegalArgumentException(
-                    "Trying to create 13-digit ISBN from non 13-digit number");
+            throw new WrongFormatException("Trying to create 13-digit ISBN from non 13-digit number");
         }
         if (!isValid(tmp)) {
-            throw new IllegalArgumentException("Invalid 13-digit ISBN number");
+            throw new WrongFormatException("Invalid 13-digit ISBN number");
         }
         isbn_ = tmp;
     }
@@ -38,7 +37,7 @@ public class Isbn13 extends Isbn {
         return this;
     }
 
-	private char getLastDigit(final String isbn) {
+    private char getLastDigit(final String isbn) {
         int result = 0;
         final char digits[] = isbn.toCharArray();
         final int isbnLength = isbn.length();

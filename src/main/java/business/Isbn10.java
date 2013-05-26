@@ -8,15 +8,15 @@ package business;
  * 
  */
 public class Isbn10 extends Isbn {
-    public Isbn10(final String isbn) {
+    public Isbn10(final String isbn) throws WrongFormatException {
         assert (isbn != null);
 
         final String tmp = isbn.replace("-", "");
         if (tmp.length() != 10) {
-            throw new IllegalArgumentException("Trying to create 10-digit ISBN from non 10-digit number");
+            throw new WrongFormatException("Trying to create 10-digit ISBN from non 10-digit number");
         }
         if (!isValid(tmp)) {
-            throw new IllegalArgumentException("Invalid 10-digit ISBN number");
+            throw new WrongFormatException("Invalid 10-digit ISBN number");
         }
         isbn_ = tmp;
     }

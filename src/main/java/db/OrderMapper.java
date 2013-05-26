@@ -1,10 +1,9 @@
 package db;
 
 import business.*;
-import util.ReverseEnumMap;
-
 import java.sql.*;
 import java.util.GregorianCalendar;
+import util.ReverseEnumMap;
 
 /**
  * Created with IntelliJ IDEA.

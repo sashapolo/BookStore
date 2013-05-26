@@ -1,17 +1,15 @@
 package business;
 
-import org.junit.Test;
-
 import java.util.GregorianCalendar;
-
 import static org.junit.Assert.assertEquals;
+import org.junit.Test;
 
 
 public class CartTest {
     private final Book book;
     public static final double EPSILON = 1e-15;
 
-    public CartTest() {
+    public CartTest() throws WrongFormatException {
         book = new Book.Builder(0,
                                 "",
                                 "",

@@ -1,7 +1,6 @@
 package db;
 
 import business.*;
-
 import java.sql.*;
 import java.util.GregorianCalendar;
 import java.util.LinkedList;
@@ -35,6 +34,29 @@ public class BookMapper extends Mapper<Book>{
                 result.add(createBook(rs));
             }
             return result;
+        } catch (SQLException e) {
+            throw new DataMapperException("Error occurred while searching for book", e);
+        } finally {
+            try {
+                if (statement != null) statement.close();
+            } catch (SQLException e) {}
+        }
+    }
+    
+    public Book find(final Isbn isbn) throws DataMapperException {
+        assert(isbn != null);
+
+        PreparedStatement statement = null;
+        try {
+            final String query = "SELECT * from Books where Isbn=?";
+            statement = connection_.prepareStatement(query);
+            statement.setString(1, isbn.toString());
+
+            final ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                return createBook(rs);
+            }
+            return null;
         } catch (SQLException e) {
             throw new DataMapperException("Error occurred while searching for book", e);
         } finally {
@@ -148,7 +170,12 @@ public class BookMapper extends Mapper<Book>{
         final int id = rs.getInt("Id");
         final String name = rs.getString("Name");
         final String genre = rs.getString("Genre");
-        final Isbn isbn = new Isbn13(rs.getString("Isbn"));
+        Isbn isbn = null;
+        try {
+            isbn = new Isbn13(rs.getString("Isbn"));
+        } catch (WrongFormatException e) {
+            throw new IllegalStateException("Retreived incorrect isbn from the database");
+        }
 
         final GregorianCalendar date = new GregorianCalendar();
         date.setTime(rs.getDate("PublicationDate"));

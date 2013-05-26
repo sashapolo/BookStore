@@ -3,9 +3,8 @@
  */
 package business;
 
-import util.EnumConverter;
-
 import java.util.GregorianCalendar;
+import util.EnumConverter;
 
 
 /**
@@ -26,9 +25,8 @@ public class Order {
         public Builder(final int id, final Cart cart, final Customer orderer) {
             assert (cart != null);
             assert (orderer != null);
+            assert (!cart.isEmpty()): "Creating an order with an empty cart";
 
-            if (cart.isEmpty())
-                throw new IllegalArgumentException("Creating an order with an empty cart");
             id_ = id;
             cart_ = cart;
             cartPrice_ = cart.getPrice(orderer.getPersonalDiscount());
