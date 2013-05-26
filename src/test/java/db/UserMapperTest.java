@@ -29,9 +29,7 @@ public class UserMapperTest {
     public static void setUpDatabase() throws Exception {
         final TestConnectionManager manager = new TestConnectionManager();
         Statement statement = null;
-        Connection connection = null;
-        try {
-            connection = manager.getConnection();
+        try (Connection connection = manager.getConnection()) {
             String query = "INSERT into Users(Type, Login, Password, Name, SecondName, Email, PersonalDiscount)" +
                            "VALUES (2, 'foo', 0, 'Mad', 'Jack', 'The pirate', 0)";
             statement = connection.createStatement();
@@ -50,7 +48,6 @@ public class UserMapperTest {
             statement.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
             customerId_ = Mapper.getId(statement);
         } finally {
-            if (connection != null) connection.close();
             if (statement != null) statement.close();
         }
     }
@@ -59,14 +56,11 @@ public class UserMapperTest {
     public static void clearDatabase() throws SQLException {
         final TestConnectionManager manager = new TestConnectionManager();
         Statement statement = null;
-        Connection connection = null;
-        try {
-            connection = manager.getConnection();
+        try (Connection connection = manager.getConnection()) {
             final String query = "DELETE from Users";
             statement = connection.createStatement();
             statement.executeUpdate(query);
         } finally {
-            if (connection != null) connection.close();
             if (statement != null) statement.close();
         }
     }
@@ -74,9 +68,7 @@ public class UserMapperTest {
     @Test
     public void selectTest() throws Exception {
         final TestConnectionManager manager = new TestConnectionManager();
-        Connection connection = null;
-        try {
-            connection = manager.getConnection();
+        try (Connection connection = manager.getConnection()) {
             final UserMapper mapper = new UserMapper(connection);
 
             final User admin = mapper.find(administratorId_);
@@ -90,17 +82,13 @@ public class UserMapperTest {
             final User pub = mapper.find(publisherId_);
             assertThat("Got incorrect type from the database", pub, instanceOf(Publisher.class));
             assertEquals("Incorrect name", "foo", pub.getLogin());
-        } finally {
-            if (connection != null) connection.close();
         }
     }
 
     @Test
     public void updateTest() throws Exception {
         final TestConnectionManager manager = new TestConnectionManager();
-        Connection connection = null;
-        try {
-            connection = manager.getConnection();
+        try (Connection connection = manager.getConnection()) {
             final UserMapper mapper = new UserMapper(connection);
 
             final User pub = new Publisher(-1, "spam", 0, "", "", "");
@@ -110,17 +98,13 @@ public class UserMapperTest {
             final User test = mapper.find(id);
             assertThat("Got incorrect type from the database", test, instanceOf(Publisher.class));
             assertEquals("Incorrect name", "ham", test.getLogin());
-        } finally {
-            if (connection != null) connection.close();
         }
     }
 
     @Test
     public void deleteTest() throws Exception {
         final TestConnectionManager manager = new TestConnectionManager();
-        Connection connection = null;
-        try {
-            connection = manager.getConnection();
+        try (Connection connection = manager.getConnection()) {
             final UserMapper mapper = new UserMapper(connection);
 
             final User pub = new Publisher(-1, "spam", 0, "", "", "");
@@ -129,8 +113,6 @@ public class UserMapperTest {
             assertNotNull("User was deleted", mapper.find(id));
             mapper.delete(id);
             assertNull("User was not deleted", mapper.find(id));
-        } finally {
-            if (connection != null) connection.close();
         }
     }
 }

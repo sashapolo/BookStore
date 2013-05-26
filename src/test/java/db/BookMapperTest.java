@@ -30,9 +30,7 @@ public class BookMapperTest {
     public static void setUpDatabase() throws Exception {
         final TestConnectionManager manager = new TestConnectionManager();
         Statement statement = null;
-        Connection connection = null;
-        try {
-            connection = manager.getConnection();
+        try (Connection connection = manager.getConnection()) {;
             String query = "INSERT into Users(Type, Login, Password, Name, SecondName, Email, PersonalDiscount)" +
                            "VALUES (2, 'foo', 0, 'Mad', 'Jack', 'The pirate', 0)";
             statement = connection.createStatement();
@@ -45,7 +43,6 @@ public class BookMapperTest {
             statement = connection.createStatement();
             statement.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
         } finally {
-            if (connection != null) connection.close();
             if (statement != null) statement.close();
         }
     }
@@ -54,9 +51,7 @@ public class BookMapperTest {
     public static void clearDatabase() throws SQLException {
         final TestConnectionManager manager = new TestConnectionManager();
         Statement statement = null;
-        Connection connection = null;
-        try {
-            connection = manager.getConnection();
+        try (Connection connection = manager.getConnection()) {
             String query = "DELETE from Books";
             statement = connection.createStatement();
             statement.executeUpdate(query);
@@ -64,7 +59,6 @@ public class BookMapperTest {
             statement = connection.createStatement();
             statement.executeUpdate(query);
         } finally {
-            if (connection != null) connection.close();
             if (statement != null) statement.close();
         }
     }
@@ -72,9 +66,7 @@ public class BookMapperTest {
     @Test
     public void selectTest() throws Exception {
         final TestConnectionManager manager = new TestConnectionManager();
-        Connection connection = null;
-        try {
-            connection = manager.getConnection();
+        try (Connection connection = manager.getConnection()) {
             final BookMapper mapper = new BookMapper(connection);
             final List<Book> books = mapper.find("foo");
             assertEquals("Found incorrect number of books", 1, books.size());
@@ -86,17 +78,13 @@ public class BookMapperTest {
                 assertNotNull("Publisher not found", book.getPublisher());
                 assertEquals("Incorrect publisher", publisherId_, book.getPublisher().getId());
             }
-        } finally {
-            if (connection != null) connection.close();
         }
     }
 
     @Test
     public void insertTest() throws Exception {
         final TestConnectionManager manager = new TestConnectionManager();
-        Connection connection = null;
-        try {
-            connection = manager.getConnection();
+        try (Connection connection = manager.getConnection()) {
             final UserMapper userMapper = new UserMapper(connection);
             final User publisher = userMapper.find(publisherId_);
             assertNotNull("Publisher not found", publisher);
@@ -114,17 +102,13 @@ public class BookMapperTest {
             final Book check = bookMapper.find(id);
             assertNotNull("Inserted book not found", check);
             assertEquals("Wrong name of inserted book", "test", book.getName());
-        } finally {
-            if (connection != null) connection.close();
         }
     }
 
     @Test
     public void updateTest() throws Exception {
         final TestConnectionManager manager = new TestConnectionManager();
-        Connection connection = null;
-        try {
-            connection = manager.getConnection();
+        try (Connection connection = manager.getConnection()) {
             final UserMapper userMapper = new UserMapper(connection);
             final User publisher = userMapper.find(publisherId_);
             assertNotNull("Publisher not found", publisher);
@@ -151,17 +135,13 @@ public class BookMapperTest {
             assertNotNull("Updated book not found", check);
             assertEquals("Wrong name of updated book", "test69", check.getName());
             assertEquals("Wrong genre of updated book", "horror", check.getGenre());
-        } finally {
-            if (connection != null) connection.close();
         }
     }
 
     @Test
     public void deleteTest() throws Exception {
         final TestConnectionManager manager = new TestConnectionManager();
-        Connection connection = null;
-        try {
-            connection = manager.getConnection();
+        try (Connection connection = manager.getConnection()) {
             final UserMapper userMapper = new UserMapper(connection);
             final User publisher = userMapper.find(publisherId_);
             assertNotNull("Publisher not found", publisher);
@@ -181,8 +161,6 @@ public class BookMapperTest {
             assertNotNull("Book was deleted", bookMapper.find(id));
             bookMapper.delete(id);
             assertNull("Book was not deleted", bookMapper.find(id));
-        } finally {
-            if (connection != null) connection.close();
         }
     }
 }

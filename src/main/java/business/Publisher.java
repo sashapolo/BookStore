@@ -3,25 +3,21 @@
  */
 package business;
 
-import business.requests.Request;
-import dbwrappers.RequestQueue;
 
 /**
  * @author alexander
  * 
  */
-public class Publisher extends User {
-
-    public Publisher(final int id,
-                     final String login,
-                     final int password,
-                     final String name,
-                     final String secondName,
-                     final String email) {
-        super(id, login, password, name, secondName, email);
+public class Publisher {
+    final int id_;
+    final String name_;
+    
+    public Publisher(final int id, final String name) {
+        assert (name != null);
+        id_ = id;
+        name_ = name;
     }
-
-    public void postRequest(final Request request) {
-        RequestQueue.INSTANCE.push(request);
-    }
+    
+    public int getId()      { return id_; }
+    public String getName() { return name_; }
 }

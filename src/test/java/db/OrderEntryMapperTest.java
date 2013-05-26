@@ -30,10 +30,8 @@ public class OrderEntryMapperTest {
     public static void setUpDatabase() throws Exception {
         final TestConnectionManager manager = new TestConnectionManager();
         Statement statement = null;
-        Connection connection = null;
 
-        try {
-            connection = manager.getConnection();
+        try (Connection connection = manager.getConnection()) {
             String query = "INSERT into Users(Type, Login, Password, Name, SecondName, Email, PersonalDiscount)" +
                            "VALUES (2, 'foo', 0, 'Mad', 'Jack', 'The pirate', 0)";
             statement = connection.createStatement();
@@ -55,7 +53,6 @@ public class OrderEntryMapperTest {
 
             entryId_ = Mapper.getId(statement);
         } finally {
-            if (connection != null) connection.close();
             if (statement != null) statement.close();
         }
     }
@@ -64,9 +61,7 @@ public class OrderEntryMapperTest {
     public static void clearDatabase() throws SQLException {
         final TestConnectionManager manager = new TestConnectionManager();
         Statement statement = null;
-        Connection connection = null;
-        try {
-            connection = manager.getConnection();
+        try (Connection connection = manager.getConnection()) {
             String query = "DELETE from OrderEntries";
             statement = connection.createStatement();
             statement.executeUpdate(query);
@@ -77,7 +72,6 @@ public class OrderEntryMapperTest {
             statement = connection.createStatement();
             statement.executeUpdate(query);
         } finally {
-            if (connection != null) connection.close();
             if (statement != null) statement.close();
         }
     }
@@ -85,26 +79,20 @@ public class OrderEntryMapperTest {
     @Test
     public void selectTest() throws Exception {
         final TestConnectionManager manager = new TestConnectionManager();
-        Connection connection = null;
-        try {
-            connection = manager.getConnection();
+        try (Connection connection = manager.getConnection()) {
             final OrderEntryMapper mapper = new OrderEntryMapper(connection);
             final OrderEntry entry = mapper.find(entryId_);
             assertNotNull("Entry not found", entry);
             assertEquals("Incorrect amount", 10, entry.getAmount());
             assertNotNull("Book not found", entry.getBook());
             assertEquals("Incorrect book", bookId_, entry.getBook().getId());
-        } finally {
-            if (connection != null) connection.close();
         }
     }
 
     @Test
     public void insertTest() throws Exception {
         final TestConnectionManager manager = new TestConnectionManager();
-        Connection connection = null;
-        try {
-            connection = manager.getConnection();
+        try (Connection connection = manager.getConnection()) {
             final OrderEntryMapper mapper = new OrderEntryMapper(connection);
             final BookMapper bookMapper = new BookMapper(connection);
             final Book book = bookMapper.find(bookId_);
@@ -115,8 +103,6 @@ public class OrderEntryMapperTest {
             final OrderEntry test = mapper.find(id);
             assertNotNull("Entry not found", test);
             assertEquals("Incorrect amount", 100, test.getAmount());
-        } finally {
-            if (connection != null) connection.close();
         }
     }
 
@@ -126,26 +112,20 @@ public class OrderEntryMapperTest {
         exception.expectMessage("Orders should never be updated!");
 
         final TestConnectionManager manager = new TestConnectionManager();
-        Connection connection = null;
-        try {
-            connection = manager.getConnection();
+        try (Connection connection = manager.getConnection()) {
             final OrderEntryMapper mapper = new OrderEntryMapper(connection);
             final BookMapper bookMapper = new BookMapper(connection);
             final Book book = bookMapper.find(bookId_);
 
             final OrderEntry entry = new OrderEntry(-1, book, 100);
             mapper.update(entry);
-        } finally {
-            if (connection != null) connection.close();
         }
     }
 
     @Test
     public void deleteTest() throws Exception {
         final TestConnectionManager manager = new TestConnectionManager();
-        Connection connection = null;
-        try {
-            connection = manager.getConnection();
+        try (Connection connection = manager.getConnection()) {
             final OrderEntryMapper mapper = new OrderEntryMapper(connection);
             final BookMapper bookMapper = new BookMapper(connection);
             final Book book = bookMapper.find(bookId_);
@@ -156,8 +136,6 @@ public class OrderEntryMapperTest {
             assertNotNull("Entry was deleted", mapper.find(id));
             mapper.delete(id);
             assertNull("Entry was not deleted", mapper.find(id));
-        } finally {
-            if (connection != null) connection.close();
         }
     }
 }

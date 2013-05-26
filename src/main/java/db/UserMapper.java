@@ -5,6 +5,7 @@ import business.Customer;
 import business.Publisher;
 import business.User;
 import java.sql.*;
+import util.ReverseEnumMap;
 
 /**
  * Created with IntelliJ IDEA.
@@ -129,22 +130,21 @@ public class UserMapper extends Mapper<User>{
         if (result.next()) {
             final int password = result.getInt("Password");
             final int id = result.getInt("Id");
-            final int type = result.getInt("Type");
+            final ReverseEnumMap<UserType> reverse = new ReverseEnumMap<>(UserType.class);
+            final UserType type = reverse.get(result.getInt("Status"));
             final String login = result.getString("Login");
             final String name = result.getString("Name");
             final String secondName = result.getString("SecondName");
             final String email = result.getString("Email");
 
             switch (type) {
-            case 0:
+            case CUSTOMER:
                 final int discount = result.getInt("PersonalDiscount");
                 return new Customer(id, login, password, name, secondName, email, discount);
-            case 1:
+            case ADMIN:
                 return new Administrator(id, login, password, name, secondName, email);
-            case 2:
+            case PUBLISHER:
                 return new Publisher(id, login, password, name, secondName, email);
-            default:
-                throw new DataMapperException("Unknown user type");
             }
         }
         return null;
@@ -154,7 +154,7 @@ public class UserMapper extends Mapper<User>{
         final String query = "INSERT into Users(Type, Login, Password, Name, SecondName, Email, PersonalDiscount) " +
                              "VALUES (?, ?, ?, ?, ?, ?, ?)";
         final PreparedStatement statement = connection_.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-        statement.setInt(1, 1);
+        statement.setInt(1, UserType.ADMIN.convert());
         statement.setString(2, user.getLogin());
         statement.setInt(3, user.getPasswordHash());
         statement.setString(4, user.getName());
@@ -168,7 +168,7 @@ public class UserMapper extends Mapper<User>{
         final String query = "INSERT into Users(Type, Login, Password, Name, SecondName, Email, PersonalDiscount) " +
                              "VALUES (?, ?, ?, ?, ?, ?, ?)";
         final PreparedStatement statement = connection_.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-        statement.setInt(1, 2);
+        statement.setInt(1, UserType.PUBLISHER.convert());
         statement.setString(2, user.getLogin());
         statement.setInt(3, user.getPasswordHash());
         statement.setString(4, user.getName());
@@ -180,9 +180,9 @@ public class UserMapper extends Mapper<User>{
 
     private PreparedStatement getInsertQuery(final Customer user) throws SQLException {
         final String query = "INSERT into Users(Type, Login, Password, Name, SecondName, Email, PersonalDiscount) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?)";
+                             "VALUES (?, ?, ?, ?, ?, ?, ?)";
         final PreparedStatement statement = connection_.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-        statement.setInt(1, 0);
+        statement.setInt(1, UserType.CUSTOMER.convert());
         statement.setString(2, user.getLogin());
         statement.setInt(3, user.getPasswordHash());
         statement.setString(4, user.getName());

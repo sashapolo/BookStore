@@ -53,15 +53,10 @@ public class Order {
         CREATED(0);
 
         private final int id_;
-
-        OrderStatus(final int id) {
-            id_ = id;
-        }
-
+        OrderStatus(final int id) { id_ = id; }
+        
         @Override
-        public int convert() {
-            return id_;
-        }
+        public int convert() { return id_; }
     }
     
     private Order(final Builder builder) {

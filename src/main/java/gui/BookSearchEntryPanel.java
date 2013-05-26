@@ -16,11 +16,14 @@ public class BookSearchEntryPanel extends javax.swing.JPanel {
      * Creates new form BookSearchEntryPanel
      */
     public BookSearchEntryPanel(final Book book) {
+        assert (book != null);
         initComponents();
+        book_ = book;
         bookNameLabel.setText(book.getName());
         isbnLabel.setText(book.getIsbn().toString());
         pubDateLabel.setText(book.getPublicationDate().toString());
         pubLabel.setText(book.getPublisher().getName());
+        priceLabel.setText('$' + String.valueOf(book.getPrice()));
     }
 
     /**
@@ -39,6 +42,10 @@ public class BookSearchEntryPanel extends javax.swing.JPanel {
         pubLabel = new javax.swing.JLabel();
         javax.swing.JLabel jLabel6 = new javax.swing.JLabel();
         pubDateLabel = new javax.swing.JLabel();
+        buyButton = new javax.swing.JButton();
+        readReviewButton = new javax.swing.JButton();
+        writeReviewButton = new javax.swing.JButton();
+        priceLabel = new javax.swing.JLabel();
 
         bookNameLabel.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         bookNameLabel.setText("Book name");
@@ -61,6 +68,15 @@ public class BookSearchEntryPanel extends javax.swing.JPanel {
         pubDateLabel.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         pubDateLabel.setText("pub_date");
 
+        buyButton.setText("Buy");
+
+        readReviewButton.setText("Reviews");
+
+        writeReviewButton.setText("Write a review");
+
+        priceLabel.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
+        priceLabel.setText("price");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -68,7 +84,6 @@ public class BookSearchEntryPanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(bookNameLabel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel4)
@@ -76,36 +91,60 @@ public class BookSearchEntryPanel extends javax.swing.JPanel {
                             .addComponent(jLabel6))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(pubDateLabel)
                             .addComponent(isbnLabel)
-                            .addComponent(pubLabel))
-                        .addGap(0, 228, Short.MAX_VALUE)))
+                            .addComponent(pubLabel)
+                            .addComponent(pubDateLabel))
+                        .addGap(0, 267, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(bookNameLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(priceLabel)))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(writeReviewButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(readReviewButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(buyButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(bookNameLabel)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(isbnLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(pubLabel))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(pubDateLabel)
-                    .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(bookNameLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel2)
+                            .addComponent(isbnLabel))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel4)
+                            .addComponent(pubLabel))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(pubDateLabel)
+                            .addComponent(jLabel6, javax.swing.GroupLayout.PREFERRED_SIZE, 15, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(buyButton)
+                            .addComponent(priceLabel))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(readReviewButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(writeReviewButton)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel bookNameLabel;
+    private javax.swing.JButton buyButton;
     private javax.swing.JLabel isbnLabel;
+    private javax.swing.JLabel priceLabel;
     private javax.swing.JLabel pubDateLabel;
     private javax.swing.JLabel pubLabel;
+    private javax.swing.JButton readReviewButton;
+    private javax.swing.JButton writeReviewButton;
     // End of variables declaration//GEN-END:variables
+    private final Book book_;
 }
