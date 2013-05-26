@@ -107,11 +107,6 @@ public class UserMapper extends Mapper<User>{
     }
 
     @Override
-    public void delete(final User user) throws DataMapperException {
-        assert (user != null);
-        delete(user.getId());
-    }
-
     public void delete(final int id) throws DataMapperException {
         PreparedStatement statement = null;
         try {

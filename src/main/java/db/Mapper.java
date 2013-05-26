@@ -38,5 +38,5 @@ public abstract class Mapper<T> {
     public abstract T find(final int id) throws DataMapperException;
     public abstract int insert(final T param) throws DataMapperException;
     public abstract void update(final T param) throws DataMapperException;
-    public abstract void delete(final T param) throws DataMapperException;
+    public abstract void delete(final int id) throws DataMapperException;
 }

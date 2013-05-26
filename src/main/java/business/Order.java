@@ -27,6 +27,8 @@ public class Order {
             assert (cart != null);
             assert (orderer != null);
 
+            if (cart.isEmpty())
+                throw new IllegalArgumentException("Creating an order with an empty cart");
             id_ = id;
             cart_ = cart;
             cartPrice_ = cart.getPrice(orderer.getPersonalDiscount());

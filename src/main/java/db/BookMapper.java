@@ -128,11 +128,6 @@ public class BookMapper extends Mapper<Book>{
     }
 
     @Override
-    public void delete(final Book book) throws DataMapperException {
-        assert (book != null);
-        delete(book.getId());
-    }
-
     public void delete(final int id) throws DataMapperException {
         PreparedStatement statement = null;
         try {
