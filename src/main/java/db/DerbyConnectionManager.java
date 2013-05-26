@@ -1,5 +1,7 @@
 package db;
 
+import business.BookStore;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -13,21 +15,7 @@ import java.util.logging.Logger;
  * To change this template use File | Settings | File Templates.
  */
 public class DerbyConnectionManager implements ConnectionManager {
-    private final String dbUrl_;
-    private final String username_;
-    private final String password_;
-
-    private static final Logger LOGGER = Logger.getLogger(ConnectionManager.class.getName());
-
-    public DerbyConnectionManager(final String dbUrl, final String username, final String password) {
-        assert(dbUrl != null);
-        assert(username != null);
-        assert(password != null);
-
-        dbUrl_ = dbUrl;
-        username_ = username;
-        password_ = password;
-    }
+    private static final Logger LOGGER = Logger.getLogger(BookStore.class.getName());
 
     @Override
     public Connection getConnection() throws SQLException {
@@ -36,7 +24,9 @@ public class DerbyConnectionManager implements ConnectionManager {
         } catch (ClassNotFoundException e) {
             LOGGER.severe("Can't load derby embedded driver");
         }
-        return DriverManager.getConnection(dbUrl_ + ";create=true", username_, password_);
+        Connection result = DriverManager.getConnection("jdbc:derby:db");
+        result.setAutoCommit(true);
+        return result;
     }
 
     @Override
