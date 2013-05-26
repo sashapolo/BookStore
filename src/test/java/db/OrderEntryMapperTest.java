@@ -32,8 +32,7 @@ public class OrderEntryMapperTest {
         Statement statement = null;
 
         try (Connection connection = manager.getConnection()) {
-            String query = "INSERT into Users(Type, Login, Password, Name, SecondName, Email, PersonalDiscount)" +
-                           "VALUES (2, 'foo', 0, 'Mad', 'Jack', 'The pirate', 0)";
+            String query = "INSERT into Publishers(Name) VALUES ('Mad Jack')";
             statement = connection.createStatement();
             statement.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
 

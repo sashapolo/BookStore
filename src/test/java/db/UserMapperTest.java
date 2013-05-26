@@ -2,7 +2,6 @@ package db;
 
 import business.Administrator;
 import business.Customer;
-import business.Publisher;
 import business.User;
 import java.sql.Connection;
 import java.sql.SQLException;
@@ -21,7 +20,6 @@ import org.junit.Test;
  * To change this template use File | Settings | File Templates.
  */
 public class UserMapperTest {
-    private static int publisherId_;
     private static int customerId_;
     private static int administratorId_;
 
@@ -31,13 +29,7 @@ public class UserMapperTest {
         Statement statement = null;
         try (Connection connection = manager.getConnection()) {
             String query = "INSERT into Users(Type, Login, Password, Name, SecondName, Email, PersonalDiscount)" +
-                           "VALUES (2, 'foo', 0, 'Mad', 'Jack', 'The pirate', 0)";
-            statement = connection.createStatement();
-            statement.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
-            publisherId_ = Mapper.getId(statement);
-
-            query = "INSERT into Users(Type, Login, Password, Name, SecondName, Email, PersonalDiscount)" +
-                    "VALUES (1, 'bar', 0, 'Led', 'Zeppelin', 'IV', 0)";
+                           "VALUES (1, 'bar', 0, 'Led', 'Zeppelin', 'IV', 0)";
             statement = connection.createStatement();
             statement.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
             administratorId_ = Mapper.getId(statement);
@@ -78,10 +70,6 @@ public class UserMapperTest {
             final User custom = mapper.find(customerId_);
             assertThat("Got incorrect type from the database", custom, instanceOf(Customer.class));
             assertEquals("Incorrect name", "baz", custom.getLogin());
-
-            final User pub = mapper.find(publisherId_);
-            assertThat("Got incorrect type from the database", pub, instanceOf(Publisher.class));
-            assertEquals("Incorrect name", "foo", pub.getLogin());
         }
     }
 
@@ -91,12 +79,12 @@ public class UserMapperTest {
         try (Connection connection = manager.getConnection()) {
             final UserMapper mapper = new UserMapper(connection);
 
-            final User pub = new Publisher(-1, "spam", 0, "", "", "");
-            final int id = mapper.insert(pub);
-            final User tmp = new Publisher(id, "ham", 0, "", "", "");
+            final User admin = new Administrator(-1, "spam", 0, "", "", "");
+            final int id = mapper.insert(admin);
+            final User tmp = new Administrator(id, "ham", 0, "", "", "");
             mapper.update(tmp);
             final User test = mapper.find(id);
-            assertThat("Got incorrect type from the database", test, instanceOf(Publisher.class));
+            assertThat("Got incorrect type from the database", test, instanceOf(Administrator.class));
             assertEquals("Incorrect name", "ham", test.getLogin());
         }
     }
@@ -107,8 +95,8 @@ public class UserMapperTest {
         try (Connection connection = manager.getConnection()) {
             final UserMapper mapper = new UserMapper(connection);
 
-            final User pub = new Publisher(-1, "spam", 0, "", "", "");
-            final int id = mapper.insert(pub);
+            final User admin = new Administrator(-1, "spam", 0, "", "", "");
+            final int id = mapper.insert(admin);
             mapper.delete(id + 1);
             assertNotNull("User was deleted", mapper.find(id));
             mapper.delete(id);

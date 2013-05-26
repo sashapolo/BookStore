@@ -12,7 +12,7 @@ import org.junit.runners.Suite;
  */
 @RunWith(Suite.class)
 @Suite.SuiteClasses({ BookMapperTest.class, OrderEntryMapperTest.class, UserMapperTest.class,
-                      OrderMapperTest.class })
+                      OrderMapperTest.class, PublisherMapperTest.class })
 public class MapperTests {
     /*
      * Test suite for all Mapper classes

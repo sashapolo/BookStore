@@ -34,8 +34,7 @@ public class OrderMapperTest {
         final TestConnectionManager manager = new TestConnectionManager();
         Statement statement = null;
         try (Connection connection = manager.getConnection()) {
-            String query = "INSERT into Users(Type, Login, Password, Name, SecondName, Email, PersonalDiscount) " +
-                    "VALUES (2, 'foo', 0, 'Mad', 'Jack', 'The pirate', 0)";
+            String query = "INSERT into Publishers(Name) VALUES ('Mad Jack')";
             statement = connection.createStatement();
             statement.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
             pubId_ = Mapper.getId(statement);
@@ -172,15 +171,16 @@ public class OrderMapperTest {
 
     private Order createOrder(final Connection connection, final String isbn10) throws DataMapperException, WrongFormatException {
         final Mapper<User> userMapper = new UserMapper(connection);
+        final Mapper<Publisher> pubMapper = new PublisherMapper(connection);
         final Mapper<Book> bookMapper = new BookMapper(connection);
 
         User user = userMapper.find(userId_);
-        User pub = userMapper.find(pubId_);
+        Publisher pub = pubMapper.find(pubId_);
         Book book1 = bookMapper.find(bookId_);
         final Book book2 = new Book.Builder(-1,
                                             "test",
                                             "",
-                                            (Publisher)pub,
+                                            pub,
                                             new GregorianCalendar(),
                                             new Isbn10(isbn10).toIsbn13(),
                                             120.44).build();

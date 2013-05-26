@@ -15,6 +15,11 @@ CREATE TABLE Users (
 
 -----------------------------------------------------------------
 
+CREATE TABLE Publishers (
+    Id int NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
+    Name varchar(20) NOT NULL
+);
+
 CREATE TABLE Books (
     Id int NOT NULL PRIMARY KEY GENERATED ALWAYS AS IDENTITY,
     Name varchar(20) NOT NULL,
@@ -24,7 +29,7 @@ CREATE TABLE Books (
     Price double precision NOT NULL CHECK (Price >= 0),
     Discount int NOT NULL,
     NumSold int NOT NULL,
-    PublisherId int REFERENCES Users(Id)
+    PublisherId int REFERENCES Publishers(Id)
 );
 
 CREATE TABLE Orders (

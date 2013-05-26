@@ -20,7 +20,7 @@ public class OrderEntryTest {
         book = new Book.Builder(0,
                                 "",
                                 "",
-                                new Publisher(0, "", 0, "", "", ""),
+                                new Publisher(0, ""),
                                 new GregorianCalendar(),
                                 new Isbn13("9783161484100"),
                                 120.44).discount(50).build();

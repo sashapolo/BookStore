@@ -183,16 +183,14 @@ public class BookMapper extends Mapper<Book>{
         final double price = rs.getDouble("Price");
         final Discount discount = new Discount(rs.getInt("Discount"));
 
-        final Mapper<User> userMapper = new UserMapper(connection_);
-        final User publisher = userMapper.find(rs.getInt("PublisherId"));
+        final Mapper<Publisher> pubMapper = new PublisherMapper(connection_);
+        final Publisher publisher = pubMapper.find(rs.getInt("PublisherId"));
         if (publisher == null) {
             throw new DataMapperException("Publisher not found");
         }
 
-        assert (publisher instanceof Publisher);
-
         final int numSold = rs.getInt("NumSold");
-        return new Book.Builder(id, name, genre, (Publisher) publisher, date, isbn, price)
+        return new Book.Builder(id, name, genre, publisher, date, isbn, price)
                             .discount(discount)
                             .numSold(numSold)
                             .build();

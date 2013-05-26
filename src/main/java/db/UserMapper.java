@@ -2,7 +2,6 @@ package db;
 
 import business.Administrator;
 import business.Customer;
-import business.Publisher;
 import business.User;
 import java.sql.*;
 import util.ReverseEnumMap;
@@ -30,7 +29,7 @@ public class UserMapper extends Mapper<User>{
             statement.setString(1, login);
             return createUser(statement);
         } catch (SQLException e) {
-            throw new DataMapperException("Error occurred while searching for user", e);
+            throw new DataMapperException("Error occurred while searching for user: " + e.getMessage());
         } finally {
             try {
                 if (statement != null) statement.close();
@@ -47,7 +46,7 @@ public class UserMapper extends Mapper<User>{
             statement.setInt(1, id);
             return createUser(statement);
         } catch (SQLException e) {
-            throw new DataMapperException("Error occurred while searching for user", e);
+            throw new DataMapperException("Error occurred while searching for user: " + e.getMessage());
         } finally {
             try {
                 if (statement != null) statement.close();
@@ -63,8 +62,6 @@ public class UserMapper extends Mapper<User>{
         try {
             if (user instanceof Administrator) {
                 statement = getInsertQuery((Administrator) user);
-            } else if (user instanceof Publisher) {
-                statement = getInsertQuery((Publisher) user);
             } else if (user instanceof Customer) {
                 statement = getInsertQuery((Customer) user);
             } else {
@@ -89,8 +86,6 @@ public class UserMapper extends Mapper<User>{
         try {
             if (user instanceof Administrator) {
                 statement = getUpdateQuery((Administrator) user);
-            } else if (user instanceof Publisher) {
-                statement = getUpdateQuery((Publisher) user);
             } else if (user instanceof Customer) {
                 statement = getUpdateQuery((Customer) user);
             } else {
@@ -131,7 +126,7 @@ public class UserMapper extends Mapper<User>{
             final int password = result.getInt("Password");
             final int id = result.getInt("Id");
             final ReverseEnumMap<UserType> reverse = new ReverseEnumMap<>(UserType.class);
-            final UserType type = reverse.get(result.getInt("Status"));
+            final UserType type = reverse.get(result.getInt("Type"));
             final String login = result.getString("Login");
             final String name = result.getString("Name");
             final String secondName = result.getString("SecondName");
@@ -143,8 +138,6 @@ public class UserMapper extends Mapper<User>{
                 return new Customer(id, login, password, name, secondName, email, discount);
             case ADMIN:
                 return new Administrator(id, login, password, name, secondName, email);
-            case PUBLISHER:
-                return new Publisher(id, login, password, name, secondName, email);
             }
         }
         return null;
@@ -155,20 +148,6 @@ public class UserMapper extends Mapper<User>{
                              "VALUES (?, ?, ?, ?, ?, ?, ?)";
         final PreparedStatement statement = connection_.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
         statement.setInt(1, UserType.ADMIN.convert());
-        statement.setString(2, user.getLogin());
-        statement.setInt(3, user.getPasswordHash());
-        statement.setString(4, user.getName());
-        statement.setString(5, user.getSecondName());
-        statement.setString(6, user.getEmail());
-        statement.setInt(7, 0);
-        return statement;
-    }
-
-    private PreparedStatement getInsertQuery(final Publisher user) throws SQLException {
-        final String query = "INSERT into Users(Type, Login, Password, Name, SecondName, Email, PersonalDiscount) " +
-                             "VALUES (?, ?, ?, ?, ?, ?, ?)";
-        final PreparedStatement statement = connection_.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-        statement.setInt(1, UserType.PUBLISHER.convert());
         statement.setString(2, user.getLogin());
         statement.setInt(3, user.getPasswordHash());
         statement.setString(4, user.getName());
@@ -193,21 +172,6 @@ public class UserMapper extends Mapper<User>{
     }
 
     private PreparedStatement getUpdateQuery(final Administrator user) throws SQLException {
-        final String query = "UPDATE Users SET " +
-                             "Login=?, Password=?, Name=?, SecondName=?, Email=?, PersonalDiscount=? " +
-                             "where Id=?";
-        final PreparedStatement statement = connection_.prepareStatement(query);
-        statement.setString(1, user.getLogin());
-        statement.setInt(2, user.getPasswordHash());
-        statement.setString(3, user.getName());
-        statement.setString(4, user.getSecondName());
-        statement.setString(5, user.getEmail());
-        statement.setInt(6, 0);
-        statement.setInt(7, user.getId());
-        return statement;
-    }
-
-    private PreparedStatement getUpdateQuery(final Publisher user) throws SQLException {
         final String query = "UPDATE Users SET " +
                              "Login=?, Password=?, Name=?, SecondName=?, Email=?, PersonalDiscount=? " +
                              "where Id=?";
