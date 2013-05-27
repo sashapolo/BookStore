@@ -35,7 +35,7 @@ public class BookMapper extends Mapper<Book>{
             }
             return result;
         } catch (SQLException e) {
-            throw new DataMapperException("Error occurred while searching for book", e);
+            throw new DataMapperException("Error occurred while searching for book: " + e.getMessage());
         } finally {
             try {
                 if (statement != null) statement.close();
@@ -58,7 +58,7 @@ public class BookMapper extends Mapper<Book>{
             }
             return null;
         } catch (SQLException e) {
-            throw new DataMapperException("Error occurred while searching for book", e);
+            throw new DataMapperException("Error occurred while searching for book: " + e.getMessage());
         } finally {
             try {
                 if (statement != null) statement.close();
@@ -80,7 +80,7 @@ public class BookMapper extends Mapper<Book>{
             }
             return null;
         } catch (SQLException e) {
-            throw new DataMapperException("Error occurred while searching for book", e);
+            throw new DataMapperException("Error occurred while searching for book: " + e.getMessage());
         } finally {
             try {
                 if (statement != null) statement.close();
@@ -94,23 +94,24 @@ public class BookMapper extends Mapper<Book>{
 
         PreparedStatement statement = null;
         try {
-            final String query = "INSERT into Books(Name, Genre, Isbn, PublicationDate, Price, Discount, NumSold, PublisherId)" +
-                                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            final String query = "INSERT into Books(Name, Author, Genre, Isbn, PublicationDate, Price, Discount, NumSold, PublisherId)" +
+                                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
             statement = connection_.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 
             statement.setString(1, book.getName());
-            statement.setString(2, book.getGenre());
-            statement.setString(3, book.getIsbn().toString());
-            statement.setDate(4, new Date(book.getPublicationDate().getTimeInMillis()));
-            statement.setDouble(5, book.getPrice());
-            statement.setInt(6, book.getDiscount().integerValue());
-            statement.setInt(7, book.getNumSold());
-            statement.setInt(8, book.getPublisher().getId());
+            statement.setString(2, book.getAuthor());
+            statement.setString(3, book.getGenre());
+            statement.setString(4, book.getIsbn().toString());
+            statement.setDate(5, new Date(book.getPublicationDate().getTimeInMillis()));
+            statement.setDouble(6, book.getPrice());
+            statement.setInt(7, book.getDiscount().integerValue());
+            statement.setInt(8, book.getNumSold());
+            statement.setInt(9, book.getPublisher().getId());
             statement.executeUpdate();
 
             return getId(statement);
         } catch (SQLException e) {
-            throw new DataMapperException("Error occurred while inserting a book", e);
+            throw new DataMapperException("Error occurred while inserting a book: " + e.getMessage());
         } finally {
             try {
                 if (statement != null) statement.close();
@@ -125,23 +126,24 @@ public class BookMapper extends Mapper<Book>{
         PreparedStatement statement = null;
         try {
             final String query = "UPDATE Books SET " +
-                                 "Name=?, Genre=?, Isbn=?, PublicationDate=?, Price=?, Discount=?, " +
+                                 "Name=?, Author=?, Genre=?, Isbn=?, PublicationDate=?, Price=?, Discount=?, " +
                                  "NumSold=?, PublisherId=?" +
                                  "where Id=?";
             statement = connection_.prepareStatement(query);
 
             statement.setString(1, book.getName());
-            statement.setString(2, book.getGenre());
-            statement.setString(3, book.getIsbn().toString());
-            statement.setDate(4, new Date(book.getPublicationDate().getTimeInMillis()));
-            statement.setDouble(5, book.getPrice());
-            statement.setInt(6, book.getDiscount().integerValue());
-            statement.setInt(7, book.getNumSold());
-            statement.setInt(8, book.getPublisher().getId());
-            statement.setInt(9, book.getId());
+            statement.setString(2, book.getAuthor());
+            statement.setString(3, book.getGenre());
+            statement.setString(4, book.getIsbn().toString());
+            statement.setDate(5, new Date(book.getPublicationDate().getTimeInMillis()));
+            statement.setDouble(6, book.getPrice());
+            statement.setInt(7, book.getDiscount().integerValue());
+            statement.setInt(8, book.getNumSold());
+            statement.setInt(9, book.getPublisher().getId());
+            statement.setInt(10, book.getId());
             statement.executeUpdate();
         } catch (SQLException e) {
-            throw new DataMapperException("Error occurred while updating a book", e);
+            throw new DataMapperException("Error occurred while updating a book: " + e.getMessage());
         } finally {
             try {
                 if (statement != null) statement.close();
@@ -158,7 +160,7 @@ public class BookMapper extends Mapper<Book>{
             statement.setInt(1, id);
             statement.executeUpdate();
         } catch (SQLException e) {
-            throw new DataMapperException("Error occurred while deleting a book", e);
+            throw new DataMapperException("Error occurred while deleting a book: " + e.getMessage());
         } finally {
             try {
                 if (statement != null) statement.close();
@@ -169,12 +171,13 @@ public class BookMapper extends Mapper<Book>{
     private Book createBook(final ResultSet rs) throws DataMapperException, SQLException {
         final int id = rs.getInt("Id");
         final String name = rs.getString("Name");
+        final String author = rs.getString("Author");
         final String genre = rs.getString("Genre");
         Isbn isbn = null;
         try {
             isbn = new Isbn13(rs.getString("Isbn"));
         } catch (WrongFormatException e) {
-            throw new IllegalStateException("Retreived incorrect isbn from the database");
+            throw new IllegalStateException("Retreived incorrect isbn from the database", e);
         }
 
         final GregorianCalendar date = new GregorianCalendar();
@@ -190,7 +193,8 @@ public class BookMapper extends Mapper<Book>{
         }
 
         final int numSold = rs.getInt("NumSold");
-        return new Book.Builder(id, name, genre, publisher, date, isbn, price)
+        return new Book.Builder(name, author, genre, publisher, date, isbn, price)
+                            .id(id)
                             .discount(discount)
                             .numSold(numSold)
                             .build();

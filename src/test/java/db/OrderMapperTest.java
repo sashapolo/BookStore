@@ -33,7 +33,7 @@ public class OrderMapperTest {
     public static void setUpDatabase() throws Exception {
         final TestConnectionManager manager = new TestConnectionManager();
         Statement statement = null;
-        try (Connection connection = manager.getConnection()) {
+        try (Connection connection = manager.getConnection("testdb")) {
             String query = "INSERT into Publishers(Name) VALUES ('Mad Jack')";
             statement = connection.createStatement();
             statement.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
@@ -45,8 +45,8 @@ public class OrderMapperTest {
             statement.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
             userId_ = Mapper.getId(statement);
 
-            query = "INSERT into Books(Name, Genre, Isbn, PublicationDate, Price, Discount, NumSold, PublisherId) " +
-                    "VALUES ('foo', 'bar', '9783161484100', '2012-01-01', 200, 10, 0, " + pubId_ + ')';
+            query = "INSERT into Books(Name, Author, Genre, Isbn, PublicationDate, Price, Discount, NumSold, PublisherId) " +
+                    "VALUES ('foo', 'nya', 'bar', '9783161484100', '2012-01-01', 200, 10, 0, " + pubId_ + ')';
             statement = connection.createStatement();
             statement.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
             bookId_ = Mapper.getId(statement);
@@ -76,7 +76,7 @@ public class OrderMapperTest {
     public static void clearDatabase() throws SQLException {
         final TestConnectionManager manager = new TestConnectionManager();
         Statement statement = null;
-        try (Connection connection = manager.getConnection()) {
+        try (Connection connection = manager.getConnection("testdb")) {
             String query = "DELETE from Cart";
             statement = connection.createStatement();
             statement.executeUpdate(query);
@@ -100,7 +100,7 @@ public class OrderMapperTest {
     @Test
     public void selectTest() throws Exception {
         final TestConnectionManager manager = new TestConnectionManager();
-        try (Connection connection = manager.getConnection()) {
+        try (Connection connection = manager.getConnection("testdb")) {
             final Mapper<Order> mapper = new OrderMapper(connection);
             final Order test = mapper.find(orderId_);
             assertNotNull("Order not found", test);
@@ -117,7 +117,7 @@ public class OrderMapperTest {
         exception.expectMessage("Orders should never be updated!");
 
         final TestConnectionManager manager = new TestConnectionManager();
-        try (Connection connection = manager.getConnection()) {
+        try (Connection connection = manager.getConnection("testdb")) {
             final Mapper<Order> mapper = new OrderMapper(connection);
             final Order test = mapper.find(orderId_);
             mapper.update(test);
@@ -127,7 +127,7 @@ public class OrderMapperTest {
     @Test
     public void insertTest() throws Exception {
         final TestConnectionManager manager = new TestConnectionManager();
-        try (Connection connection = manager.getConnection()) {
+        try (Connection connection = manager.getConnection("testdb")) {
             final Mapper<Order> orderMapper = new OrderMapper(connection);
             final int id = orderMapper.insert(createOrder(connection, "9992158107"));
             Order test = orderMapper.find(id);
@@ -142,7 +142,7 @@ public class OrderMapperTest {
     public void deleteTest() throws Exception {
         final TestConnectionManager manager = new TestConnectionManager();
         Statement statement = null;
-        try (Connection connection = manager.getConnection()) {
+        try (Connection connection = manager.getConnection("testdb")) {
             String query = "INSERT into OrderEntries(BookId, Amount) " +
                            "VALUES (" + bookId_ + ", 15)";
             statement = connection.createStatement();
@@ -177,8 +177,8 @@ public class OrderMapperTest {
         User user = userMapper.find(userId_);
         Publisher pub = pubMapper.find(pubId_);
         Book book1 = bookMapper.find(bookId_);
-        final Book book2 = new Book.Builder(-1,
-                                            "test",
+        final Book book2 = new Book.Builder("test",
+                                            "",
                                             "",
                                             pub,
                                             new GregorianCalendar(),

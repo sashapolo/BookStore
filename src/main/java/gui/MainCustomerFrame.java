@@ -7,6 +7,7 @@ package gui;
 import business.Book;
 import dbwrappers.BookCatalogue;
 import java.util.List;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -106,10 +107,14 @@ public class MainCustomerFrame extends javax.swing.JFrame {
 
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
         final List<Book> bookList = BookCatalogue.getBooks(searchField.getText());
-        for (final Book book : bookList) {
-            searchResultPanel.add(new BookSearchEntryPanel(book));
+        if (bookList.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "No books found", "Info", JOptionPane.INFORMATION_MESSAGE);
+        } else {
+            for (final Book book : bookList) {
+                searchResultPanel.add(new BookSearchEntryPanel(book));
+            }
+            searchResultPanel.revalidate();
         }
-        searchResultPanel.repaint();
     }//GEN-LAST:event_searchButtonActionPerformed
 
     private void exitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitButtonActionPerformed

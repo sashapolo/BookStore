@@ -17,7 +17,7 @@ public class OrderEntryTest {
 
     @Before
     public void init() throws WrongFormatException {
-        book = new Book.Builder(0,
+        book = new Book.Builder("",
                                 "",
                                 "",
                                 new Publisher(0, ""),

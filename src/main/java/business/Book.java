@@ -14,8 +14,9 @@ public class Book {
     private final Builder builder_;
 
     public static class Builder {
-        private int id_;
+        private int id_ = 0;
         private final String name_;
+        private final String author_;
         private final String genre_;
         private final Publisher publisher_;
         private final GregorianCalendar publicationDate_;
@@ -24,21 +25,22 @@ public class Book {
         private Discount discount_ = new Discount(0);
         private int numSold_ = 0;
 
-        public Builder(final int id,
-                       final String name,
+        public Builder(final String name,
+                       final String author,
                        final String genre,
                        final Publisher publisher,
                        final GregorianCalendar publicationDate,
                        final Isbn isbn,
                        final double price) {
             assert (name != null);
+            assert (author != null);
             assert (genre != null);
             assert (publisher != null);
             assert (publicationDate != null);
             assert (isbn != null);
-
-            id_ = id;
+            
             name_ = name;
+            author_ = author;
             genre_ = genre;
             publisher_ = publisher;
             publicationDate_ = publicationDate;
@@ -46,6 +48,11 @@ public class Book {
             price_ = price;
         }
 
+        public Builder id(final int id) {
+            id_ = id;
+            return this;
+        }
+        
         public Builder discount(final int discount) {
             discount_ = new Discount(discount);
             return this;
@@ -88,6 +95,10 @@ public class Book {
 
     public String getName() {
         return builder_.name_;
+    }
+    
+    public String getAuthor() {
+        return builder_.author_;
     }
 
     public String getGenre() {

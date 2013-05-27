@@ -5,6 +5,7 @@
 package gui;
 
 import business.Book;
+import java.util.GregorianCalendar;
 
 /**
  *
@@ -20,8 +21,10 @@ public class BookSearchEntryPanel extends javax.swing.JPanel {
         initComponents();
         book_ = book;
         bookNameLabel.setText(book.getName());
+        authorLabel.setText(book.getAuthor());
         isbnLabel.setText(book.getIsbn().toString());
-        pubDateLabel.setText(book.getPublicationDate().toString());
+        GregorianCalendar date = book.getPublicationDate();
+        pubDateLabel.setText(date.get(GregorianCalendar.YEAR) + "-" + date.get(GregorianCalendar.MONTH) + "-" + date.get(GregorianCalendar.DAY_OF_MONTH));
         pubLabel.setText(book.getPublisher().getName());
         priceLabel.setText('$' + String.valueOf(book.getPrice()));
     }
@@ -46,6 +49,8 @@ public class BookSearchEntryPanel extends javax.swing.JPanel {
         readReviewButton = new javax.swing.JButton();
         writeReviewButton = new javax.swing.JButton();
         priceLabel = new javax.swing.JLabel();
+        javax.swing.JLabel jLabel1 = new javax.swing.JLabel();
+        authorLabel = new javax.swing.JLabel();
 
         bookNameLabel.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         bookNameLabel.setText("Book name");
@@ -77,6 +82,10 @@ public class BookSearchEntryPanel extends javax.swing.JPanel {
         priceLabel.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         priceLabel.setText("price");
 
+        jLabel1.setText("Author:");
+
+        authorLabel.setText("author_name");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
         layout.setHorizontalGroup(
@@ -84,21 +93,23 @@ public class BookSearchEntryPanel extends javax.swing.JPanel {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(bookNameLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 253, Short.MAX_VALUE)
+                        .addComponent(priceLabel))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel4)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel6))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                            .addComponent(jLabel1)
+                            .addComponent(jLabel6)
+                            .addComponent(jLabel2))
+                        .addGap(33, 33, 33)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(isbnLabel)
                             .addComponent(pubLabel)
-                            .addComponent(pubDateLabel))
-                        .addGap(0, 267, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(bookNameLabel)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(priceLabel)))
+                            .addComponent(pubDateLabel)
+                            .addComponent(authorLabel))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(writeReviewButton, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -113,6 +124,10 @@ public class BookSearchEntryPanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(bookNameLabel)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(jLabel1)
+                            .addComponent(authorLabel))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel2)
@@ -133,10 +148,11 @@ public class BookSearchEntryPanel extends javax.swing.JPanel {
                         .addComponent(readReviewButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(writeReviewButton)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(21, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JLabel authorLabel;
     private javax.swing.JLabel bookNameLabel;
     private javax.swing.JButton buyButton;
     private javax.swing.JLabel isbnLabel;

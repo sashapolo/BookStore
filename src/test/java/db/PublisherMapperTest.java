@@ -24,7 +24,7 @@ public class PublisherMapperTest {
     public static void setUpDatabase() throws Exception {
         final TestConnectionManager manager = new TestConnectionManager();
         Statement statement = null;
-        try (Connection connection = manager.getConnection()) {
+        try (Connection connection = manager.getConnection("testdb")) {
             final String query = "INSERT into Publishers(Name) VALUES ('Mad Jack')";
             statement = connection.createStatement();
             statement.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
@@ -38,7 +38,7 @@ public class PublisherMapperTest {
     public static void clearDatabase() throws SQLException {
         final TestConnectionManager manager = new TestConnectionManager();
         Statement statement = null;
-        try (Connection connection = manager.getConnection()) {
+        try (Connection connection = manager.getConnection("testdb")) {
             final String query = "DELETE from Users";
             statement = connection.createStatement();
             statement.executeUpdate(query);
@@ -50,7 +50,7 @@ public class PublisherMapperTest {
     @Test
     public void selectTest() throws Exception {
         final TestConnectionManager manager = new TestConnectionManager();
-        try (Connection connection = manager.getConnection()) {
+        try (Connection connection = manager.getConnection("testdb")) {
             final Mapper<Publisher> mapper = new PublisherMapper(connection);
 
             final Publisher pub = mapper.find(id_);
@@ -61,7 +61,7 @@ public class PublisherMapperTest {
     @Test
     public void updateTest() throws Exception {
         final TestConnectionManager manager = new TestConnectionManager();
-        try (Connection connection = manager.getConnection()) {
+        try (Connection connection = manager.getConnection("testdb")) {
             final Mapper<Publisher> mapper = new PublisherMapper(connection);
 
             final Publisher pub = new Publisher(-1, "spam");
@@ -76,7 +76,7 @@ public class PublisherMapperTest {
     @Test
     public void deleteTest() throws Exception {
         final TestConnectionManager manager = new TestConnectionManager();
-        try (Connection connection = manager.getConnection()) {
+        try (Connection connection = manager.getConnection("testdb")) {
             final Mapper<Publisher> mapper = new PublisherMapper(connection);
 
             final Publisher pub = new Publisher(-1, "spam");

@@ -10,7 +10,7 @@ public class CartTest {
     public static final double EPSILON = 1e-15;
 
     public CartTest() throws WrongFormatException {
-        book = new Book.Builder(0,
+        book = new Book.Builder("",
                                 "",
                                 "",
                                 new Publisher(0, ""),

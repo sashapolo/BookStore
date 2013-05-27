@@ -18,6 +18,8 @@ public class Publisher {
         name_ = name;
     }
     
+    public Publisher(final String name) { this(0, name); }
+    
     public int getId()      { return id_; }
     public String getName() { return name_; }
 }

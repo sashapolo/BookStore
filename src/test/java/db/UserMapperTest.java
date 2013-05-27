@@ -27,7 +27,7 @@ public class UserMapperTest {
     public static void setUpDatabase() throws Exception {
         final TestConnectionManager manager = new TestConnectionManager();
         Statement statement = null;
-        try (Connection connection = manager.getConnection()) {
+        try (Connection connection = manager.getConnection("testdb")) {
             String query = "INSERT into Users(Type, Login, Password, Name, SecondName, Email, PersonalDiscount)" +
                            "VALUES (1, 'bar', 0, 'Led', 'Zeppelin', 'IV', 0)";
             statement = connection.createStatement();
@@ -48,7 +48,7 @@ public class UserMapperTest {
     public static void clearDatabase() throws SQLException {
         final TestConnectionManager manager = new TestConnectionManager();
         Statement statement = null;
-        try (Connection connection = manager.getConnection()) {
+        try (Connection connection = manager.getConnection("testdb")) {
             final String query = "DELETE from Users";
             statement = connection.createStatement();
             statement.executeUpdate(query);
@@ -60,7 +60,7 @@ public class UserMapperTest {
     @Test
     public void selectTest() throws Exception {
         final TestConnectionManager manager = new TestConnectionManager();
-        try (Connection connection = manager.getConnection()) {
+        try (Connection connection = manager.getConnection("testdb")) {
             final UserMapper mapper = new UserMapper(connection);
 
             final User admin = mapper.find(administratorId_);
@@ -76,7 +76,7 @@ public class UserMapperTest {
     @Test
     public void updateTest() throws Exception {
         final TestConnectionManager manager = new TestConnectionManager();
-        try (Connection connection = manager.getConnection()) {
+        try (Connection connection = manager.getConnection("testdb")) {
             final UserMapper mapper = new UserMapper(connection);
 
             final User admin = new Administrator(-1, "spam", 0, "", "", "");
@@ -92,7 +92,7 @@ public class UserMapperTest {
     @Test
     public void deleteTest() throws Exception {
         final TestConnectionManager manager = new TestConnectionManager();
-        try (Connection connection = manager.getConnection()) {
+        try (Connection connection = manager.getConnection("testdb")) {
             final UserMapper mapper = new UserMapper(connection);
 
             final User admin = new Administrator(-1, "spam", 0, "", "", "");

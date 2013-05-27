@@ -38,7 +38,7 @@ public class OrderEntryMapper extends Mapper<OrderEntry> {
 
             return null;
         } catch (SQLException e) {
-            throw new DataMapperException("Error occurred while searching for entry", e);
+            throw new DataMapperException("Error occurred while searching for entry: " + e.getMessage());
         } finally {
             try {
                 if (statement != null) statement.close();
@@ -59,7 +59,7 @@ public class OrderEntryMapper extends Mapper<OrderEntry> {
             statement.executeUpdate();
             return getId(statement);
         } catch (SQLException e) {
-            throw new DataMapperException("Error occurred while inserting an entry", e);
+            throw new DataMapperException("Error occurred while inserting an entry: " + e.getMessage());
         } finally {
             try {
                 if (statement != null) statement.close();
@@ -71,22 +71,6 @@ public class OrderEntryMapper extends Mapper<OrderEntry> {
     public void update(final OrderEntry entry) throws DataMapperException {
         assert (entry != null);
         throw new DataMapperException("Orders should never be updated!");
-//
-//        PreparedStatement statement = null;
-//        try {
-//            final String query = "UPDATE OrderEntries SET BookId=?, Amount=? where Id=?";
-//            statement = connection_.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
-//            statement.setInt(1, entry.getBook().getId());
-//            statement.setInt(2, entry.getAmount());
-//            statement.setInt(3, entry.getId());
-//            statement.executeUpdate();
-//        } catch (SQLException e) {
-//            throw new DataMapperException("Error occurred while inserting an entry", e);
-//        } finally {
-//            try {
-//                if (statement != null) statement.close();
-//            } catch (SQLException e) {}
-//        }
     }
 
     @Override
@@ -98,7 +82,7 @@ public class OrderEntryMapper extends Mapper<OrderEntry> {
             statement.setInt(1, id);
             statement.executeUpdate();
         } catch (SQLException e) {
-            throw new DataMapperException("Error occurred while deleting an entry", e);
+            throw new DataMapperException("Error occurred while deleting an entry: " + e.getMessage());
         } finally {
             try {
                 if (statement != null) statement.close();

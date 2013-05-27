@@ -16,7 +16,7 @@ public class TestConnectionManager implements ConnectionManager {
     private static final Logger LOGGER = Logger.getLogger(ConnectionManager.class.getName());
 
     @Override
-    public Connection getConnection() throws SQLException {
+    public Connection getConnection(final String url) throws SQLException {
         try {
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
         } catch (ClassNotFoundException e) {

@@ -17,13 +17,13 @@ public class DerbyConnectionManager implements ConnectionManager {
     private static final Logger LOGGER = Logger.getLogger(BookStore.class.getName());
 
     @Override
-    public Connection getConnection() throws SQLException {
+    public Connection getConnection(final String url) throws SQLException {
         try {
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
         } catch (ClassNotFoundException e) {
             LOGGER.severe("Can't load derby embedded driver");
         }
-        Connection result = DriverManager.getConnection("jdbc:derby:db");
+        Connection result = DriverManager.getConnection("jdbc:derby:" + url);
         result.setAutoCommit(true);
         return result;
     }

@@ -7,6 +7,6 @@
 --     0,
 --     0,
 
-INSERT into Users VALUES (1, 2, 'Addison-Wesley', 1234, 'Addison-Wesley', '', '', 0);
+INSERT into Publishers(Name) VALUES ('Addison-Wesley');
 
 

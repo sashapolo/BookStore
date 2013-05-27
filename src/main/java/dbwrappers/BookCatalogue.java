@@ -32,7 +32,7 @@ public final class BookCatalogue {
         final ConnectionManager manager = new DerbyConnectionManager();
         Connection connection = null;
         try {
-            connection = manager.getConnection();
+            connection = manager.getConnection("db");
             final BookMapper mapper = new BookMapper(connection);
             final Book test = mapper.find(book.getIsbn());
             if (test != null) throw new EntryRedefinitionException("Book already exists");
@@ -53,7 +53,7 @@ public final class BookCatalogue {
         final ConnectionManager manager = new DerbyConnectionManager();
         Connection connection = null;
         try {
-            connection = manager.getConnection();
+            connection = manager.getConnection("db");
             final BookMapper mapper = new BookMapper(connection);
             
             // first trying to find the book by ISBN

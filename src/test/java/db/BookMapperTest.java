@@ -3,7 +3,6 @@ package db;
 import business.Book;
 import business.Isbn10;
 import business.Publisher;
-import business.User;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -30,15 +29,15 @@ public class BookMapperTest {
     public static void setUpDatabase() throws Exception {
         final TestConnectionManager manager = new TestConnectionManager();
         Statement statement = null;
-        try (Connection connection = manager.getConnection()) {;
+        try (Connection connection = manager.getConnection("testdb")) {
             String query = "INSERT into Publishers(Name) VALUES ('Mad Jack')";
             statement = connection.createStatement();
             statement.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
 
             publisherId_ = Mapper.getId(statement);
 
-            query = "INSERT into Books(Name, Genre, Isbn, PublicationDate, Price, Discount, NumSold, PublisherId)" +
-                    "VALUES ('foo', 'bar', '9783161484100', '2012-01-01', 200, 10, 0, " + publisherId_ + ')';
+            query = "INSERT into Books(Name, Author, Genre, Isbn, PublicationDate, Price, Discount, NumSold, PublisherId)" +
+                    "VALUES ('foo', '', 'bar', '9783161484100', '2012-01-01', 200, 10, 0, " + publisherId_ + ')';
             statement = connection.createStatement();
             statement.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
         } finally {
@@ -50,7 +49,7 @@ public class BookMapperTest {
     public static void clearDatabase() throws SQLException {
         final TestConnectionManager manager = new TestConnectionManager();
         Statement statement = null;
-        try (Connection connection = manager.getConnection()) {
+        try (Connection connection = manager.getConnection("testdb")) {
             String query = "DELETE from Books";
             statement = connection.createStatement();
             statement.executeUpdate(query);
@@ -65,7 +64,7 @@ public class BookMapperTest {
     @Test
     public void selectTest() throws Exception {
         final TestConnectionManager manager = new TestConnectionManager();
-        try (Connection connection = manager.getConnection()) {
+        try (Connection connection = manager.getConnection("testdb")) {
             final BookMapper mapper = new BookMapper(connection);
             final List<Book> books = mapper.find("foo");
             assertEquals("Found incorrect number of books", 1, books.size());
@@ -83,14 +82,14 @@ public class BookMapperTest {
     @Test
     public void insertTest() throws Exception {
         final TestConnectionManager manager = new TestConnectionManager();
-        try (Connection connection = manager.getConnection()) {
+        try (Connection connection = manager.getConnection("testdb")) {
             final Mapper<Publisher> pubMapper = new PublisherMapper(connection);
             final Publisher publisher = pubMapper.find(publisherId_);
             assertNotNull("Publisher not found", publisher);
             assertThat("Retrieved wrong user type", publisher, instanceOf(Publisher.class));
 
-            final Book book = new Book.Builder(-1,
-                                               "test",
+            final Book book = new Book.Builder("test",
+                                               "",
                                                "",
                                                publisher,
                                                new GregorianCalendar(),
@@ -107,14 +106,14 @@ public class BookMapperTest {
     @Test
     public void updateTest() throws Exception {
         final TestConnectionManager manager = new TestConnectionManager();
-        try (Connection connection = manager.getConnection()) {
+        try (Connection connection = manager.getConnection("testdb")) {
             final Mapper<Publisher> pubMapper = new PublisherMapper(connection);
             final Publisher publisher = pubMapper.find(publisherId_);
             assertNotNull("Publisher not found", publisher);
             assertThat("Retrieved wrong user type", publisher, instanceOf(Publisher.class));
 
-            final Book book = new Book.Builder(-1,
-                                               "test",
+            final Book book = new Book.Builder("test",
+                                               "",
                                                "",
                                                publisher,
                                                new GregorianCalendar(),
@@ -122,13 +121,13 @@ public class BookMapperTest {
                                                120.44).build();
             final BookMapper bookMapper = new BookMapper(connection);
             final int id = bookMapper.insert(book);
-            final Book test = new Book.Builder(id,
-                                               "test69",
+            final Book test = new Book.Builder("test69",
+                                               "",
                                                "horror",
                                                publisher,
                                                new GregorianCalendar(),
                                                new Isbn10("9992158107").toIsbn13(),
-                                               120.44).build();
+                                               120.44).id(id).build();
             bookMapper.update(test);
             final Book check = bookMapper.find(id);
             assertNotNull("Updated book not found", check);
@@ -140,14 +139,14 @@ public class BookMapperTest {
     @Test
     public void deleteTest() throws Exception {
         final TestConnectionManager manager = new TestConnectionManager();
-        try (Connection connection = manager.getConnection()) {
+        try (Connection connection = manager.getConnection("testdb")) {
             final Mapper<Publisher> pubMapper = new PublisherMapper(connection);
             final Publisher publisher = pubMapper.find(publisherId_);
             assertNotNull("Publisher not found", publisher);
             assertThat("Retrieved wrong user type", publisher, instanceOf(Publisher.class));
 
-            final Book book = new Book.Builder(-1,
-                                               "test",
+            final Book book = new Book.Builder("test",
+                                               "",
                                                "",
                                                publisher,
                                                new GregorianCalendar(),
