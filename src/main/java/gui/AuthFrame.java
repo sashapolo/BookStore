@@ -42,8 +42,8 @@ public class AuthFrame extends javax.swing.JFrame {
         javax.swing.JLabel passwordLabel = new javax.swing.JLabel();
         loginField = new javax.swing.JTextField();
         passwordField = new javax.swing.JPasswordField();
-        enterButton = new javax.swing.JButton();
-        registerButton = new javax.swing.JButton();
+        javax.swing.JButton enterButton = new javax.swing.JButton();
+        javax.swing.JButton registerButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -142,10 +142,8 @@ public class AuthFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_registerButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton enterButton;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField loginField;
     private javax.swing.JPasswordField passwordField;
-    private javax.swing.JButton registerButton;
     // End of variables declaration//GEN-END:variables
 }

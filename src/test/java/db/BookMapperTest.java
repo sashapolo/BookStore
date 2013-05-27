@@ -36,8 +36,8 @@ public class BookMapperTest {
 
             publisherId_ = Mapper.getId(statement);
 
-            query = "INSERT into Books(Name, Author, Genre, Isbn, PublicationDate, Price, Discount, NumSold, PublisherId)" +
-                    "VALUES ('foo', '', 'bar', '9783161484100', '2012-01-01', 200, 10, 0, " + publisherId_ + ')';
+            query = "INSERT into Books(Name, Author, Genre, Isbn, PublicationDate, Price, Discount, PublisherId)" +
+                    "VALUES ('foo', '', 'bar', '9783161484100', '2012-01-01', 200, 10, " + publisherId_ + ')';
             statement = connection.createStatement();
             statement.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
         } finally {

@@ -22,6 +22,10 @@ public class OrderEntry {
         book_ = book;
     }
     
+    public OrderEntry(final Book book, final int amount) {
+        this(0, book, amount);
+    }
+    
     public OrderEntry add(final OrderEntry other) {
     	assert (other != null);
     	assert (book_.equals(other.book_)): "Trying to add order entries containing different books";

@@ -41,7 +41,7 @@ public final class BookCatalogue {
             mapper.insert(book, amount);
         } catch (SQLException | DataMapperException e) {
             LOGGER.log(Level.SEVERE, e.getMessage());
-            throw new IllegalStateException("something is very wrong :(", e);
+            throw new IllegalStateException(e.getMessage());
         }
     }
 
@@ -64,7 +64,7 @@ public final class BookCatalogue {
             return mapper.find(search);
         } catch (SQLException | DataMapperException e) {
             LOGGER.log(Level.SEVERE, e.getMessage());
-            throw new IllegalStateException("something is very wrong :(", e);
+            throw new IllegalStateException(e.getMessage());
         }
     }
     
@@ -79,7 +79,7 @@ public final class BookCatalogue {
             return result;
         } catch (SQLException | DataMapperException e) {
             LOGGER.log(Level.SEVERE, e.getMessage());
-            throw new IllegalStateException("something is very wrong :(", e);
+            throw new IllegalStateException(e.getMessage());
         }
     }
 }

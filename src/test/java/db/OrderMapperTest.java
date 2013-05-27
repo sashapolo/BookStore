@@ -45,8 +45,8 @@ public class OrderMapperTest {
             statement.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
             userId_ = Mapper.getId(statement);
 
-            query = "INSERT into Books(Name, Author, Genre, Isbn, PublicationDate, Price, Discount, NumSold, PublisherId) " +
-                    "VALUES ('foo', 'nya', 'bar', '9783161484100', '2012-01-01', 200, 10, 0, " + pubId_ + ')';
+            query = "INSERT into Books(Name, Author, Genre, Isbn, PublicationDate, Price, Discount, PublisherId) " +
+                    "VALUES ('foo', 'nya', 'bar', '9783161484100', '2012-01-01', 200, 10, " + pubId_ + ')';
             statement = connection.createStatement();
             statement.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
             bookId_ = Mapper.getId(statement);

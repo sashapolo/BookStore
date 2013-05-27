@@ -6,8 +6,10 @@ package gui;
 
 import business.Book;
 import business.Customer;
+import business.OrderEntry;
 import dbwrappers.BookCatalogue;
 import dbwrappers.EntryNotFoundException;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -19,18 +21,15 @@ public class BuyFrame extends javax.swing.JFrame {
      * Creates new form BuyFrame
      */
     public BuyFrame(final Book book, final Customer user) {
-        initComponents();
         book_ = book;
         user_ = user;
-        nameLabel.setText(book.getName());
-        priceField.setText("$" + book.getPrice());
         try {
-            numLabel.setText(String.valueOf(BookCatalogue.getAmount(book)));
+            amount_ = BookCatalogue.getAmount(book);
         } catch (EntryNotFoundException e) {
             //unreachable
             assert false;
         }
-        
+        initComponents();
     }
 
     /**
@@ -41,26 +40,26 @@ public class BuyFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        nameLabel = new javax.swing.JLabel();
+        javax.swing.JLabel nameLabel = new javax.swing.JLabel();
         javax.swing.JLabel jLabel2 = new javax.swing.JLabel();
         numSpinner = new javax.swing.JSpinner();
         javax.swing.JLabel jLabel3 = new javax.swing.JLabel();
-        numLabel = new javax.swing.JLabel();
-        backButton = new javax.swing.JButton();
-        buyButton = new javax.swing.JButton();
+        javax.swing.JLabel numLabel = new javax.swing.JLabel();
+        javax.swing.JButton backButton = new javax.swing.JButton();
+        javax.swing.JButton buyButton = new javax.swing.JButton();
         javax.swing.JLabel jLabel5 = new javax.swing.JLabel();
-        priceField = new javax.swing.JTextField();
+        priceField = new javax.swing.JTextField("$" + book_.getPrice());
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         nameLabel.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        nameLabel.setText("Book_name");
+        nameLabel.setText(book_.getName());
 
         jLabel2.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         jLabel2.setText("Number:");
 
         numSpinner.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        numSpinner.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(1), null, Integer.valueOf(1)));
+        numSpinner.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(1), Integer.valueOf(amount_), Integer.valueOf(1)));
         numSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 numSpinnerStateChanged(evt);
@@ -81,6 +80,11 @@ public class BuyFrame extends javax.swing.JFrame {
         });
 
         buyButton.setText("Buy!");
+        buyButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                buyButtonActionPerformed(evt);
+            }
+        });
 
         jLabel5.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
         jLabel5.setText("Total price:");
@@ -98,7 +102,7 @@ public class BuyFrame extends javax.swing.JFrame {
                         .addComponent(jLabel2)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(numSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 184, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 187, Short.MAX_VALUE)
                         .addComponent(jLabel5))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
@@ -150,14 +154,19 @@ public class BuyFrame extends javax.swing.JFrame {
         new MainCustomerFrame(user_).setVisible(true);
     }//GEN-LAST:event_backButtonActionPerformed
 
+    private void buyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buyButtonActionPerformed
+        OrderEntry entry = new OrderEntry(book_, (Integer) numSpinner.getValue());
+        user_.addOrderEntry(entry);
+        JOptionPane.showMessageDialog(this, "Purchase successfull!", "Success", JOptionPane.INFORMATION_MESSAGE);
+        dispose();
+        new MainCustomerFrame(user_).setVisible(true);
+    }//GEN-LAST:event_buyButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton backButton;
-    private javax.swing.JButton buyButton;
-    private javax.swing.JLabel nameLabel;
-    private javax.swing.JLabel numLabel;
     private javax.swing.JSpinner numSpinner;
     private javax.swing.JTextField priceField;
     // End of variables declaration//GEN-END:variables
     private final Book book_;
     private final Customer user_;
+    private int amount_ = 0;
 }

@@ -6,6 +6,8 @@ package gui;
 
 import business.Book;
 import business.Customer;
+import dbwrappers.BookCatalogue;
+import dbwrappers.EntryNotFoundException;
 import java.util.GregorianCalendar;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -22,19 +24,16 @@ public class BookSearchEntryPanel extends javax.swing.JPanel {
     public BookSearchEntryPanel(final Book book, final Customer user) {
         assert (book != null);
         assert (user != null);
-        initComponents();
+        
         book_ = book;
         user_ = user;
-        bookNameLabel.setText(book.getName());
-        authorLabel.setText(book.getAuthor());
-        isbnLabel.setText(book.getIsbn().toString());
-        final GregorianCalendar date = book.getPublicationDate();
-        int year = date.get(GregorianCalendar.YEAR);
-        int month = date.get(GregorianCalendar.MONTH);
-        int day = date.get(GregorianCalendar.DAY_OF_MONTH);
-        pubDateLabel.setText(year + "-" + month + "-" + day);
-        pubLabel.setText(book.getPublisher().getName());
-        priceLabel.setText('$' + String.valueOf(book.getPrice()));
+        try {
+            amount_ = BookCatalogue.getAmount(book);
+        } catch (EntryNotFoundException e) {
+            //unreachable
+            assert false;
+        }
+        initComponents();
     }
 
     /**
@@ -46,42 +45,50 @@ public class BookSearchEntryPanel extends javax.swing.JPanel {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        bookNameLabel = new javax.swing.JLabel();
+        javax.swing.JLabel bookNameLabel = new javax.swing.JLabel();
         javax.swing.JLabel jLabel2 = new javax.swing.JLabel();
-        isbnLabel = new javax.swing.JLabel();
+        javax.swing.JLabel isbnLabel = new javax.swing.JLabel();
         javax.swing.JLabel jLabel4 = new javax.swing.JLabel();
-        pubLabel = new javax.swing.JLabel();
+        javax.swing.JLabel pubLabel = new javax.swing.JLabel();
         javax.swing.JLabel jLabel6 = new javax.swing.JLabel();
-        pubDateLabel = new javax.swing.JLabel();
-        buyButton = new javax.swing.JButton();
-        readReviewButton = new javax.swing.JButton();
-        writeReviewButton = new javax.swing.JButton();
-        priceLabel = new javax.swing.JLabel();
+        javax.swing.JLabel pubDateLabel = new javax.swing.JLabel();
+        javax.swing.JButton buyButton = new javax.swing.JButton();
+        javax.swing.JButton readReviewButton = new javax.swing.JButton();
+        javax.swing.JButton writeReviewButton = new javax.swing.JButton();
+        javax.swing.JLabel priceLabel = new javax.swing.JLabel();
         javax.swing.JLabel jLabel1 = new javax.swing.JLabel();
-        authorLabel = new javax.swing.JLabel();
+        javax.swing.JLabel authorLabel = new javax.swing.JLabel();
+        javax.swing.JLabel avaliableLabel = new javax.swing.JLabel();
 
         bookNameLabel.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        bookNameLabel.setText("Book name");
+        bookNameLabel.setText(book_.getName());
 
         jLabel2.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         jLabel2.setText("ISBN:");
 
         isbnLabel.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        isbnLabel.setText("isbn_number");
+        isbnLabel.setText(book_.getIsbn().toString());
 
         jLabel4.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         jLabel4.setText("Publisher:");
 
         pubLabel.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        pubLabel.setText("pub_name");
+        pubLabel.setText(book_.getPublisher().getName());
 
         jLabel6.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         jLabel6.setText("Date:");
 
         pubDateLabel.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        pubDateLabel.setText("pub_date");
+        final GregorianCalendar date = book_.getPublicationDate();
+        int year = date.get(GregorianCalendar.YEAR);
+        int month = date.get(GregorianCalendar.MONTH);
+        int day = date.get(GregorianCalendar.DAY_OF_MONTH);
+        pubDateLabel.setText(year + "-" + month + "-" + day);
 
         buyButton.setText("Buy");
+        if (amount_ == 0) {
+            buyButton.setEnabled(false);
+        }
         buyButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 buyButtonActionPerformed(evt);
@@ -98,11 +105,15 @@ public class BookSearchEntryPanel extends javax.swing.JPanel {
         writeReviewButton.setText("Write a review");
 
         priceLabel.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        priceLabel.setText("price");
+        priceLabel.setText("$" + book_.getPrice());
 
         jLabel1.setText("Author:");
 
-        authorLabel.setText("author_name");
+        authorLabel.setText(book_.getAuthor());
+
+        avaliableLabel.setFont(new java.awt.Font("Dialog", 1, 14)); // NOI18N
+        avaliableLabel.setForeground(new java.awt.Color(255, 0, 51));
+        avaliableLabel.setText("Not avaliable");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -113,7 +124,7 @@ public class BookSearchEntryPanel extends javax.swing.JPanel {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(bookNameLabel)
-                        .addGap(47, 402, Short.MAX_VALUE)
+                        .addGap(47, 296, Short.MAX_VALUE)
                         .addComponent(priceLabel))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -128,14 +139,17 @@ public class BookSearchEntryPanel extends javax.swing.JPanel {
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                                 .addComponent(readReviewButton, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(isbnLabel)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(buyButton, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addComponent(authorLabel)
-                            .addGroup(layout.createSequentialGroup()
                                 .addComponent(pubDateLabel)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(writeReviewButton)))))
+                                .addComponent(writeReviewButton, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(isbnLabel)
+                                    .addComponent(authorLabel))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(avaliableLabel)
+                                    .addComponent(buyButton, javax.swing.GroupLayout.PREFERRED_SIZE, 137, javax.swing.GroupLayout.PREFERRED_SIZE))))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -148,7 +162,8 @@ public class BookSearchEntryPanel extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel1)
-                    .addComponent(authorLabel))
+                    .addComponent(authorLabel)
+                    .addComponent(avaliableLabel))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
@@ -170,6 +185,10 @@ public class BookSearchEntryPanel extends javax.swing.JPanel {
                         .addComponent(writeReviewButton)))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
+
+        if (amount_ != 0) {
+            avaliableLabel.setVisible(false);
+        }
     }// </editor-fold>//GEN-END:initComponents
 
     private void buyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buyButtonActionPerformed
@@ -183,16 +202,8 @@ public class BookSearchEntryPanel extends javax.swing.JPanel {
     }//GEN-LAST:event_readReviewButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel authorLabel;
-    private javax.swing.JLabel bookNameLabel;
-    private javax.swing.JButton buyButton;
-    private javax.swing.JLabel isbnLabel;
-    private javax.swing.JLabel priceLabel;
-    private javax.swing.JLabel pubDateLabel;
-    private javax.swing.JLabel pubLabel;
-    private javax.swing.JButton readReviewButton;
-    private javax.swing.JButton writeReviewButton;
     // End of variables declaration//GEN-END:variables
     private final Book book_;
     private final Customer user_;
+    private int amount_ = 0;
 }

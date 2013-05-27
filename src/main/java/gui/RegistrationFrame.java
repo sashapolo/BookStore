@@ -42,8 +42,8 @@ public class RegistrationFrame extends javax.swing.JFrame {
         nameField = new javax.swing.JTextField();
         secondNameField = new javax.swing.JTextField();
         emailField = new javax.swing.JTextField();
-        registerButton = new javax.swing.JButton();
-        backButton = new javax.swing.JButton();
+        javax.swing.JButton registerButton = new javax.swing.JButton();
+        javax.swing.JButton backButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -175,13 +175,11 @@ public class RegistrationFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_registerButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton backButton;
     private javax.swing.JTextField emailField;
     private javax.swing.JTextField loginField;
     private javax.swing.JTextField nameField;
     private javax.swing.JPasswordField passwordField;
     private javax.swing.JPasswordField passwordField2;
-    private javax.swing.JButton registerButton;
     private javax.swing.JTextField secondNameField;
     // End of variables declaration//GEN-END:variables
 }

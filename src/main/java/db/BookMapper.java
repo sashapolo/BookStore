@@ -184,10 +184,10 @@ public class BookMapper extends Mapper<Book>{
     public int getAmount(final int id) throws DataMapperException {
         PreparedStatement statement = null;
         try {
-            final String query = "SELECT from Stock where Id=?";
+            final String query = "SELECT * from Stock where Id=?";
             statement = connection_.prepareStatement(query);
             statement.setInt(1, id);
-            statement.executeUpdate();
+            statement.executeQuery();
             
             final ResultSet rs = statement.executeQuery();
             if (rs.next()) {
