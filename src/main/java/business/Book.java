@@ -23,7 +23,6 @@ public class Book {
         private final Isbn isbn13_;
         private double price_;
         private Discount discount_ = new Discount(0);
-        private int numSold_ = 0;
 
         public Builder(final String name,
                        final String author,
@@ -61,11 +60,6 @@ public class Book {
         public Builder discount(final Discount discount) {
             assert (discount != null);
             discount_ = discount;
-            return this;
-        }
-
-        public Builder numSold(final int numSold) {
-            numSold_ = numSold;
             return this;
         }
 
@@ -119,10 +113,6 @@ public class Book {
 
     public Isbn getIsbn() {
         return builder_.isbn13_;
-    }
-    
-    public int getNumSold() {
-    	return builder_.numSold_;
     }
     
     public void setPrice(final double price) {

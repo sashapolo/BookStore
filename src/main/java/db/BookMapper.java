@@ -1,6 +1,7 @@
 package db;
 
 import business.*;
+import static db.Mapper.getId;
 import java.sql.*;
 import java.util.GregorianCalendar;
 import java.util.LinkedList;
@@ -90,12 +91,16 @@ public class BookMapper extends Mapper<Book>{
 
     @Override
     public int insert(final Book book) throws DataMapperException {
+        return insert(book, 0);
+    }
+    
+    public int insert(final Book book, int amount) throws DataMapperException {
         assert (book != null);
 
         PreparedStatement statement = null;
         try {
-            final String query = "INSERT into Books(Name, Author, Genre, Isbn, PublicationDate, Price, Discount, NumSold, PublisherId)" +
-                                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            final String query = "INSERT into Books(Name, Author, Genre, Isbn, PublicationDate, Price, Discount, PublisherId)" +
+                                 "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
             statement = connection_.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
 
             statement.setString(1, book.getName());
@@ -105,11 +110,17 @@ public class BookMapper extends Mapper<Book>{
             statement.setDate(5, new Date(book.getPublicationDate().getTimeInMillis()));
             statement.setDouble(6, book.getPrice());
             statement.setInt(7, book.getDiscount().integerValue());
-            statement.setInt(8, book.getNumSold());
-            statement.setInt(9, book.getPublisher().getId());
+            statement.setInt(8, book.getPublisher().getId());
             statement.executeUpdate();
 
-            return getId(statement);
+            final int id = getId(statement);
+            
+            final String stockQuery = "INSERT into Stock(Id, Amount, NumSold) VALUES (?, ?, 0)";
+            statement = connection_.prepareStatement(stockQuery);
+            statement.setInt(1, id);
+            statement.setInt(2, amount);
+            statement.executeUpdate();
+            return id;
         } catch (SQLException e) {
             throw new DataMapperException("Error occurred while inserting a book: " + e.getMessage());
         } finally {
@@ -118,7 +129,7 @@ public class BookMapper extends Mapper<Book>{
             } catch (SQLException e) {}
         }
     }
-
+    
     @Override
     public void update(final Book book) throws DataMapperException {
         assert (book != null);
@@ -126,8 +137,7 @@ public class BookMapper extends Mapper<Book>{
         PreparedStatement statement = null;
         try {
             final String query = "UPDATE Books SET " +
-                                 "Name=?, Author=?, Genre=?, Isbn=?, PublicationDate=?, Price=?, Discount=?, " +
-                                 "NumSold=?, PublisherId=?" +
+                                 "Name=?, Author=?, Genre=?, Isbn=?, PublicationDate=?, Price=?, Discount=?, PublisherId=?" +
                                  "where Id=?";
             statement = connection_.prepareStatement(query);
 
@@ -138,9 +148,8 @@ public class BookMapper extends Mapper<Book>{
             statement.setDate(5, new Date(book.getPublicationDate().getTimeInMillis()));
             statement.setDouble(6, book.getPrice());
             statement.setInt(7, book.getDiscount().integerValue());
-            statement.setInt(8, book.getNumSold());
-            statement.setInt(9, book.getPublisher().getId());
-            statement.setInt(10, book.getId());
+            statement.setInt(8, book.getPublisher().getId());
+            statement.setInt(9, book.getId());
             statement.executeUpdate();
         } catch (SQLException e) {
             throw new DataMapperException("Error occurred while updating a book: " + e.getMessage());
@@ -159,8 +168,34 @@ public class BookMapper extends Mapper<Book>{
             statement = connection_.prepareStatement(query);
             statement.setInt(1, id);
             statement.executeUpdate();
+            final String stockQuery = "DELETE from Stock where Id=?";
+            statement = connection_.prepareStatement(stockQuery);
+            statement.setInt(1, id);
+            statement.executeUpdate();
         } catch (SQLException e) {
             throw new DataMapperException("Error occurred while deleting a book: " + e.getMessage());
+        } finally {
+            try {
+                if (statement != null) statement.close();
+            } catch (SQLException e) {}
+        }
+    }
+    
+    public int getAmount(final int id) throws DataMapperException {
+        PreparedStatement statement = null;
+        try {
+            final String query = "SELECT from Stock where Id=?";
+            statement = connection_.prepareStatement(query);
+            statement.setInt(1, id);
+            statement.executeUpdate();
+            
+            final ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("Amount");
+            }
+            return -1;
+        } catch (SQLException e) {
+            throw new DataMapperException("Error: " + e.getMessage());
         } finally {
             try {
                 if (statement != null) statement.close();
@@ -192,11 +227,9 @@ public class BookMapper extends Mapper<Book>{
             throw new DataMapperException("Publisher not found");
         }
 
-        final int numSold = rs.getInt("NumSold");
         return new Book.Builder(name, author, genre, publisher, date, isbn, price)
                             .id(id)
                             .discount(discount)
-                            .numSold(numSold)
                             .build();
     }
 }

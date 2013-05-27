@@ -29,7 +29,6 @@ CREATE TABLE Books (
     PublicationDate date NOT NULL,
     Price double precision NOT NULL CHECK (Price >= 0),
     Discount int NOT NULL,
-    NumSold int NOT NULL,
     PublisherId int REFERENCES Publishers(Id)
 );
 
@@ -50,4 +49,10 @@ CREATE TABLE Cart (
     OrderId int NOT NULL REFERENCES Orders(Id) ON DELETE CASCADE,
     OrderEntryId int NOT NULL REFERENCES OrderEntries(Id) ON DELETE CASCADE,
     PRIMARY KEY (OrderId, OrderEntryId)
+);
+
+CREATE TABLE Stock (
+    Id int PRIMARY KEY REFERENCES Books(Id) ON DELETE CASCADE,
+    Amount int NOT NULL,
+    NumSold int NOT NULL
 );

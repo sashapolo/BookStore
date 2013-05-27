@@ -5,6 +5,7 @@
 package gui;
 
 import business.Book;
+import business.Customer;
 import dbwrappers.BookCatalogue;
 import java.util.List;
 import javax.swing.JOptionPane;
@@ -14,14 +15,14 @@ import javax.swing.JOptionPane;
  * @author alexander
  */
 public class MainCustomerFrame extends javax.swing.JFrame {
-
     /**
      * Creates new form MainCustomerFrame
      */
-    public MainCustomerFrame() {
+    public MainCustomerFrame(final Customer user) {
+        user_ = user;
         initComponents();
     }
-
+    
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -106,15 +107,16 @@ public class MainCustomerFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
+        searchResultPanel.removeAll();
         final List<Book> bookList = BookCatalogue.getBooks(searchField.getText());
         if (bookList.isEmpty()) {
             JOptionPane.showMessageDialog(this, "No books found", "Info", JOptionPane.INFORMATION_MESSAGE);
         } else {
             for (final Book book : bookList) {
-                searchResultPanel.add(new BookSearchEntryPanel(book));
+                searchResultPanel.add(new BookSearchEntryPanel(book, user_));
             }
-            searchResultPanel.revalidate();
         }
+        searchResultPanel.revalidate();
     }//GEN-LAST:event_searchButtonActionPerformed
 
     private void exitButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_exitButtonActionPerformed
@@ -128,4 +130,6 @@ public class MainCustomerFrame extends javax.swing.JFrame {
     private javax.swing.JTextField searchField;
     private javax.swing.JPanel searchResultPanel;
     // End of variables declaration//GEN-END:variables
+    private final Customer user_;
+
 }

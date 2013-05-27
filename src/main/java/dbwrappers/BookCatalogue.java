@@ -28,32 +28,28 @@ public final class BookCatalogue {
     private static final Logger LOGGER = Logger.getLogger(BookStore.class.getName());
 
     public static void createBook(final Book book) throws EntryRedefinitionException {
-    	Stock.INSTANCE.createEntry(book.getIsbn(), 0);
+        createBook(book, 0);
+    }
+    
+    public static void createBook(final Book book, int amount) throws EntryRedefinitionException {
+        assert (book != null);
         final ConnectionManager manager = new DerbyConnectionManager();
-        Connection connection = null;
-        try {
-            connection = manager.getConnection("db");
+        try (Connection connection = manager.getConnection("db")) {
             final BookMapper mapper = new BookMapper(connection);
             final Book test = mapper.find(book.getIsbn());
             if (test != null) throw new EntryRedefinitionException("Book already exists");
-            mapper.insert(book);
+            mapper.insert(book, amount);
         } catch (SQLException | DataMapperException e) {
             LOGGER.log(Level.SEVERE, e.getMessage());
             throw new IllegalStateException("something is very wrong :(", e);
-        } finally {
-            try {
-                if (connection != null) manager.closeConnection(connection);
-            } catch (SQLException e) {}
         }
     }
 
-    public static List<Book> getBooks(String search) {
+    public static List<Book> getBooks(final String search) {
         assert (search != null);
         
         final ConnectionManager manager = new DerbyConnectionManager();
-        Connection connection = null;
-        try {
-            connection = manager.getConnection("db");
+        try (Connection connection = manager.getConnection("db")) {
             final BookMapper mapper = new BookMapper(connection);
             
             // first trying to find the book by ISBN
@@ -69,10 +65,21 @@ public final class BookCatalogue {
         } catch (SQLException | DataMapperException e) {
             LOGGER.log(Level.SEVERE, e.getMessage());
             throw new IllegalStateException("something is very wrong :(", e);
-        } finally {
-            try {
-                if (connection != null) manager.closeConnection(connection);
-            } catch (SQLException e) {}
+        }
+    }
+    
+    public static int getAmount(final Book book) throws EntryNotFoundException {
+        assert (book != null);
+        
+        final ConnectionManager manager = new DerbyConnectionManager();
+        try (Connection connection = manager.getConnection("db")) {
+            final BookMapper mapper = new BookMapper(connection);
+            int result = mapper.getAmount(book.getId());
+            if (result == -1) throw new EntryNotFoundException("Book not found");
+            return result;
+        } catch (SQLException | DataMapperException e) {
+            LOGGER.log(Level.SEVERE, e.getMessage());
+            throw new IllegalStateException("something is very wrong :(", e);
         }
     }
 }

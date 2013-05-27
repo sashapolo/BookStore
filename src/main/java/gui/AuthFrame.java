@@ -127,7 +127,7 @@ public class AuthFrame extends javax.swing.JFrame {
             final User user = UserCatalogue.getUser(login, password);
             if (user instanceof Customer) {
                 dispose();
-                new MainCustomerFrame().setVisible(true);
+                new MainCustomerFrame((Customer)user).setVisible(true);
             }
         } catch (IncorrectPasswordException e) {
             JOptionPane.showMessageDialog(this, "Incorrect password!", "Error", JOptionPane.ERROR_MESSAGE);
