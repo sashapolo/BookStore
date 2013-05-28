@@ -32,6 +32,14 @@ public class User {
         secondName_ = secondName;
         email_ = email;
     }
+    
+    public User(final String login,
+                final int password,
+                final String name,
+                final String secondName,
+                final String email) {
+       this(0, login, password, name, secondName, email);         
+    }
 
     public int getId() {
         return id_;

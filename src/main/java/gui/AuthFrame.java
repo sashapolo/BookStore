@@ -4,6 +4,7 @@
  */
 package gui;
 
+import business.Administrator;
 import business.BookStore;
 import business.Customer;
 import business.User;
@@ -128,6 +129,8 @@ public class AuthFrame extends javax.swing.JFrame {
             if (user instanceof Customer) {
                 dispose();
                 new MainCustomerFrame((Customer)user).setVisible(true);
+            } else if (user instanceof Administrator) {
+                JOptionPane.showMessageDialog(this, "Admins are not supported yet =(", "Error", JOptionPane.ERROR_MESSAGE);
             }
         } catch (IncorrectPasswordException e) {
             JOptionPane.showMessageDialog(this, "Incorrect password!", "Error", JOptionPane.ERROR_MESSAGE);
