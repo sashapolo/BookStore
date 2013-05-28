@@ -43,7 +43,8 @@ public class OrderMapper extends Mapper<Order> {
                 assert (orderer instanceof Customer);
 
                 final Cart cart = getCart(id);
-                return new Order.Builder(id, cart, (Customer)orderer)
+                return new Order.Builder(cart, (Customer)orderer)
+                                    .id(id)
                                     .status(status)
                                     .dateCreated(date)
                                     .build();

@@ -9,6 +9,9 @@ import business.Customer;
 import business.OrderEntry;
 import dbwrappers.BookCatalogue;
 import dbwrappers.EntryNotFoundException;
+import java.math.RoundingMode;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import javax.swing.JOptionPane;
 
 /**
@@ -48,7 +51,11 @@ public class BuyFrame extends javax.swing.JFrame {
         javax.swing.JButton backButton = new javax.swing.JButton();
         javax.swing.JButton buyButton = new javax.swing.JButton();
         javax.swing.JLabel jLabel5 = new javax.swing.JLabel();
-        priceField = new javax.swing.JTextField("$" + book_.getPrice());
+        NumberFormat df = DecimalFormat.getInstance();
+        df.setMinimumFractionDigits(2);
+        df.setMaximumFractionDigits(4);
+        df.setRoundingMode(RoundingMode.DOWN);
+        priceField = new javax.swing.JTextField("$" + df.format(book_.getPrice()));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -70,7 +77,7 @@ public class BuyFrame extends javax.swing.JFrame {
         jLabel3.setText("Avaliable:");
 
         numLabel.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        numLabel.setText("num");
+        numLabel.setText(String.valueOf(amount_));
 
         backButton.setText("Back");
         backButton.addActionListener(new java.awt.event.ActionListener() {
@@ -143,10 +150,15 @@ public class BuyFrame extends javax.swing.JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void numSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_numSpinnerStateChanged
-        priceField.setText("$" + ((Integer) numSpinner.getValue() * book_.getPrice()));
+        NumberFormat df = DecimalFormat.getInstance();
+        df.setMinimumFractionDigits(2);
+        df.setMaximumFractionDigits(4);
+        df.setRoundingMode(RoundingMode.DOWN);
+        priceField.setText("$" + df.format((Integer) numSpinner.getValue() * book_.getPrice()));
     }//GEN-LAST:event_numSpinnerStateChanged
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed

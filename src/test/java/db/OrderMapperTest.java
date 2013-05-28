@@ -192,6 +192,6 @@ public class OrderMapperTest {
         cart.put(entry1);
         cart.put(entry2);
 
-        return new Order.Builder(-1, cart, (Customer)user).build();
+        return new Order.Builder(cart, (Customer)user).build();
     }
 }

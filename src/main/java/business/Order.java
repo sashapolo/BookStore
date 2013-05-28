@@ -15,24 +15,28 @@ public class Order {
     private final Builder builder_;
 
     public static class Builder {
-        private int id_;
+        private int id_= 0;
         private GregorianCalendar dateCreated_ = new GregorianCalendar();
         private final Cart cart_;
         private final double cartPrice_;
         private OrderStatus status_ = OrderStatus.CREATED;
         private final Customer orderer_;
 
-        public Builder(final int id, final Cart cart, final Customer orderer) {
+        public Builder(final Cart cart, final Customer orderer) {
             assert (cart != null);
             assert (orderer != null);
             assert (!cart.isEmpty()): "Creating an order with an empty cart";
 
-            id_ = id;
             cart_ = cart;
             cartPrice_ = cart.getPrice(orderer.getPersonalDiscount());
             orderer_ = orderer;
         }
 
+        public Builder id(final int id) {
+            id_ = id;
+            return this;
+        }
+        
         public Builder dateCreated(final GregorianCalendar date) {
             dateCreated_ = date;
             return this;

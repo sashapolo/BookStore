@@ -5,6 +5,7 @@ package business;
 
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Map;
 
 
@@ -12,7 +13,7 @@ import java.util.Map;
  * @author alexander
  * 
  */
-public class Cart {
+public class Cart implements Iterable<OrderEntry> {
     private final Map<Book, OrderEntry> entries_;
 
     public Cart() {
@@ -37,6 +38,11 @@ public class Cart {
         }
     }
 
+    public OrderEntry remove(final Book book) {
+        assert (book != null);
+        return entries_.remove(book);
+    }
+
     public double getPrice(final Discount userDiscount) {
         assert (userDiscount != null);
 
@@ -57,5 +63,14 @@ public class Cart {
 
     public Collection<OrderEntry> values() {
         return entries_.values();
+    }
+
+    @Override
+    public Iterator<OrderEntry> iterator() {
+        return values().iterator();
+    }
+
+    public void clear() {
+        entries_.clear();
     }
 }

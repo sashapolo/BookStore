@@ -203,6 +203,37 @@ public class BookMapper extends Mapper<Book>{
         }
     }
 
+    public void buy(final int id, final int amount) throws DataMapperException {
+        PreparedStatement statement = null;
+        try {
+            final String query = "SELECT * from Stock where Id=?";
+            statement = connection_.prepareStatement(query);
+            statement.setInt(1, id);
+            statement.executeQuery();
+            
+            final ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                int numSold = rs.getInt("NumSold");
+                int numAvaliable = rs.getInt("Amount");
+                assert (numAvaliable >= amount);
+                final String query2 = "UPDATE Stock SET NumSold=?, Amount=? where Id=?";
+                statement = connection_.prepareStatement(query2);
+                statement.setInt(1, numSold + amount);
+                statement.setInt(2, numAvaliable - amount);
+                statement.setInt(3, id);
+                statement.executeUpdate();
+                return;
+            }
+            throw new DataMapperException("Book not found");
+        } catch (SQLException e) {
+            throw new DataMapperException("Error: " + e.getMessage());
+        } finally {
+            try {
+                if (statement != null) statement.close();
+            } catch (SQLException e) {}
+        }
+    }
+    
     private Book createBook(final ResultSet rs) throws DataMapperException, SQLException {
         final int id = rs.getInt("Id");
         final String name = rs.getString("Name");

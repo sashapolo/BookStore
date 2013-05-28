@@ -10,7 +10,7 @@ package business;
  */
 public class Customer extends User {
     private final Discount personalDiscount_;
-    private final Cart currentCart_ = null;
+    private final Cart currentCart_ = new Cart();
 
     public Customer(final int id,
                     final String login,
@@ -38,6 +38,20 @@ public class Customer extends User {
     }
     
     public void addOrderEntry(final OrderEntry entry) {
+        assert (entry != null);
     	currentCart_.put(entry);
+    }
+    
+    public void deleteOrderEntry(final OrderEntry entry) {
+        assert (entry != null);
+        currentCart_.remove(entry.getBook());
+    }
+    
+    public double getCartPrice() {
+        return currentCart_.getPrice(personalDiscount_);
+    }
+    
+    public Cart getCart() {
+        return currentCart_;
     }
 }
