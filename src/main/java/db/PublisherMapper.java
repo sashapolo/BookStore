@@ -11,6 +11,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  *
@@ -20,6 +22,22 @@ public class PublisherMapper extends Mapper<Publisher> {
     
     public PublisherMapper(final Connection connection) {
         super(connection);
+    }
+    
+    public List<Publisher> findAll() throws DataMapperException {
+        try (final Statement statement = connection_.createStatement()) {
+            final String query = "SELECT * from Publishers";
+            final ResultSet rs = statement.executeQuery(query);
+            final List<Publisher> result = new LinkedList<>();
+            while (rs.next()) {
+                final int id = rs.getInt("Id");
+                final String name = rs.getString("Name");
+                result.add(new Publisher(id, name));
+            }
+            return result;
+        } catch (SQLException e) {
+            throw new DataMapperException("Error occurred while searching for publisher", e);
+        }
     }
     
     @Override

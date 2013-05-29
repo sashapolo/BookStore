@@ -51,11 +51,7 @@ public class BuyFrame extends javax.swing.JFrame {
         javax.swing.JButton backButton = new javax.swing.JButton();
         javax.swing.JButton buyButton = new javax.swing.JButton();
         javax.swing.JLabel jLabel5 = new javax.swing.JLabel();
-        NumberFormat df = DecimalFormat.getInstance();
-        df.setMinimumFractionDigits(2);
-        df.setMaximumFractionDigits(4);
-        df.setRoundingMode(RoundingMode.DOWN);
-        priceField = new javax.swing.JTextField("$" + df.format(book_.getPrice()));
+        priceField = new javax.swing.JFormattedTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -97,6 +93,8 @@ public class BuyFrame extends javax.swing.JFrame {
         jLabel5.setText("Total price:");
 
         priceField.setEditable(false);
+        priceField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
+        priceField.setText("$" + book_.getPrice());
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -111,17 +109,17 @@ public class BuyFrame extends javax.swing.JFrame {
                         .addComponent(numSpinner, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 187, Short.MAX_VALUE)
                         .addComponent(jLabel5))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(buyButton, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(backButton)
                             .addComponent(nameLabel))
                         .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(buyButton, javax.swing.GroupLayout.PREFERRED_SIZE, 98, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(jLabel3)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(numLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(priceField, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -176,7 +174,7 @@ public class BuyFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JSpinner numSpinner;
-    private javax.swing.JTextField priceField;
+    private javax.swing.JFormattedTextField priceField;
     // End of variables declaration//GEN-END:variables
     private final Book book_;
     private final Customer user_;

@@ -33,7 +33,7 @@ public final class UserCatalogue {
             return result;
         } catch (SQLException | DataMapperException e) {
             LOGGER.log(Level.SEVERE, e.getMessage());
-            throw new IllegalStateException("something is very wrong :(", e);
+            throw new IllegalStateException(e.getMessage());
         }
     }
     
@@ -53,7 +53,7 @@ public final class UserCatalogue {
             mapper.insert(user);
         } catch (SQLException | DataMapperException e) {
             LOGGER.log(Level.SEVERE, e.getMessage());
-            throw new IllegalStateException("something is very wrong :(", e);
+            throw new IllegalStateException(e.getMessage());
         }
     }
 }

@@ -130,7 +130,8 @@ public class AuthFrame extends javax.swing.JFrame {
                 dispose();
                 new MainCustomerFrame((Customer)user).setVisible(true);
             } else if (user instanceof Administrator) {
-                JOptionPane.showMessageDialog(this, "Admins are not supported yet =(", "Error", JOptionPane.ERROR_MESSAGE);
+                dispose();
+                new MainAdminFrame().setVisible(true);
             }
         } catch (IncorrectPasswordException e) {
             JOptionPane.showMessageDialog(this, "Incorrect password!", "Error", JOptionPane.ERROR_MESSAGE);
