@@ -4,8 +4,8 @@
  */
 package gui;
 
-import dbwrappers.EntryRedefinitionException;
-import dbwrappers.UserCatalogue;
+import service.EntryRedefinitionException;
+import service.UserCatalogue;
 import javax.swing.JOptionPane;
 
 /**

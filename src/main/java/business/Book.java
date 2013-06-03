@@ -13,61 +13,6 @@ import java.util.GregorianCalendar;
 public class Book {
     private final Builder builder_;
 
-    public static class Builder {
-        private int id_ = 0;
-        private final String name_;
-        private final String author_;
-        private final String genre_;
-        private final Publisher publisher_;
-        private final GregorianCalendar publicationDate_;
-        private final Isbn isbn13_;
-        private double price_;
-        private Discount discount_ = new Discount(0);
-
-        public Builder(final String name,
-                       final String author,
-                       final String genre,
-                       final Publisher publisher,
-                       final GregorianCalendar publicationDate,
-                       final Isbn isbn,
-                       final double price) {
-            assert (name != null);
-            assert (author != null);
-            assert (genre != null);
-            assert (publisher != null);
-            assert (publicationDate != null);
-            assert (isbn != null);
-            
-            name_ = name;
-            author_ = author;
-            genre_ = genre;
-            publisher_ = publisher;
-            publicationDate_ = publicationDate;
-            isbn13_ = isbn.toIsbn13();
-            price_ = price;
-        }
-
-        public Builder id(final int id) {
-            id_ = id;
-            return this;
-        }
-        
-        public Builder discount(final int discount) {
-            discount_ = new Discount(discount);
-            return this;
-        }
-
-        public Builder discount(final Discount discount) {
-            assert (discount != null);
-            discount_ = discount;
-            return this;
-        }
-
-        public Book build() {
-            return new Book(this);
-        }
-    }
-
     private Book(final Builder builder) {
         assert (builder != null);
         builder_ = builder;
@@ -135,5 +80,60 @@ public class Book {
 
         final Book book = (Book) o;
         return builder_.isbn13_.equals(book.builder_.isbn13_);
+    }
+
+    public static class Builder {
+        private int id_ = 0;
+        private final String name_;
+        private final String author_;
+        private final String genre_;
+        private final Publisher publisher_;
+        private final GregorianCalendar publicationDate_;
+        private final Isbn isbn13_;
+        private double price_;
+        private Discount discount_ = new Discount(0);
+
+        public Builder(final String name,
+                       final String author,
+                       final String genre,
+                       final Publisher publisher,
+                       final GregorianCalendar publicationDate,
+                       final Isbn isbn,
+                       final double price) {
+            assert (name != null);
+            assert (author != null);
+            assert (genre != null);
+            assert (publisher != null);
+            assert (publicationDate != null);
+            assert (isbn != null);
+            
+            name_ = name;
+            author_ = author;
+            genre_ = genre;
+            publisher_ = publisher;
+            publicationDate_ = publicationDate;
+            isbn13_ = isbn.toIsbn13();
+            price_ = price;
+        }
+
+        public Builder id(final int id) {
+            id_ = id;
+            return this;
+        }
+        
+        public Builder discount(final int discount) {
+            discount_ = new Discount(discount);
+            return this;
+        }
+
+        public Builder discount(final Discount discount) {
+            assert (discount != null);
+            discount_ = discount;
+            return this;
+        }
+
+        public Book build() {
+            return new Book(this);
+        }
     }
 }

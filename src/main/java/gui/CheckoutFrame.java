@@ -6,7 +6,7 @@ package gui;
 
 import business.Customer;
 import business.OrderEntry;
-import dbwrappers.OrderCatalogue;
+import service.OrderCatalogue;
 import java.text.DecimalFormat;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package dbwrappers;
+package service;
 
 import business.Book;
 import business.BookStore;
@@ -68,6 +68,19 @@ public final class BookCatalogue {
         }
     }
     
+    public static Book getBook(final String isbn) throws WrongFormatException {
+        assert (isbn != null);
+        
+        final ConnectionManager manager = new DerbyConnectionManager();
+        try (Connection connection = manager.getConnection("db")) {
+            final BookMapper mapper = new BookMapper(connection);
+            return mapper.find(new Isbn13(isbn));
+        } catch (SQLException | DataMapperException e) {
+            LOGGER.log(Level.SEVERE, e.getMessage());
+            throw new IllegalStateException(e.getMessage());
+        }
+    }
+    
     public static int getAmount(final Book book) throws EntryNotFoundException {
         assert (book != null);
         
@@ -82,4 +95,45 @@ public final class BookCatalogue {
             throw new IllegalStateException(e.getMessage());
         }
     }
+    
+    public static void setAmount(final Book book, int amount) throws EntryNotFoundException {
+        assert (book != null);
+        
+        final ConnectionManager manager = new DerbyConnectionManager();
+        try (Connection connection = manager.getConnection("db")) {
+            final BookMapper mapper = new BookMapper(connection);
+            mapper.setAmount(book.getId(), amount);
+        } catch (SQLException | DataMapperException e) {
+            LOGGER.log(Level.SEVERE, e.getMessage());
+            throw new IllegalStateException(e.getMessage());
+        }
+    }
+    
+    public static void deleteBook(final Book book) {
+        assert (book != null);
+        
+        final ConnectionManager manager = new DerbyConnectionManager();
+        try (Connection connection = manager.getConnection("db")) {
+            final BookMapper mapper = new BookMapper(connection);
+            mapper.delete(book.getId());
+        } catch (SQLException | DataMapperException e) {
+            LOGGER.log(Level.SEVERE, e.getMessage());
+            throw new IllegalStateException(e.getMessage());
+        }
+    }
+    
+    public static void updateBook(final Book book) {
+        assert (book != null);
+        
+        final ConnectionManager manager = new DerbyConnectionManager();
+        try (Connection connection = manager.getConnection("db")) {
+            final BookMapper mapper = new BookMapper(connection);
+            mapper.update(book);
+        } catch (SQLException | DataMapperException e) {
+            LOGGER.log(Level.SEVERE, e.getMessage());
+            throw new IllegalStateException(e.getMessage());
+        }
+    }
+
+    private BookCatalogue() {}
 }

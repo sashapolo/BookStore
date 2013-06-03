@@ -15,7 +15,7 @@
 *.iml
 
 # NetBeans #
-.nbactions.xml
+nbactions.xml
 
 # Maven folder structure #
 target/

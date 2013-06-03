@@ -9,8 +9,8 @@ package business;
  * 
  */
 public class Publisher {
-    final int id_;
-    final String name_;
+    private final int id_;
+    private String name_;
     
     public Publisher(final int id, final String name) {
         assert (name != null);
@@ -22,4 +22,8 @@ public class Publisher {
     
     public int getId()      { return id_; }
     public String getName() { return name_; }
+    
+    public void setName(final String name) {
+        name_ = name;
+    }
 }

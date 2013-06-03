@@ -6,8 +6,8 @@ package gui;
 
 import business.Book;
 import business.Customer;
-import dbwrappers.BookCatalogue;
-import dbwrappers.EntryNotFoundException;
+import service.BookCatalogue;
+import service.EntryNotFoundException;
 import java.util.GregorianCalendar;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;

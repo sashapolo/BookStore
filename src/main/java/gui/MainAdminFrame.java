@@ -4,10 +4,17 @@
  */
 package gui;
 
+import business.Book;
+import business.WrongFormatException;
+import javax.swing.JOptionPane;
+import service.BookCatalogue;
+import service.PublisherCatalogue;
+
 /**
  *
  * @author alexander
  */
+@SuppressWarnings("serial")
 public class MainAdminFrame extends javax.swing.JFrame {
 
     /**
@@ -29,20 +36,16 @@ public class MainAdminFrame extends javax.swing.JFrame {
         javax.swing.JPanel bookPanel = new javax.swing.JPanel();
         javax.swing.JButton addBookButton = new javax.swing.JButton();
         javax.swing.JButton modifyBookButton = new javax.swing.JButton();
-        javax.swing.JButton incBookButton = new javax.swing.JButton();
         javax.swing.JPanel pubPanel = new javax.swing.JPanel();
         javax.swing.JButton addPubButton = new javax.swing.JButton();
         javax.swing.JButton modifyPubButton = new javax.swing.JButton();
         javax.swing.JButton exitButton = new javax.swing.JButton();
-        javax.swing.JPanel userPanel = new javax.swing.JPanel();
-        javax.swing.JButton addUserButton = new javax.swing.JButton();
-        javax.swing.JButton modifyUserButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         bookPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Books"));
 
-        addBookButton.setText("Add book");
+        addBookButton.setText("Create book");
         addBookButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 addBookButtonActionPerformed(evt);
@@ -50,8 +53,11 @@ public class MainAdminFrame extends javax.swing.JFrame {
         });
 
         modifyBookButton.setText("Modify book");
-
-        incBookButton.setText("Increase amount");
+        modifyBookButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                modifyBookButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout bookPanelLayout = new javax.swing.GroupLayout(bookPanel);
         bookPanel.setLayout(bookPanelLayout);
@@ -60,9 +66,8 @@ public class MainAdminFrame extends javax.swing.JFrame {
             .addGroup(bookPanelLayout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(bookPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(incBookButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(modifyBookButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(addBookButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                    .addComponent(addBookButton, javax.swing.GroupLayout.DEFAULT_SIZE, 153, Short.MAX_VALUE))
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         bookPanelLayout.setVerticalGroup(
@@ -72,16 +77,24 @@ public class MainAdminFrame extends javax.swing.JFrame {
                 .addComponent(addBookButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(modifyBookButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(incBookButton)
-                .addContainerGap(113, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
         pubPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Publishers"));
 
         addPubButton.setText("Add publisher");
+        addPubButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                addPubButtonActionPerformed(evt);
+            }
+        });
 
         modifyPubButton.setText("Modify publisher");
+        modifyPubButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                modifyPubButtonActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout pubPanelLayout = new javax.swing.GroupLayout(pubPanel);
         pubPanel.setLayout(pubPanelLayout);
@@ -101,7 +114,7 @@ public class MainAdminFrame extends javax.swing.JFrame {
                 .addComponent(addPubButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(modifyPubButton)
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addContainerGap(104, Short.MAX_VALUE))
         );
 
         exitButton.setText("Log out");
@@ -110,33 +123,6 @@ public class MainAdminFrame extends javax.swing.JFrame {
                 exitButtonActionPerformed(evt);
             }
         });
-
-        userPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Users"));
-
-        addUserButton.setText("Add user");
-
-        modifyUserButton.setText("Modify user");
-
-        javax.swing.GroupLayout userPanelLayout = new javax.swing.GroupLayout(userPanel);
-        userPanel.setLayout(userPanelLayout);
-        userPanelLayout.setHorizontalGroup(
-            userPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(userPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addGroup(userPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(modifyUserButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(addUserButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-        );
-        userPanelLayout.setVerticalGroup(
-            userPanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(userPanelLayout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(addUserButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(modifyUserButton)
-                .addContainerGap(150, Short.MAX_VALUE))
-        );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -148,20 +134,15 @@ public class MainAdminFrame extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(bookPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(pubPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(userPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(exitButton)
-                        .addGap(0, 0, Short.MAX_VALUE)))
-                .addContainerGap())
+                        .addComponent(pubPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(exitButton))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(userPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(pubPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(bookPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -182,6 +163,34 @@ public class MainAdminFrame extends javax.swing.JFrame {
         dispose();
         new NewBookFrame().setVisible(true);
     }//GEN-LAST:event_addBookButtonActionPerformed
+
+    private void modifyBookButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modifyBookButtonActionPerformed
+        final String isbn = JOptionPane.showInputDialog(this, "Type book isbn");
+        try {
+            final Book book = BookCatalogue.getBook(isbn);
+            dispose();
+            new ModifyBookFrame(book).setVisible(true);
+        } catch (WrongFormatException ex) {
+            JOptionPane.showMessageDialog(this, "Wrong isbn format", "Error", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }//GEN-LAST:event_modifyBookButtonActionPerformed
+
+    private void modifyPubButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modifyPubButtonActionPerformed
+        dispose();
+        new PublisherChooserFrame().setVisible(true);
+    }//GEN-LAST:event_modifyPubButtonActionPerformed
+
+    private void addPubButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addPubButtonActionPerformed
+        final String name = JOptionPane.showInputDialog(this, "Input publisher's name");
+        if (name != null) {
+            if (name.isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Name field is empty", "Error", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+            PublisherCatalogue.createPublisher(name);
+            JOptionPane.showMessageDialog(this, "Publisher created successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+        }
+    }//GEN-LAST:event_addPubButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables

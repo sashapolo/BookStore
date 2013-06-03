@@ -6,7 +6,7 @@ package gui;
 
 import business.Book;
 import business.Customer;
-import dbwrappers.BookCatalogue;
+import service.BookCatalogue;
 import java.util.List;
 import javax.swing.JOptionPane;
 

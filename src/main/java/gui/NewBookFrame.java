@@ -4,13 +4,25 @@
  */
 package gui;
 
-import dbwrappers.PublisherCatalogue;
-import java.util.Vector;
+import business.Book;
+import business.Isbn;
+import business.Isbn13;
+import business.Publisher;
+import business.WrongFormatException;
+import java.util.GregorianCalendar;
+import javax.swing.JOptionPane;
+import service.BookCatalogue;
+import service.BookInfoParser;
+import service.BookParseException;
+import service.EntryNotFoundException;
+import service.EntryRedefinitionException;
+import service.PublisherCatalogue;
 
 /**
  *
  * @author alexander
  */
+@SuppressWarnings("serial")
 public class NewBookFrame extends javax.swing.JFrame {
 
     /**
@@ -29,40 +41,11 @@ public class NewBookFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        javax.swing.JLabel jLabel1 = new javax.swing.JLabel();
-        javax.swing.JLabel jLabel2 = new javax.swing.JLabel();
-        javax.swing.JLabel jLabel3 = new javax.swing.JLabel();
-        javax.swing.JLabel jLabel4 = new javax.swing.JLabel();
-        javax.swing.JLabel jLabel5 = new javax.swing.JLabel();
-        javax.swing.JLabel jLabel6 = new javax.swing.JLabel();
-        javax.swing.JLabel jLabel7 = new javax.swing.JLabel();
-        nameField = new javax.swing.JTextField();
-        authorField = new javax.swing.JTextField();
-        genreField = new javax.swing.JTextField();
-        pubBox = new javax.swing.JComboBox();
-        isbnField = new javax.swing.JTextField();
-        priceField = new javax.swing.JTextField();
         javax.swing.JButton backButton = new javax.swing.JButton();
         javax.swing.JButton createButton = new javax.swing.JButton();
-        dateField = new javax.swing.JFormattedTextField();
+        bookInfoPanel = new gui.BookInfoPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
-
-        jLabel1.setText("Name:");
-
-        jLabel2.setText("Author:");
-
-        jLabel3.setText("Genre:");
-
-        jLabel4.setText("Publisher:");
-
-        jLabel5.setText("Publication date:");
-
-        jLabel6.setText("ISBN:");
-
-        jLabel7.setText("Price:");
-
-        pubBox.setModel(new javax.swing.DefaultComboBoxModel(PublisherCatalogue.getPublisherNames().toArray()));
 
         backButton.setText("Back");
         backButton.addActionListener(new java.awt.event.ActionListener() {
@@ -78,8 +61,6 @@ public class NewBookFrame extends javax.swing.JFrame {
             }
         });
 
-        dateField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.DateFormatter()));
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -87,72 +68,22 @@ public class NewBookFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(backButton)
-                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addComponent(bookInfoPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 448, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel1)
-                            .addComponent(jLabel2)
-                            .addComponent(jLabel3)
-                            .addComponent(jLabel4))
-                        .addGap(61, 61, 61)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(nameField)
-                            .addComponent(authorField)
-                            .addComponent(genreField)
-                            .addComponent(pubBox, 0, 315, Short.MAX_VALUE)))
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(jLabel7)
-                        .addGap(93, 93, 93)
-                        .addComponent(priceField))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(createButton))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(jLabel6)
-                            .addComponent(jLabel5))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(isbnField)
-                            .addComponent(dateField))))
+                            .addComponent(backButton)
+                            .addComponent(createButton))
+                        .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel1)
-                    .addComponent(nameField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel2)
-                    .addComponent(authorField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel3)
-                    .addComponent(genreField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jLabel4)
-                    .addComponent(pubBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(dateField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(isbnField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel6))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(priceField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel7))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(bookInfoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(24, 24, 24)
                 .addComponent(createButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 126, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 88, Short.MAX_VALUE)
                 .addComponent(backButton)
                 .addContainerGap())
         );
@@ -167,16 +98,35 @@ public class NewBookFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_backButtonActionPerformed
 
     private void createButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createButtonActionPerformed
-        // TODO add your handling code here:
+        try {
+            final String name = bookInfoPanel.getBookName();
+            final String author = bookInfoPanel.getAuthor();
+            final String genre = bookInfoPanel.getGenre();
+            final String pubName = bookInfoPanel.getPub();
+            final String isbn = bookInfoPanel.getIsbn();
+            final String price = bookInfoPanel.getPrice();
+            final String amount = bookInfoPanel.getAmount();
+            final DateInputPanel panel = bookInfoPanel.getDateInputPanel();
+            final GregorianCalendar date = 
+                    new GregorianCalendar(panel.getYear(), panel.getMonth(), panel.getDay());
+
+            final Book book = BookInfoParser.parseBook(name, 
+                                                       author, 
+                                                       genre, 
+                                                       pubName, 
+                                                       isbn, 
+                                                       price, 
+                                                       date, 
+                                                       amount);
+            BookCatalogue.createBook(book, Integer.valueOf(amount));
+        } catch (NumberFormatException | EntryRedefinitionException | BookParseException ex) {
+            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+        JOptionPane.showMessageDialog(this, "Book created successfully", "Success!", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_createButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField authorField;
-    private javax.swing.JFormattedTextField dateField;
-    private javax.swing.JTextField genreField;
-    private javax.swing.JTextField isbnField;
-    private javax.swing.JTextField nameField;
-    private javax.swing.JTextField priceField;
-    private javax.swing.JComboBox pubBox;
+    private gui.BookInfoPanel bookInfoPanel;
     // End of variables declaration//GEN-END:variables
 }

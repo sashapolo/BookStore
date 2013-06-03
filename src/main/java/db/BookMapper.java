@@ -202,6 +202,23 @@ public class BookMapper extends Mapper<Book>{
             } catch (SQLException e) {}
         }
     }
+    
+    public void setAmount(int id, int amount) throws DataMapperException {
+        PreparedStatement statement = null;
+        try {
+            final String query = "UPDATE Stock SET Amount=? where Id=?";
+            statement = connection_.prepareStatement(query);
+            statement.setInt(1, amount);
+            statement.setInt(2, id);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            throw new DataMapperException("Error: " + e.getMessage());
+        } finally {
+            try {
+                if (statement != null) statement.close();
+            } catch (SQLException e) {}
+        }
+    }
 
     public void buy(final int id, final int amount) throws DataMapperException {
         PreparedStatement statement = null;

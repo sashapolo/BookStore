@@ -1,4 +1,4 @@
-package dbwrappers;
+package service;
 
 import business.BookStore;
 import business.Customer;
@@ -56,4 +56,6 @@ public final class UserCatalogue {
             throw new IllegalStateException(e.getMessage());
         }
     }
+
+    private UserCatalogue() {}
 }

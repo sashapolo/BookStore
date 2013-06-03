@@ -1,4 +1,4 @@
-package dbwrappers;
+package service;
 
 /**
  * Created with IntelliJ IDEA.

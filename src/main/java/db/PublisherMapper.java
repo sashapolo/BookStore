@@ -40,6 +40,30 @@ public class PublisherMapper extends Mapper<Publisher> {
         }
     }
     
+    public Publisher find(final String name) throws DataMapperException {
+        assert(name != null);
+
+        PreparedStatement statement = null;
+        try {
+            final String query = "SELECT * from Publishers where Name=?";
+            statement = connection_.prepareStatement(query);
+            statement.setString(1, name);
+            
+            final ResultSet rs = statement.executeQuery();
+            if (rs.next()) {
+                int id = rs.getInt("Id");
+                return new Publisher(id, name);
+            }
+            return null;
+        } catch (SQLException e) {
+            throw new DataMapperException("Error occurred while searching for user: " + e.getMessage());
+        } finally {
+            try {
+                if (statement != null) statement.close();
+            } catch (SQLException e) {}
+        }
+    }
+    
     @Override
     public Publisher find(final int id) throws DataMapperException {
         PreparedStatement statement = null;

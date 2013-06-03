@@ -22,6 +22,7 @@ public class DerbyConnectionManager implements ConnectionManager {
             Class.forName("org.apache.derby.jdbc.EmbeddedDriver");
         } catch (ClassNotFoundException e) {
             LOGGER.severe("Can't load derby embedded driver");
+            throw new IllegalStateException(e);
         }
         Connection result = DriverManager.getConnection("jdbc:derby:" + url);
         result.setAutoCommit(true);

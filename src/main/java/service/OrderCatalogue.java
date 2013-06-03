@@ -1,7 +1,7 @@
 /**
  * 
  */
-package dbwrappers;
+package service;
 
 import business.BookStore;
 import business.Customer;
