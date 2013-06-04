@@ -41,7 +41,7 @@ public class GoogleBookFrame extends javax.swing.JFrame {
         titleField = new javax.swing.JTextField();
         ratingField = new javax.swing.JFormattedTextField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jLabel1.setText("Title:");
         jLabel1.setName("jLabel1"); // NOI18N
