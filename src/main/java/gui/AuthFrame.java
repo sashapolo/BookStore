@@ -46,7 +46,12 @@ public class AuthFrame extends javax.swing.JFrame {
         javax.swing.JButton enterButton = new javax.swing.JButton();
         javax.swing.JButton registerButton = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        addWindowListener(new java.awt.event.WindowAdapter() {
+            public void windowClosing(java.awt.event.WindowEvent evt) {
+                formWindowClosing(evt);
+            }
+        });
 
         loginLabel.setText("Login");
 
@@ -144,6 +149,10 @@ public class AuthFrame extends javax.swing.JFrame {
         dispose();
         new RegistrationFrame().setVisible(true);
     }//GEN-LAST:event_registerButtonActionPerformed
+
+    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
+        BookStore.exit();
+    }//GEN-LAST:event_formWindowClosing
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel jPanel1;

@@ -1,6 +1,7 @@
 package business;
 
 import gui.AuthFrame;
+import httpservice.Server;
 
 /**
  * Created with IntelliJ IDEA.
@@ -10,7 +11,10 @@ import gui.AuthFrame;
  * To change this template use File | Settings | File Templates.
  */
 public class BookStore {
+    private static Server server = new Server();
+    
     public static void main(String args[]) {
+        server.start();
         /* Set the Nimbus look and feel */
         //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
         /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
@@ -41,5 +45,10 @@ public class BookStore {
                 new AuthFrame().setVisible(true);
             }
         });
+    }
+    
+    public static void exit() {
+        server.stop();
+        System.exit(0);
     }
 }

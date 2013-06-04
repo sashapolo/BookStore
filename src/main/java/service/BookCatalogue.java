@@ -6,6 +6,7 @@ package service;
 import business.Book;
 import business.BookStore;
 import business.Isbn;
+import business.Isbn10;
 import business.Isbn13;
 import business.WrongFormatException;
 import db.BookMapper;
@@ -71,10 +72,17 @@ public final class BookCatalogue {
     public static Book getBook(final String isbn) throws WrongFormatException {
         assert (isbn != null);
         
+        Isbn parsedIsbn;
+        try {
+            parsedIsbn = new Isbn10(isbn).toIsbn13();
+        } catch (WrongFormatException e) {
+            parsedIsbn = new Isbn13(isbn);
+        }
+        
         final ConnectionManager manager = new DerbyConnectionManager();
         try (Connection connection = manager.getConnection("db")) {
             final BookMapper mapper = new BookMapper(connection);
-            return mapper.find(new Isbn13(isbn));
+            return mapper.find(parsedIsbn);
         } catch (SQLException | DataMapperException e) {
             LOGGER.log(Level.SEVERE, e.getMessage());
             throw new IllegalStateException(e.getMessage());
@@ -129,6 +137,21 @@ public final class BookCatalogue {
         try (Connection connection = manager.getConnection("db")) {
             final BookMapper mapper = new BookMapper(connection);
             mapper.update(book);
+        } catch (SQLException | DataMapperException e) {
+            LOGGER.log(Level.SEVERE, e.getMessage());
+            throw new IllegalStateException(e.getMessage());
+        }
+    }
+    
+    public static int getNumSold(final Book book) throws EntryNotFoundException {
+        assert (book != null);
+        
+        final ConnectionManager manager = new DerbyConnectionManager();
+        try (Connection connection = manager.getConnection("db")) {
+            final BookMapper mapper = new BookMapper(connection);
+            int result = mapper.getNumSold(book.getId());
+            if (result == -1) throw new EntryNotFoundException("Book not found");
+            return result;
         } catch (SQLException | DataMapperException e) {
             LOGGER.log(Level.SEVERE, e.getMessage());
             throw new IllegalStateException(e.getMessage());

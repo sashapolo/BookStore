@@ -194,7 +194,8 @@ public class BookSearchEntryPanel extends javax.swing.JPanel {
 
     private void viewGoogleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewGoogleButtonActionPerformed
         try {
-            final JsonBookObject book = new JsonBookObject(executeRequest(new Request(book_.getIsbn())));
+            final Request request = new Request(book_.getIsbn());
+            final JsonBookObject book = new JsonBookObject(executeRequest(request));
             new GoogleBookFrame(book).setVisible(true);
         } catch (ServiceException | JSONException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
