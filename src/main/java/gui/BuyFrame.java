@@ -7,17 +7,19 @@ package gui;
 import business.Book;
 import business.Customer;
 import business.OrderEntry;
-import service.BookCatalogue;
-import service.EntryNotFoundException;
 import java.math.RoundingMode;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import javax.swing.JOptionPane;
+import javax.swing.JSpinner;
+import service.BookCatalogue;
+import service.EntryNotFoundException;
 
 /**
  *
  * @author alexander
  */
+@SuppressWarnings("serial")
 public class BuyFrame extends javax.swing.JFrame {
 
     /**
@@ -68,6 +70,7 @@ public class BuyFrame extends javax.swing.JFrame {
                 numSpinnerStateChanged(evt);
             }
         });
+        ((JSpinner.DefaultEditor) numSpinner.getEditor()).getTextField().setEditable(false);
 
         jLabel3.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         jLabel3.setText("Avaliable:");
