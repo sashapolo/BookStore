@@ -5,18 +5,12 @@
 package gui;
 
 import business.Book;
-import business.Isbn;
-import business.Isbn13;
-import business.Publisher;
-import business.WrongFormatException;
 import java.util.GregorianCalendar;
 import javax.swing.JOptionPane;
 import service.BookCatalogue;
 import service.BookInfoParser;
 import service.BookParseException;
-import service.EntryNotFoundException;
 import service.EntryRedefinitionException;
-import service.PublisherCatalogue;
 
 /**
  *

@@ -21,7 +21,7 @@ public class Server {
     
     public Server() {
         try {
-            server = HttpServer.create(new InetSocketAddress(9999), 0);
+            server = HttpServer.create(new InetSocketAddress(9_999), 0);
             HttpContext context = server.createContext("/applications/bookstore", new Handler());
             context.getFilters().add(new ParametersFilter());           
             server.setExecutor(null);

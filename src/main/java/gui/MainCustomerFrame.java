@@ -6,9 +6,9 @@ package gui;
 
 import business.Book;
 import business.Customer;
-import service.BookCatalogue;
 import java.util.List;
 import javax.swing.JOptionPane;
+import service.BookCatalogue;
 
 /**
  *
@@ -40,7 +40,7 @@ public class MainCustomerFrame extends javax.swing.JFrame {
         javax.swing.JButton exitButton = new javax.swing.JButton();
         checkoutButton = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
         searchButton.setText("search");
         searchButton.addActionListener(new java.awt.event.ActionListener() {
@@ -114,7 +114,7 @@ public class MainCustomerFrame extends javax.swing.JFrame {
                     .addGroup(layout.createSequentialGroup()
                         .addGap(22, 22, 22)
                         .addComponent(checkoutButton)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 533, Short.MAX_VALUE)))
                 .addComponent(exitButton)
                 .addContainerGap())
         );

@@ -4,9 +4,9 @@
  */
 package gui;
 
+import javax.swing.JOptionPane;
 import service.EntryRedefinitionException;
 import service.UserCatalogue;
-import javax.swing.JOptionPane;
 
 /**
  *
@@ -45,7 +45,7 @@ public class RegistrationFrame extends javax.swing.JFrame {
         javax.swing.JButton registerButton = new javax.swing.JButton();
         javax.swing.JButton backButton = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
         jLabel1.setText("Login:");
 

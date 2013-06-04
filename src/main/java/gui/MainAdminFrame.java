@@ -41,7 +41,7 @@ public class MainAdminFrame extends javax.swing.JFrame {
         javax.swing.JButton modifyPubButton = new javax.swing.JButton();
         javax.swing.JButton exitButton = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
         bookPanel.setBorder(javax.swing.BorderFactory.createTitledBorder("Books"));
 
@@ -114,7 +114,7 @@ public class MainAdminFrame extends javax.swing.JFrame {
                 .addComponent(addPubButton)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(modifyPubButton)
-                .addContainerGap(104, Short.MAX_VALUE))
+                .addContainerGap(105, Short.MAX_VALUE))
         );
 
         exitButton.setText("Log out");

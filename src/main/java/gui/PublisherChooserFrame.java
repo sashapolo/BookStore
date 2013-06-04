@@ -38,7 +38,7 @@ public class PublisherChooserFrame extends javax.swing.JFrame {
         javax.swing.JButton backButton = new javax.swing.JButton();
         javax.swing.JButton deleteButton = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
         jScrollPane1.setName("jScrollPane1"); // NOI18N
 

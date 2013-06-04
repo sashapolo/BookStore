@@ -6,8 +6,8 @@ import org.junit.Test;
 
 
 public class CartTest {
-    private final Book book;
     public static final double EPSILON = 1e-15;
+    private final Book book;
 
     public CartTest() throws WrongFormatException {
         book = new Book.Builder("",

@@ -14,21 +14,17 @@ import java.sql.Statement;
  */
 
 public abstract class Mapper<T> {
-    protected Connection connection_;
 
     public static int getId(final Statement statement) throws SQLException, DataMapperException {
-        ResultSet keys = null;
-        try {
-            keys = statement.getGeneratedKeys();
+        try (ResultSet keys = statement.getGeneratedKeys()) {
             assert (keys != null): "Forgot to add Statement.RETURN_GENERATED_KEYS";
             if (keys.next()) {
                 return keys.getInt(1);
             }
             throw new DataMapperException("Error occurred while retrieving primary key");
-        } finally {
-            if (keys != null) keys.close();
         }
     }
+    protected Connection connection_;
 
     public Mapper(final Connection connection) {
         assert (connection != null);
@@ -36,6 +32,7 @@ public abstract class Mapper<T> {
     }
 
     public abstract T find(final int id) throws DataMapperException;
+
     public abstract int insert(final T param) throws DataMapperException;
     public abstract void update(final T param) throws DataMapperException;
     public abstract void delete(final int id) throws DataMapperException;

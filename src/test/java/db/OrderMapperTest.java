@@ -26,9 +26,6 @@ public class OrderMapperTest {
     private static int pubId_;
     public static final double EPSILON = 1e-15;
 
-    @Rule
-    public final ExpectedException exception = ExpectedException.none();
-
     @BeforeClass
     public static void setUpDatabase() throws Exception {
         final TestConnectionManager manager = new TestConnectionManager();
@@ -96,6 +93,9 @@ public class OrderMapperTest {
             if (statement != null) statement.close();
         }
     }
+
+    @Rule
+    public final ExpectedException exception = ExpectedException.none();
 
     @Test
     public void selectTest() throws Exception {
@@ -169,7 +169,7 @@ public class OrderMapperTest {
         }
     }
 
-    private Order createOrder(final Connection connection, final String isbn10) throws DataMapperException, WrongFormatException {
+        private Order createOrder(final Connection connection, final String isbn10) throws DataMapperException, WrongFormatException {
         final Mapper<User> userMapper = new UserMapper(connection);
         final Mapper<Publisher> pubMapper = new PublisherMapper(connection);
         final Mapper<Book> bookMapper = new BookMapper(connection);

@@ -55,7 +55,7 @@ public class BuyFrame extends javax.swing.JFrame {
         javax.swing.JLabel jLabel5 = new javax.swing.JLabel();
         priceField = new javax.swing.JFormattedTextField();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
         nameLabel.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
         nameLabel.setText(book_.getName());

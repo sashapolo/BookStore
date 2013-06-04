@@ -9,8 +9,8 @@ import org.junit.rules.ExpectedException;
 
 
 public class OrderEntryTest {
-    private Book book;
     public static final double EPSILON = 1e-15;
+    private Book book;
 
     @Rule
     public final ExpectedException exception = ExpectedException.none();

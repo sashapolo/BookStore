@@ -13,6 +13,39 @@ import util.EnumConverter;
  */
 public class Order {
     private final Builder builder_;
+    
+    private Order(final Builder builder) {
+        assert(builder != null);
+        builder_ = builder;
+    }
+
+    public int getId() {
+        return builder_.id_;
+    }
+
+    public GregorianCalendar getDateCreated() {
+        return builder_.dateCreated_;
+    }
+
+    public double getPrice() {
+        return builder_.cartPrice_;
+    }
+
+    public OrderStatus getStatus() {
+        return builder_.status_;
+    }
+
+    public Customer getOrderer() {
+        return builder_.orderer_;
+    }
+
+    public Cart getCart() {
+    	return builder_.cart_;
+    }
+
+    public void setId(final int id) {
+        builder_.id_ = id;
+    }
 
     public static class Builder {
         private int id_= 0;
@@ -61,39 +94,6 @@ public class Order {
         
         @Override
         public int convert() { return id_; }
-    }
-    
-    private Order(final Builder builder) {
-        assert(builder != null);
-        builder_ = builder;
-    }
-
-    public int getId() {
-        return builder_.id_;
-    }
-
-    public GregorianCalendar getDateCreated() {
-        return builder_.dateCreated_;
-    }
-
-    public double getPrice() {
-        return builder_.cartPrice_;
-    }
-
-    public OrderStatus getStatus() {
-        return builder_.status_;
-    }
-
-    public Customer getOrderer() {
-        return builder_.orderer_;
-    }
-
-    public Cart getCart() {
-    	return builder_.cart_;
-    }
-
-    public void setId(final int id) {
-        builder_.id_ = id;
     }
 
 }

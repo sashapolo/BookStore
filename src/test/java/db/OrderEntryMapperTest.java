@@ -23,9 +23,6 @@ public class OrderEntryMapperTest {
     private static int bookId_;
     private static int entryId_;
 
-    @Rule
-    public final ExpectedException exception = ExpectedException.none();
-
     @BeforeClass
     public static void setUpDatabase() throws Exception {
         final TestConnectionManager manager = new TestConnectionManager();
@@ -74,6 +71,9 @@ public class OrderEntryMapperTest {
             if (statement != null) statement.close();
         }
     }
+
+    @Rule
+    public final ExpectedException exception = ExpectedException.none();
 
     @Test
     public void selectTest() throws Exception {

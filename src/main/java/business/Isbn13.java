@@ -7,7 +7,7 @@ package business;
  * @author alexander
  * 
  */
-public class Isbn13 extends Isbn {
+public final class Isbn13 extends Isbn {
     public Isbn13(final String isbn) throws WrongFormatException {
         assert (isbn != null);
 

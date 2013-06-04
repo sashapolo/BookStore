@@ -42,4 +42,7 @@ public class OrderCatalogue {
             throw new IllegalStateException(e.getMessage());
         }
     }
+
+    private OrderCatalogue() {
+    }
 }
