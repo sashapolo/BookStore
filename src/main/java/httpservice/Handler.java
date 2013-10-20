@@ -6,16 +6,17 @@ package httpservice;
 
 import com.sun.net.httpserver.HttpExchange;
 import com.sun.net.httpserver.HttpHandler;
+import org.json.JSONObject;
+
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.Map;
-import org.json.JSONObject;
 
 /**
  *
  * @author alexander
  */
-public class Handler implements HttpHandler {
+final class Handler implements HttpHandler {
     @Override
     public void handle(HttpExchange he) throws IOException {
         @SuppressWarnings("unchecked")

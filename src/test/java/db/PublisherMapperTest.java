@@ -19,33 +19,29 @@ import static org.junit.Assert.*;
  *
  * @author alexander
  */
-public class PublisherMapperTest {
-    private static int id_;
+public final class PublisherMapperTest {
+    private static int id = -1;
 
     @BeforeClass
     public static void setUpDatabase() throws Exception {
         final TestConnectionManager manager = new TestConnectionManager();
-        Statement statement = null;
         try (Connection connection = manager.getConnection("testdb")) {
             final String query = "INSERT into Publishers(Name) VALUES ('Mad Jack')";
-            statement = connection.createStatement();
-            statement.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
-            id_ = Mapper.getId(statement);
-        } finally {
-            if (statement != null) statement.close();
+            try (final Statement statement = connection.createStatement()) {
+                statement.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
+                id = Mapper.getId(statement);
+            }
         }
     }
 
     @AfterClass
     public static void clearDatabase() throws SQLException {
         final TestConnectionManager manager = new TestConnectionManager();
-        Statement statement = null;
         try (Connection connection = manager.getConnection("testdb")) {
             final String query = "DELETE from Users";
-            statement = connection.createStatement();
-            statement.executeUpdate(query);
-        } finally {
-            if (statement != null) statement.close();
+            try (final Statement statement = connection.createStatement()) {
+                statement.executeUpdate(query);
+            }
         }
     }
 
@@ -54,8 +50,7 @@ public class PublisherMapperTest {
         final TestConnectionManager manager = new TestConnectionManager();
         try (Connection connection = manager.getConnection("testdb")) {
             final Mapper<Publisher> mapper = new PublisherMapper(connection);
-
-            final Publisher pub = mapper.find(id_);
+            final Publisher pub = mapper.find(id);
             assertEquals("Incorrect name", "Mad Jack", pub.getName());
         }
     }
@@ -67,10 +62,10 @@ public class PublisherMapperTest {
             final Mapper<Publisher> mapper = new PublisherMapper(connection);
 
             final Publisher pub = new Publisher(-1, "spam");
-            final int id = mapper.insert(pub);
-            final Publisher tmp = new Publisher(id, "ham");
+            final int i = mapper.insert(pub);
+            final Publisher tmp = new Publisher(i, "ham");
             mapper.update(tmp);
-            final Publisher test = mapper.find(id);
+            final Publisher test = mapper.find(i);
             assertEquals("Incorrect name", "ham", test.getName());
         }
     }
@@ -82,11 +77,11 @@ public class PublisherMapperTest {
             final Mapper<Publisher> mapper = new PublisherMapper(connection);
 
             final Publisher pub = new Publisher(-1, "spam");
-            final int id = mapper.insert(pub);
-            mapper.delete(id + 1);
-            assertNotNull("Publisher was deleted", mapper.find(id));
-            mapper.delete(id);
-            assertNull("Publisher was not deleted", mapper.find(id));
+            final int i = mapper.insert(pub);
+            mapper.delete(i + 1);
+            assertNotNull("Publisher was deleted", mapper.find(i));
+            mapper.delete(i);
+            assertNull("Publisher was not deleted", mapper.find(i));
         }
     }
 }

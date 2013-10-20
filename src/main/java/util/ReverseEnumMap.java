@@ -10,8 +10,8 @@ import java.util.Map;
  * Time: 2:47 PM
  * To change this template use File | Settings | File Templates.
  */
-public class ReverseEnumMap<V extends Enum<V> & EnumConverter> {
-    private Map<Integer, V> map = new HashMap<>();
+public final class ReverseEnumMap<V extends Enum<V> & EnumConverter> {
+    private final Map<Integer, V> map = new HashMap<>();
 
     public ReverseEnumMap(Class<V> valueType) {
         for (V v : valueType.getEnumConstants()) {

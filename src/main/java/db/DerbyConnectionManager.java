@@ -1,9 +1,9 @@
 package db;
 
 import business.BookStore;
+import org.apache.derby.jdbc.EmbeddedDataSource;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.logging.Logger;
 
@@ -25,7 +25,9 @@ public final class DerbyConnectionManager implements ConnectionManager {
             LOGGER.severe("Can't load derby embedded driver");
             throw new IllegalStateException(e);
         }
-        Connection result = DriverManager.getConnection("jdbc:derby:" + url);
+        final EmbeddedDataSource ds = new EmbeddedDataSource();
+        ds.setDatabaseName(url);
+        final Connection result = ds.getConnection();
         result.setAutoCommit(true);
         return result;
     }

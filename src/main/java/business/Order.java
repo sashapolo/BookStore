@@ -3,80 +3,81 @@
  */
 package business;
 
-import java.util.GregorianCalendar;
 import util.EnumConverter;
+
+import java.util.GregorianCalendar;
 
 
 /**
  * @author alexander
  * 
  */
-public class Order {
-    private final Builder builder_;
+public final class Order {
+    private final Builder builder;
     
     private Order(final Builder builder) {
         assert(builder != null);
-        builder_ = builder;
+        this.builder = builder;
     }
 
     public int getId() {
-        return builder_.id_;
+        return builder.id;
     }
 
     public GregorianCalendar getDateCreated() {
-        return builder_.dateCreated_;
+        return (GregorianCalendar) builder.dateCreated.clone();
     }
 
     public double getPrice() {
-        return builder_.cartPrice_;
+        return builder.cartPrice;
     }
 
     public OrderStatus getStatus() {
-        return builder_.status_;
+        return builder.status;
     }
 
     public Customer getOrderer() {
-        return builder_.orderer_;
+        return builder.customer;
     }
 
     public Cart getCart() {
-    	return builder_.cart_;
+    	return builder.cart;
     }
 
     public void setId(final int id) {
-        builder_.id_ = id;
+        builder.id = id;
     }
 
-    public static class Builder {
-        private int id_= 0;
-        private GregorianCalendar dateCreated_ = new GregorianCalendar();
-        private final Cart cart_;
-        private final double cartPrice_;
-        private OrderStatus status_ = OrderStatus.CREATED;
-        private final Customer orderer_;
+    public final static class Builder {
+        private int id = 0;
+        private GregorianCalendar dateCreated = new GregorianCalendar();
+        private final Cart cart;
+        private final double cartPrice;
+        private OrderStatus status = OrderStatus.CREATED;
+        private final Customer customer;
 
-        public Builder(final Cart cart, final Customer orderer) {
+        public Builder(final Cart cart, final Customer customer) {
             assert (cart != null);
-            assert (orderer != null);
+            assert (customer != null);
             assert (!cart.isEmpty()): "Creating an order with an empty cart";
 
-            cart_ = cart;
-            cartPrice_ = cart.getPrice(orderer.getPersonalDiscount());
-            orderer_ = orderer;
+            this.cart = cart;
+            cartPrice = cart.getPrice(customer.getPersonalDiscount());
+            this.customer = customer;
         }
 
         public Builder id(final int id) {
-            id_ = id;
+            this.id = id;
             return this;
         }
         
         public Builder dateCreated(final GregorianCalendar date) {
-            dateCreated_ = date;
+            dateCreated = (GregorianCalendar) date.clone();
             return this;
         }
 
         public Builder status(final OrderStatus status) {
-            status_ = status;
+            this.status = status;
             return this;
         }
 
@@ -86,14 +87,14 @@ public class Order {
     }
 
     public enum OrderStatus implements EnumConverter {
-        // TODO add some statuses
+        //TODO add some statuses
         CREATED(0);
 
-        private final int id_;
-        OrderStatus(final int id) { id_ = id; }
+        private final int id;
+        OrderStatus(final int id) { this.id = id; }
         
         @Override
-        public int convert() { return id_; }
+        public int convert() { return id; }
     }
 
 }

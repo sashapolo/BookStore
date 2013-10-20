@@ -5,9 +5,10 @@
 package gui;
 
 import business.Publisher;
-import javax.swing.JOptionPane;
 import service.EntryNotFoundException;
 import service.PublisherCatalogue;
+
+import javax.swing.*;
 
 /**
  *

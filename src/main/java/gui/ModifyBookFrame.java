@@ -5,13 +5,14 @@
 package gui;
 
 import business.Book;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import javax.swing.JOptionPane;
 import service.BookCatalogue;
 import service.BookInfoParser;
 import service.BookParseException;
 import service.EntryNotFoundException;
+
+import javax.swing.*;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 /**
  *
@@ -142,7 +143,7 @@ public class ModifyBookFrame extends javax.swing.JFrame {
             book.setId(book_.getId());
             BookCatalogue.updateBook(book);
             BookCatalogue.setAmount(book, Integer.valueOf(amount));
-        } catch (NumberFormatException | BookParseException | EntryNotFoundException ex) {
+        } catch (NumberFormatException | BookParseException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
             return;
         }

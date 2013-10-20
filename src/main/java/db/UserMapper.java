@@ -1,6 +1,7 @@
 package db;
 
 import business.Administrator;
+import business.Credentials;
 import business.Customer;
 import business.User;
 import util.ReverseEnumMap;
@@ -47,23 +48,22 @@ public final class UserMapper extends Mapper<User>{
     public int insert(final User user) throws DataMapperException {
         assert (user != null);
 
-        PreparedStatement statement = null;
         try {
             if (user instanceof Administrator) {
-                statement = getInsertQuery((Administrator) user);
+                try (final PreparedStatement statement = getInsertQuery((Administrator) user)) {
+                    statement.executeUpdate();
+                    return getId(statement);
+                }
             } else if (user instanceof Customer) {
-                statement = getInsertQuery((Customer) user);
+                try (final PreparedStatement statement = getInsertQuery((Customer) user)) {
+                    statement.executeUpdate();
+                    return getId(statement);
+                }
             } else {
                 throw new DataMapperException("Unknown user type");
             }
-            statement.executeUpdate();
-            return getId(statement);
         } catch (SQLException e) {
             throw new DataMapperException("Error occurred while inserting a user: " + e.getMessage());
-        } finally {
-            try {
-                if (statement != null) statement.close();
-            } catch (SQLException e) {}
         }
     }
 
@@ -71,22 +71,20 @@ public final class UserMapper extends Mapper<User>{
     public void update(final User user) throws DataMapperException {
         assert (user != null);
 
-        PreparedStatement statement = null;
         try {
             if (user instanceof Administrator) {
-                statement = getUpdateQuery((Administrator) user);
+                try (final PreparedStatement statement = getUpdateQuery((Administrator) user)) {
+                    statement.executeUpdate();
+                }
             } else if (user instanceof Customer) {
-                statement = getUpdateQuery((Customer) user);
+                try (final PreparedStatement statement = getUpdateQuery((Customer) user)) {
+                    statement.executeUpdate();
+                }
             } else {
                 throw new DataMapperException("Unknown user type");
             }
-            statement.executeUpdate();
         } catch (SQLException e) {
             throw new DataMapperException("Error occurred while updating a user: " + e.getMessage());
-        } finally {
-            try {
-                if (statement != null) statement.close();
-            } catch (SQLException e) {}
         }
     }
 
@@ -101,7 +99,7 @@ public final class UserMapper extends Mapper<User>{
         }
     }
 
-    private User createUser(final PreparedStatement statement) throws SQLException, DataMapperException {
+    private User createUser(final PreparedStatement statement) throws SQLException {
         assert(statement != null);
 
         final ResultSet result = statement.executeQuery();
@@ -115,12 +113,13 @@ public final class UserMapper extends Mapper<User>{
             final String secondName = result.getString("SecondName");
             final String email = result.getString("Email");
 
+            final Credentials credentials = new Credentials(name, secondName, email);
             switch (type) {
             case CUSTOMER:
                 final int discount = result.getInt("PersonalDiscount");
-                return new Customer(id, login, password, name, secondName, email, discount);
+                return new Customer(id, login, password, credentials, discount);
             case ADMIN:
-                return new Administrator(id, login, password, name, secondName, email);
+                return new Administrator(id, login, password, credentials);
             }
         }
         return null;

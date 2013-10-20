@@ -6,20 +6,18 @@ package httpservice;
 
 import com.sun.net.httpserver.Filter;
 import com.sun.net.httpserver.HttpExchange;
+
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLDecoder;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  *
  * @author alexander
  */
-public class ParametersFilter extends Filter {
+final class ParametersFilter extends Filter {
 
     @Override
     public void doFilter(HttpExchange he, Chain chain) throws IOException {
@@ -57,11 +55,11 @@ public class ParametersFilter extends Filter {
             }
 
             if (result.containsKey(key)) {
-                Object obj = result.get(key);
+                final Object obj = result.get(key);
                 if (obj instanceof List<?>) {
-                    ((List<String>) obj).add(value);
+                    ((Collection<String>) obj).add(value);
                 } else if (obj instanceof String) {
-                    List<String> values = new ArrayList<>();
+                    final Collection<String> values = new ArrayList<>();
                     values.add((String) obj);
                     values.add(value);
                     result.put(key, values);

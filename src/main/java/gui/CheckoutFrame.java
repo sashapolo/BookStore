@@ -6,10 +6,9 @@ package gui;
 
 import business.Customer;
 import business.OrderEntry;
-import javax.swing.JOptionPane;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
 import service.OrderCatalogue;
+
+import javax.swing.*;
 
 /**
  *

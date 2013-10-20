@@ -6,17 +6,17 @@ package gui;
 
 import business.Book;
 import business.Customer;
-import static httpservice.GBooksHttpConnecter.executeRequest;
 import httpservice.JsonBookObject;
 import httpservice.Request;
 import httpservice.ServiceException;
-import java.util.GregorianCalendar;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
-import javax.swing.SwingUtilities;
 import org.json.JSONException;
 import service.BookCatalogue;
 import service.EntryNotFoundException;
+
+import javax.swing.*;
+import java.util.GregorianCalendar;
+
+import static httpservice.GBooksHttpConnecter.executeRequest;
 
 /**
  *

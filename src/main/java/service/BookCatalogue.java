@@ -3,7 +3,10 @@
  */
 package service;
 
-import business.*;
+import business.Book;
+import business.BookStore;
+import business.Isbn;
+import business.WrongFormatException;
 import db.BookMapper;
 import db.ConnectionManager;
 import db.DataMapperException;
@@ -24,10 +27,6 @@ import java.util.logging.Logger;
 public final class BookCatalogue {
     private static final Logger LOGGER = Logger.getLogger(BookStore.class.getName());
 
-    public static void createBook(final Book book) throws EntryRedefinitionException {
-        createBook(book, 0);
-    }
-    
     public static void createBook(final Book book, int amount) throws EntryRedefinitionException {
         assert (book != null);
         final ConnectionManager manager = new DerbyConnectionManager();
@@ -96,7 +95,7 @@ public final class BookCatalogue {
         }
     }
     
-    public static void setAmount(final Book book, int amount) throws EntryNotFoundException {
+    public static void setAmount(final Book book, int amount) {
         assert (book != null);
         
         final ConnectionManager manager = new DerbyConnectionManager();

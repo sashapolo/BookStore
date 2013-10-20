@@ -6,7 +6,8 @@ package gui;
 
 import business.Customer;
 import business.OrderEntry;
-import javax.swing.SwingUtilities;
+
+import javax.swing.*;
 
 /**
  *

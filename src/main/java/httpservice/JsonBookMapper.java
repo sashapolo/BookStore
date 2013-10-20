@@ -6,17 +6,18 @@ package httpservice;
 
 import business.Book;
 import business.WrongFormatException;
-import java.util.HashMap;
-import java.util.Map;
 import org.json.JSONObject;
 import service.BookCatalogue;
 import service.EntryNotFoundException;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  *
  * @author alexander
  */
-public class JsonBookMapper {
+class JsonBookMapper {
     public static JSONObject mapNumSold(final String isbn) {
         try {
             Map<String, Integer> map = new HashMap<>(1);

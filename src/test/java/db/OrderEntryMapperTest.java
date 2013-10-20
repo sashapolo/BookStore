@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 
@@ -21,56 +22,51 @@ import static org.junit.Assert.*;
  * Time: 1:12 AM
  * To change this template use File | Settings | File Templates.
  */
-public class OrderEntryMapperTest {
-    private static int bookId_;
-    private static int entryId_;
+public final class OrderEntryMapperTest {
+    private static int bookId = -1;
+    private static int entryId = -1;
 
     @BeforeClass
     public static void setUpDatabase() throws Exception {
         final TestConnectionManager manager = new TestConnectionManager();
-        Statement statement = null;
 
         try (Connection connection = manager.getConnection("testdb")) {
-            String query = "INSERT into Publishers(Name) VALUES ('Mad Jack')";
-            statement = connection.createStatement();
-            statement.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
+            final String query1 = "INSERT into Publishers(Name) VALUES ('Mad Jack')";
+            final int id;
+            try (final Statement statement = connection.createStatement()) {
+                statement.executeUpdate(query1, Statement.RETURN_GENERATED_KEYS);
+                id = Mapper.getId(statement);
+            }
 
-            final int id = Mapper.getId(statement);
+            final String query2 = "INSERT into Books(Name, Author, Genre, Isbn, PublicationDate, Price, Discount, PublisherId)" +
+                                  "VALUES ('foo', '', 'bar', '9783161484100', '2012-01-01', 200, 10, ?)";
+            try (final PreparedStatement statement = connection.prepareStatement(query2, Statement.RETURN_GENERATED_KEYS)) {
+                statement.setInt(1, id);
+                statement.executeUpdate();
+                bookId = Mapper.getId(statement);
+            }
 
-            query = "INSERT into Books(Name, Author, Genre, Isbn, PublicationDate, Price, Discount, PublisherId)" +
-                    "VALUES ('foo', '', 'bar', '9783161484100', '2012-01-01', 200, 10, " + id + ')';
-            statement = connection.createStatement();
-            statement.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
-
-            bookId_ = Mapper.getId(statement);
-
-            query = "INSERT into OrderEntries(BookId, Amount)" +
-                    "VALUES (" + bookId_+ ", 10)";
-            statement = connection.createStatement();
-            statement.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
-
-            entryId_ = Mapper.getId(statement);
-        } finally {
-            if (statement != null) statement.close();
+            final String query3 = "INSERT into OrderEntries(BookId, Amount) VALUES (?, 10)";
+            try (final PreparedStatement statement = connection.prepareStatement(query3, Statement.RETURN_GENERATED_KEYS)) {
+                statement.setInt(1, bookId);
+                statement.executeUpdate();
+                entryId = Mapper.getId(statement);
+            }
         }
     }
 
     @AfterClass
     public static void clearDatabase() throws SQLException {
         final TestConnectionManager manager = new TestConnectionManager();
-        Statement statement = null;
         try (Connection connection = manager.getConnection("testdb")) {
-            String query = "DELETE from OrderEntries";
-            statement = connection.createStatement();
-            statement.executeUpdate(query);
-            query = "DELETE from Books";
-            statement = connection.createStatement();
-            statement.executeUpdate(query);
-            query = "DELETE from Users";
-            statement = connection.createStatement();
-            statement.executeUpdate(query);
-        } finally {
-            if (statement != null) statement.close();
+            try (final Statement statement = connection.createStatement()) {
+                final String query1 = "DELETE from OrderEntries";
+                final String query2 = "DELETE from Books";
+                final String query3 = "DELETE from Users";
+                statement.executeUpdate(query1);
+                statement.executeUpdate(query2);
+                statement.executeUpdate(query3);
+            }
         }
     }
 
@@ -82,11 +78,11 @@ public class OrderEntryMapperTest {
         final TestConnectionManager manager = new TestConnectionManager();
         try (Connection connection = manager.getConnection("testdb")) {
             final OrderEntryMapper mapper = new OrderEntryMapper(connection);
-            final OrderEntry entry = mapper.find(entryId_);
+            final OrderEntry entry = mapper.find(entryId);
             assertNotNull("Entry not found", entry);
             assertEquals("Incorrect amount", 10, entry.getAmount());
             assertNotNull("Book not found", entry.getBook());
-            assertEquals("Incorrect book", bookId_, entry.getBook().getId());
+            assertEquals("Incorrect book", bookId, entry.getBook().getId());
         }
     }
 
@@ -96,7 +92,7 @@ public class OrderEntryMapperTest {
         try (Connection connection = manager.getConnection("testdb")) {
             final OrderEntryMapper mapper = new OrderEntryMapper(connection);
             final BookMapper bookMapper = new BookMapper(connection);
-            final Book book = bookMapper.find(bookId_);
+            final Book book = bookMapper.find(bookId);
             assertNotNull("Book not found", book);
 
             final OrderEntry entry = new OrderEntry(-1, book, 100);
@@ -116,7 +112,7 @@ public class OrderEntryMapperTest {
         try (Connection connection = manager.getConnection("testdb")) {
             final OrderEntryMapper mapper = new OrderEntryMapper(connection);
             final BookMapper bookMapper = new BookMapper(connection);
-            final Book book = bookMapper.find(bookId_);
+            final Book book = bookMapper.find(bookId);
 
             final OrderEntry entry = new OrderEntry(-1, book, 100);
             mapper.update(entry);
@@ -129,7 +125,7 @@ public class OrderEntryMapperTest {
         try (Connection connection = manager.getConnection("testdb")) {
             final OrderEntryMapper mapper = new OrderEntryMapper(connection);
             final BookMapper bookMapper = new BookMapper(connection);
-            final Book book = bookMapper.find(bookId_);
+            final Book book = bookMapper.find(bookId);
 
             final OrderEntry entry = new OrderEntry(-1, book, 100);
             final int id = mapper.insert(entry);

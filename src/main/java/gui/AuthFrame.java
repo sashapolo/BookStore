@@ -8,11 +8,12 @@ import business.Administrator;
 import business.BookStore;
 import business.Customer;
 import business.User;
-import java.util.logging.Logger;
-import javax.swing.JOptionPane;
 import service.EntryNotFoundException;
 import service.IncorrectPasswordException;
 import service.UserCatalogue;
+
+import javax.swing.*;
+import java.util.logging.Logger;
 
 /**
  *

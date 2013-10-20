@@ -1,11 +1,13 @@
 package business;
 
-import java.util.GregorianCalendar;
-import static org.junit.Assert.assertEquals;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
+
+import java.util.GregorianCalendar;
+
+import static org.junit.Assert.assertEquals;
 
 
 public final class OrderEntryTest {

@@ -1,14 +1,16 @@
 package business;
 
-import java.util.GregorianCalendar;
-import static org.junit.Assert.assertEquals;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
+import java.util.GregorianCalendar;
+
+import static org.junit.Assert.assertEquals;
+
 
 public final class BookTest {
-    public static final double EPSILON = 1e-15;
+    private static final double EPSILON = 1e-15;
 
     @Rule
     public final ExpectedException exception = ExpectedException.none();

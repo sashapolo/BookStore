@@ -1,7 +1,8 @@
 package db;
 
+import org.apache.derby.jdbc.EmbeddedDataSource;
+
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.logging.Logger;
 
@@ -12,7 +13,7 @@ import java.util.logging.Logger;
  * Time: 9:02 PM
  * To change this template use File | Settings | File Templates.
  */
-public class TestConnectionManager implements ConnectionManager {
+public final class TestConnectionManager implements ConnectionManager {
     private static final Logger LOGGER = Logger.getLogger(ConnectionManager.class.getName());
 
     @Override
@@ -22,7 +23,9 @@ public class TestConnectionManager implements ConnectionManager {
         } catch (ClassNotFoundException e) {
             LOGGER.severe("Can't load derby embedded driver");
         }
-        final Connection result = DriverManager.getConnection("jdbc:derby:testdb");
+        final EmbeddedDataSource ds = new EmbeddedDataSource();
+        ds.setDatabaseName("testdb");
+        final Connection result = ds.getConnection();
         result.setAutoCommit(true);
         return result;
     }

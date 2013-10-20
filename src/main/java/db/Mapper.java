@@ -13,7 +13,7 @@ import java.sql.Statement;
  * To change this template use File | Settings | File Templates.
  */
 
-public abstract class Mapper<T> {
+abstract class Mapper<T> {
 
     public static int getId(final Statement statement) throws SQLException, DataMapperException {
         try (ResultSet keys = statement.getGeneratedKeys()) {
@@ -26,7 +26,7 @@ public abstract class Mapper<T> {
     }
     protected Connection connection;
 
-    public Mapper(final Connection connection) {
+    protected Mapper(final Connection connection) {
         assert (connection != null);
         this.connection = connection;
     }

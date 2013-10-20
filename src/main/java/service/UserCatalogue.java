@@ -1,6 +1,7 @@
 package service;
 
 import business.BookStore;
+import business.Credentials;
 import business.Customer;
 import business.User;
 import db.ConnectionManager;
@@ -32,7 +33,7 @@ public final class UserCatalogue {
             if (result == null)
                 throw new EntryNotFoundException("user not found");
             if (password.hashCode() != result.getPasswordHash())
-                throw new IncorrectPasswordException("incorrect password");
+                throw new IncorrectPasswordException();
 
             return result;
         } catch (SQLException | DataMapperException e) {
@@ -51,8 +52,9 @@ public final class UserCatalogue {
             final UserMapper mapper = new UserMapper(connection);
             final User test = mapper.find(login);
             if (test != null) throw new EntryRedefinitionException("user already exists");
-            
-            final User user = new Customer(-1, login, password.hashCode(), name, secondName, email);
+
+            final Credentials credentials = new Credentials(name, secondName, email);
+            final User user = new Customer(-1, login, password.hashCode(), credentials);
             mapper.insert(user);
         } catch (SQLException | DataMapperException e) {
             LOGGER.log(Level.SEVERE, e.getMessage());

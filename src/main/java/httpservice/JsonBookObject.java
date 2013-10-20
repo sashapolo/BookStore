@@ -12,54 +12,54 @@ import org.json.JSONObject;
  *
  * @author alexander
  */
-public class JsonBookObject {
-    private final String name_;
-    private final String author_;
-    private final String publisher_;
-    private final String publishedDate_;
-    private final double rating_;
+public final class JsonBookObject {
+    private final String name;
+    private final String author;
+    private final String publisher;
+    private final String publishedDate;
+    private final double rating;
     
     public JsonBookObject(final JSONObject object) throws JSONException {
         final JSONArray items = object.getJSONArray("items");
         final JSONObject item = items.getJSONObject(0);
         final JSONObject volumeInfo = item.getJSONObject("volumeInfo");
-        name_ = volumeInfo.getString("title");
+        name = volumeInfo.getString("title");
         final JSONArray array = volumeInfo.getJSONArray("authors");
-        author_ = array.getString(0);
+        author = array.getString(0);
         if (volumeInfo.has("publisher")) {
-            publisher_ = volumeInfo.getString("publisher");
+            publisher = volumeInfo.getString("publisher");
         } else {
-            publisher_ = "";
+            publisher = "";
         } 
         if (volumeInfo.has("publishedDate")) {
-            publishedDate_ = volumeInfo.getString("publishedDate");
+            publishedDate = volumeInfo.getString("publishedDate");
         } else {
-            publishedDate_ = "";
+            publishedDate = "";
         }
         if (volumeInfo.has("averageRating")) {
-            rating_ = volumeInfo.getDouble("averageRating");
+            rating = volumeInfo.getDouble("averageRating");
         } else {
-            rating_ = 0;
+            rating = 0;
         }
     }
 
     public String getName() {
-        return name_;
+        return name;
     }
 
     public String getAuthor() {
-        return author_;
+        return author;
     }
 
     public String getPublisher() {
-        return publisher_;
+        return publisher;
     }
 
     public String getPublishedDate() {
-        return publishedDate_;
+        return publishedDate;
     }
 
     public double getRating() {
-        return rating_;
+        return rating;
     }
 }

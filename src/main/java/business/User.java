@@ -8,60 +8,41 @@ package business;
  * 
  */
 public class User {
-    protected final int id_;
-    protected String login_;
-    protected int password_;
-    protected String name_;
-    protected String secondName_;
-    protected String email_;
+    private final int id;
+    private final String login;
+    private final int password;
+    private final Credentials credentials;
 
-    public User(final int id,
-                final String login,
-                final int password,
-                final String name,
-                final String secondName,
-                final String email) {
+    User(int id, final String login, int password, final Credentials credentials) {
         assert (login != null);
-        assert (name != null);
-        assert (secondName != null);
 
-        id_ = id;
-        login_ = login;
-        password_ = password;
-        name_ = name;
-        secondName_ = secondName;
-        email_ = email;
-    }
-    
-    public User(final String login,
-                final int password,
-                final String name,
-                final String secondName,
-                final String email) {
-       this(0, login, password, name, secondName, email);         
+        this.id = id;
+        this.login = login;
+        this.password = password;
+        this.credentials = credentials;
     }
 
-    public int getId() {
-        return id_;
+    public final int getId() {
+        return id;
     }
 
-    public String getLogin() {
-        return login_;
+    public final String getLogin() {
+        return login;
     }
 
-    public int getPasswordHash() {
-        return password_;
+    public final int getPasswordHash() {
+        return password;
     }
 
-    public String getName() {
-        return name_;
+    public final String getName() {
+        return credentials.getName();
     }
 
-    public String getSecondName() {
-        return secondName_;
+    public final String getSecondName() {
+        return credentials.getSecondName();
     }
 
-    public String getEmail() {
-        return email_;
+    public final String getEmail() {
+        return credentials.getEmail();
     }
 }

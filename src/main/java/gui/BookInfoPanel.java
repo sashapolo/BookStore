@@ -4,8 +4,9 @@
  */
 package gui;
 
-import java.io.Serializable;
 import service.PublisherCatalogue;
+
+import java.io.Serializable;
 
 /**
  *

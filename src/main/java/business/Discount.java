@@ -7,7 +7,7 @@ package business;
  * @author alexander
  * 
  */
-public class Discount {
+public final class Discount {
     private final int value_;
 
     public Discount(final int value) {

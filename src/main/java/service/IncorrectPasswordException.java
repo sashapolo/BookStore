@@ -8,5 +8,5 @@ package service;
  * To change this template use File | Settings | File Templates.
  */
 public class IncorrectPasswordException extends Exception {
-    public IncorrectPasswordException(final String message) { super(message); }
+    public IncorrectPasswordException() { super("Incorrect password"); }
 }

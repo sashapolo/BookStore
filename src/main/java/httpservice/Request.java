@@ -5,6 +5,7 @@
 package httpservice;
 
 import business.Isbn;
+
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -12,16 +13,16 @@ import java.net.URL;
  *
  * @author alexander
  */
-public class Request {
+public final class Request {
     private static final String requestString = "https://www.googleapis.com/books/v1/volumes?q=isbn:";
-    private final Isbn isbn_;
+    private final Isbn isbn;
     
     public Request(final Isbn isbn) {
         assert (isbn != null);
-        isbn_ = isbn;
+        this.isbn = isbn;
     }
     
     public URL getUrl() throws MalformedURLException {
-        return new URL(requestString + isbn_.toString());
+        return new URL(requestString + isbn.toString());
     }
 }

@@ -4,9 +4,10 @@
  */
 package gui;
 
-import javax.swing.JOptionPane;
 import service.EntryRedefinitionException;
 import service.UserCatalogue;
+
+import javax.swing.*;
 
 /**
  *

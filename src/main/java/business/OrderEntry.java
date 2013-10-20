@@ -8,18 +8,18 @@ package business;
  * @author alexander
  * 
  */
-public class OrderEntry {
-    private final int id_;
-    private final int amount_;
-    private final Book book_;
+public final class OrderEntry {
+    private final int id;
+    private final int amount;
+    private final Book book;
 
     public OrderEntry(final int id, final Book book, final int amount) {
         assert (book != null);
         assert (amount > 0);
         
-        id_ = id;
-        amount_ = amount;
-        book_ = book;
+        this.id = id;
+        this.amount = amount;
+        this.book = book;
     }
     
     public OrderEntry(final Book book, final int amount) {
@@ -28,24 +28,24 @@ public class OrderEntry {
     
     public OrderEntry add(final OrderEntry other) {
     	assert (other != null);
-    	assert (book_.equals(other.book_)): "Trying to add order entries containing different books";
+    	assert (book.equals(other.book)): "Trying to add order entries containing different books";
 
-    	return new OrderEntry(id_, book_, amount_ + other.amount_);
+    	return new OrderEntry(id, book, amount + other.amount);
     }
 
     public int getId() {
-        return id_;
+        return id;
     }
 
     public int getAmount() {
-        return amount_;
+        return amount;
     }
 
     public Book getBook() {
-        return book_;
+        return book;
     }
 
     public double getPrice() {
-        return book_.getPrice() * amount_;
+        return book.getPrice() * amount;
     }
 }

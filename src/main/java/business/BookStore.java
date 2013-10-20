@@ -3,6 +3,10 @@ package business;
 import gui.AuthFrame;
 import httpservice.Server;
 
+import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  * Created with IntelliJ IDEA.
  * User: alexander
@@ -11,7 +15,16 @@ import httpservice.Server;
  * To change this template use File | Settings | File Templates.
  */
 public class BookStore {
-    private static Server server = new Server();
+    private static final Server server;
+
+    static {
+       try {
+           server = new Server();
+       } catch (IOException e) {
+           Logger.getLogger(BookStore.class.getName()).log(Level.SEVERE, null, e);
+           throw new IllegalStateException();
+       }
+    }
     
     public static void main(String args[]) {
         server.start();
