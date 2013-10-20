@@ -1,6 +1,7 @@
 package db;
 
 import business.BookStore;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -13,7 +14,7 @@ import java.util.logging.Logger;
  * Time: 4:21 PM
  * To change this template use File | Settings | File Templates.
  */
-public class DerbyConnectionManager implements ConnectionManager {
+public final class DerbyConnectionManager implements ConnectionManager {
     private static final Logger LOGGER = Logger.getLogger(BookStore.class.getName());
 
     @Override

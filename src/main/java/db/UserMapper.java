@@ -3,8 +3,9 @@ package db;
 import business.Administrator;
 import business.Customer;
 import business.User;
-import java.sql.*;
 import util.ReverseEnumMap;
+
+import java.sql.*;
 
 /**
  * Created with IntelliJ IDEA.
@@ -13,7 +14,7 @@ import util.ReverseEnumMap;
  * Time: 4:50 PM
  * To change this template use File | Settings | File Templates.
  */
-public class UserMapper extends Mapper<User>{
+public final class UserMapper extends Mapper<User>{
 
     public UserMapper(final Connection connection) {
         super(connection);
@@ -22,35 +23,23 @@ public class UserMapper extends Mapper<User>{
     public User find(final String login) throws DataMapperException {
         assert(login != null);
 
-        PreparedStatement statement = null;
-        try {
-            final String query = "SELECT * from USERS where Login=?";
-            statement = connection_.prepareStatement(query);
+        final String query = "SELECT * from USERS where Login=?";
+        try (final PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, login);
             return createUser(statement);
         } catch (SQLException e) {
             throw new DataMapperException("Error occurred while searching for user: " + e.getMessage());
-        } finally {
-            try {
-                if (statement != null) statement.close();
-            } catch (SQLException e) {}
         }
     }
 
     @Override
     public User find(final int id) throws DataMapperException {
-        PreparedStatement statement = null;
-        try {
-            final String query = "SELECT * from USERS where Id=?";
-            statement = connection_.prepareStatement(query);
+        final String query = "SELECT * from USERS where Id=?";
+        try (final PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, id);
             return createUser(statement);
         } catch (SQLException e) {
             throw new DataMapperException("Error occurred while searching for user: " + e.getMessage());
-        } finally {
-            try {
-                if (statement != null) statement.close();
-            } catch (SQLException e) {}
         }
     }
 
@@ -70,7 +59,7 @@ public class UserMapper extends Mapper<User>{
             statement.executeUpdate();
             return getId(statement);
         } catch (SQLException e) {
-            throw new DataMapperException("Error occurred while inserting a user", e);
+            throw new DataMapperException("Error occurred while inserting a user: " + e.getMessage());
         } finally {
             try {
                 if (statement != null) statement.close();
@@ -93,7 +82,7 @@ public class UserMapper extends Mapper<User>{
             }
             statement.executeUpdate();
         } catch (SQLException e) {
-            throw new DataMapperException("Error occurred while updating a user", e);
+            throw new DataMapperException("Error occurred while updating a user: " + e.getMessage());
         } finally {
             try {
                 if (statement != null) statement.close();
@@ -103,18 +92,12 @@ public class UserMapper extends Mapper<User>{
 
     @Override
     public void delete(final int id) throws DataMapperException {
-        PreparedStatement statement = null;
-        try {
-            final String query = "DELETE from Users where Id=?";
-            statement = connection_.prepareStatement(query);
+        final String query = "DELETE from Users where Id=?";
+        try (final PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, id);
             statement.executeUpdate();
         } catch (SQLException e) {
-            throw new DataMapperException("Error occurred while deleting a user", e);
-        } finally {
-            try {
-                if (statement != null) statement.close();
-            } catch (SQLException e) {}
+            throw new DataMapperException("Error occurred while deleting a user: " + e.getMessage());
         }
     }
 
@@ -146,7 +129,7 @@ public class UserMapper extends Mapper<User>{
     private PreparedStatement getInsertQuery(final Administrator user) throws SQLException {
         final String query = "INSERT into Users(Type, Login, Password, Name, SecondName, Email, PersonalDiscount) " +
                              "VALUES (?, ?, ?, ?, ?, ?, ?)";
-        final PreparedStatement statement = connection_.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+        final PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
         statement.setInt(1, UserType.ADMIN.convert());
         statement.setString(2, user.getLogin());
         statement.setInt(3, user.getPasswordHash());
@@ -160,7 +143,7 @@ public class UserMapper extends Mapper<User>{
     private PreparedStatement getInsertQuery(final Customer user) throws SQLException {
         final String query = "INSERT into Users(Type, Login, Password, Name, SecondName, Email, PersonalDiscount) " +
                              "VALUES (?, ?, ?, ?, ?, ?, ?)";
-        final PreparedStatement statement = connection_.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
+        final PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS);
         statement.setInt(1, UserType.CUSTOMER.convert());
         statement.setString(2, user.getLogin());
         statement.setInt(3, user.getPasswordHash());
@@ -175,7 +158,7 @@ public class UserMapper extends Mapper<User>{
         final String query = "UPDATE Users SET " +
                              "Login=?, Password=?, Name=?, SecondName=?, Email=?, PersonalDiscount=? " +
                              "where Id=?";
-        final PreparedStatement statement = connection_.prepareStatement(query);
+        final PreparedStatement statement = connection.prepareStatement(query);
         statement.setString(1, user.getLogin());
         statement.setInt(2, user.getPasswordHash());
         statement.setString(3, user.getName());
@@ -190,7 +173,7 @@ public class UserMapper extends Mapper<User>{
         final String query = "UPDATE Users SET " +
                              "Login=?, Password=?, Name=?, SecondName=?, Email=?, PersonalDiscount=? " +
                              "where Id=?";
-        final PreparedStatement statement = connection_.prepareStatement(query);
+        final PreparedStatement statement = connection.prepareStatement(query);
         statement.setString(1, user.getLogin());
         statement.setInt(2, user.getPasswordHash());
         statement.setString(3, user.getName());

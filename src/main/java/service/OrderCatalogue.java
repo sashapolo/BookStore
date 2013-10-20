@@ -7,11 +7,8 @@ import business.BookStore;
 import business.Customer;
 import business.Order;
 import business.OrderEntry;
-import db.BookMapper;
-import db.ConnectionManager;
-import db.DataMapperException;
-import db.DerbyConnectionManager;
-import db.OrderMapper;
+import db.*;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -28,7 +25,7 @@ public class OrderCatalogue {
         assert (user != null);
         
         final ConnectionManager manager = new DerbyConnectionManager();
-        try (Connection connection = manager.getConnection("db")) {
+        try (final Connection connection = manager.getConnection("db")) {
             final OrderMapper mapper = new OrderMapper(connection);
             final Order order = new Order.Builder(user.getCart(), user).build();
             mapper.insert(order);
@@ -39,10 +36,9 @@ public class OrderCatalogue {
             }
         } catch (SQLException | DataMapperException e) {
             LOGGER.log(Level.SEVERE, e.getMessage());
-            throw new IllegalStateException(e.getMessage());
+            throw new IllegalStateException(e);
         }
     }
 
-    private OrderCatalogue() {
-    }
+    private OrderCatalogue() {}
 }

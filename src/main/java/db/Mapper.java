@@ -24,11 +24,11 @@ public abstract class Mapper<T> {
             throw new DataMapperException("Error occurred while retrieving primary key");
         }
     }
-    protected Connection connection_;
+    protected Connection connection;
 
     public Mapper(final Connection connection) {
         assert (connection != null);
-        connection_ = connection;
+        this.connection = connection;
     }
 
     public abstract T find(final int id) throws DataMapperException;

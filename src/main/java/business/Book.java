@@ -10,67 +10,67 @@ import java.util.GregorianCalendar;
  * @author alexander
  * 
  */
-public class Book {
-    private final Builder builder_;
+public final class Book {
+    private final Builder builder;
 
     private Book(final Builder builder) {
         assert (builder != null);
-        builder_ = builder;
+        this.builder = builder;
     }
     
     public boolean matchesString(final String match) {
-    	return builder_.name_.contains(match) ||
-               builder_.genre_.contains(match) ||
-               builder_.publisher_.getName().contains(match);
+    	return builder.name.contains(match) ||
+               builder.genre.contains(match) ||
+               builder.publisher.getName().contains(match);
     }
 
     public int getId() {
-        return builder_.id_;
+        return builder.id;
     }
 
     public double getPrice() {
-        return builder_.price_ * builder_.discount_.getInvertedValue();
+        return builder.price * builder.discount.getInvertedValue();
     }
 
     public String getName() {
-        return builder_.name_;
+        return builder.name;
     }
     
     public String getAuthor() {
-        return builder_.author_;
+        return builder.author;
     }
 
     public String getGenre() {
-        return builder_.genre_;
+        return builder.genre;
     }
 
     public Discount getDiscount() {
-        return builder_.discount_;
+        return builder.discount;
     }
 
     public Publisher getPublisher() {
-        return builder_.publisher_;
+        return builder.publisher;
     }
 
     public GregorianCalendar getPublicationDate() {
-        return (GregorianCalendar) builder_.publicationDate_.clone();
+        return (GregorianCalendar) builder.publicationDate.clone();
     }
 
     public Isbn getIsbn() {
-        return builder_.isbn13_;
+        return builder.isbn;
     }
     
     public void setPrice(final double price) {
-        builder_.price_ = price;
+        builder.price = price;
     }
 
     public void setId(final int id) {
-        builder_.id_ = id;
+        builder.id = id;
     }
 
     @Override
     public int hashCode() {
-    	return builder_.isbn13_.hashCode();
+    	return builder.isbn.hashCode();
     }
 
     @Override
@@ -79,19 +79,19 @@ public class Book {
         if (!(o instanceof Book)) return false;
 
         final Book book = (Book) o;
-        return builder_.isbn13_.equals(book.builder_.isbn13_);
+        return builder.isbn.equals(book.builder.isbn);
     }
 
-    public static class Builder {
-        private int id_ = 0;
-        private final String name_;
-        private final String author_;
-        private final String genre_;
-        private final Publisher publisher_;
-        private final GregorianCalendar publicationDate_;
-        private final Isbn isbn13_;
-        private double price_;
-        private Discount discount_ = new Discount(0);
+    public static final class Builder {
+        private int id = 0;
+        private final String name;
+        private final String author;
+        private final String genre;
+        private final Publisher publisher;
+        private final GregorianCalendar publicationDate;
+        private final Isbn isbn;
+        private double price;
+        private Discount discount = new Discount(0);
 
         public Builder(final String name,
                        final String author,
@@ -107,28 +107,28 @@ public class Book {
             assert (publicationDate != null);
             assert (isbn != null);
             
-            name_ = name;
-            author_ = author;
-            genre_ = genre;
-            publisher_ = publisher;
-            publicationDate_ = publicationDate;
-            isbn13_ = isbn.toIsbn13();
-            price_ = price;
+            this.name = name;
+            this.author = author;
+            this.genre = genre;
+            this.publisher = publisher;
+            this.publicationDate = (GregorianCalendar) publicationDate.clone();
+            this.isbn = isbn;
+            this.price = price;
         }
 
         public Builder id(final int id) {
-            id_ = id;
+            this.id = id;
             return this;
         }
         
         public Builder discount(final int discount) {
-            discount_ = new Discount(discount);
+            this.discount = new Discount(discount);
             return this;
         }
 
         public Builder discount(final Discount discount) {
             assert (discount != null);
-            discount_ = discount;
+            this.discount = discount;
             return this;
         }
 

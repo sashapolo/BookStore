@@ -4,11 +4,8 @@
  */
 package service;
 
-import business.Book;
-import business.Isbn;
-import business.Isbn13;
-import business.Publisher;
-import business.WrongFormatException;
+import business.*;
+
 import java.util.GregorianCalendar;
 
 /**
@@ -27,26 +24,31 @@ public class BookInfoParser {
         if (name.isEmpty() || author.isEmpty() || genre.isEmpty() || pubName.isEmpty()) {
             throw new BookParseException("Some required fields are empty");
         }
-        Isbn parsedIsbn;
+        final Isbn parsedIsbn;
         try {
-            parsedIsbn = new Isbn13(isbn);
+            parsedIsbn = new Isbn(isbn);
         } catch (WrongFormatException ex) {
             throw new BookParseException(ex.getMessage());
         }
+
         double parsedPrice;
         try {
             parsedPrice = Double.valueOf(price);
         } catch (NumberFormatException e) {
-            throw new BookParseException("Price must be a floating point value");
+            throw new BookParseException(e.getMessage());
         }
+
         int parsedAmount;
         try {
             parsedAmount = Integer.valueOf(amount);
-            if (parsedAmount <= 0) throw new NumberFormatException("Amount must be greater than 0");
+            if (parsedAmount <= 0) {
+                throw new BookParseException("Amount must be greater than 0");
+            }
         } catch (NumberFormatException e) {
             throw new BookParseException(e.getMessage());
         }
-        Publisher pub = null;
+
+        final Publisher pub;
         try {
             pub = PublisherCatalogue.getPublisher(pubName);
         } catch (EntryNotFoundException ex) {
@@ -57,5 +59,4 @@ public class BookInfoParser {
     }
 
     private BookInfoParser() {}
-    
 }

@@ -3,14 +3,16 @@ package db;
 import business.Administrator;
 import business.Customer;
 import business.User;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+
 import static org.hamcrest.CoreMatchers.instanceOf;
-import org.junit.AfterClass;
 import static org.junit.Assert.*;
-import org.junit.BeforeClass;
-import org.junit.Test;
 
 /**
  * Created with IntelliJ IDEA.

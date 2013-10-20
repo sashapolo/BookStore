@@ -10,6 +10,7 @@ import db.ConnectionManager;
 import db.DataMapperException;
 import db.DerbyConnectionManager;
 import db.PublisherMapper;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.LinkedList;
@@ -26,7 +27,7 @@ public class PublisherCatalogue {
     
     public static List<String> getPublisherNames() {
         final ConnectionManager manager = new DerbyConnectionManager();
-        try (Connection connection = manager.getConnection("db")) {
+        try (final Connection connection = manager.getConnection("db")) {
             final PublisherMapper mapper = new PublisherMapper(connection);
             final List<Publisher> publishers = mapper.findAll();
 
@@ -37,13 +38,13 @@ public class PublisherCatalogue {
             return result;
         } catch (SQLException | DataMapperException e) {
             LOGGER.log(Level.SEVERE, e.getMessage());
-            throw new IllegalStateException(e.getMessage());
+            throw new IllegalStateException(e);
         }
     }
     
     public static Publisher getPublisher(final String name) throws EntryNotFoundException {
         final ConnectionManager manager = new DerbyConnectionManager();
-        try (Connection connection = manager.getConnection("db")) {
+        try (final Connection connection = manager.getConnection("db")) {
             final PublisherMapper mapper = new PublisherMapper(connection);
             final Publisher result = mapper.find(name);
 
@@ -51,7 +52,7 @@ public class PublisherCatalogue {
             return result;
         } catch (SQLException | DataMapperException e) {
             LOGGER.log(Level.SEVERE, e.getMessage());
-            throw new IllegalStateException(e.getMessage());
+            throw new IllegalStateException(e);
         }
     }
     
@@ -59,12 +60,12 @@ public class PublisherCatalogue {
         assert (pub != null);
         
         final ConnectionManager manager = new DerbyConnectionManager();
-        try (Connection connection = manager.getConnection("db")) {
+        try (final Connection connection = manager.getConnection("db")) {
             final PublisherMapper mapper = new PublisherMapper(connection);
             mapper.update(pub);
         } catch (SQLException | DataMapperException e) {
             LOGGER.log(Level.SEVERE, e.getMessage());
-            throw new IllegalStateException(e.getMessage());
+            throw new IllegalStateException(e);
         }
     }
     
@@ -72,12 +73,12 @@ public class PublisherCatalogue {
         assert (pub != null);
         
         final ConnectionManager manager = new DerbyConnectionManager();
-        try (Connection connection = manager.getConnection("db")) {
+        try (final Connection connection = manager.getConnection("db")) {
             final PublisherMapper mapper = new PublisherMapper(connection);
             mapper.delete(pub.getId());
         } catch (SQLException | DataMapperException e) {
             LOGGER.log(Level.SEVERE, e.getMessage());
-            throw new IllegalStateException(e.getMessage());
+            throw new IllegalStateException(e);
         }
     }
     

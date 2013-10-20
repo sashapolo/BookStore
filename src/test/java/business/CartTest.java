@@ -5,7 +5,7 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 
-public class CartTest {
+public final class CartTest {
     public static final double EPSILON = 1e-15;
     private final Book book;
 
@@ -15,7 +15,7 @@ public class CartTest {
                                 "",
                                 new Publisher(0, ""),
                                 new GregorianCalendar(),
-                                new Isbn13("9783161484100"),
+                                new Isbn("9783161484100"),
                                 120.44).discount(50).build();
     }
 

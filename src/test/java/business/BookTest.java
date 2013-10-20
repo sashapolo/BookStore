@@ -7,7 +7,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 
 
-public class BookTest {
+public final class BookTest {
     public static final double EPSILON = 1e-15;
 
     @Rule
@@ -20,7 +20,7 @@ public class BookTest {
                                        "",
                                        new Publisher(0, ""),
                                        new GregorianCalendar(),
-                                       new Isbn13("9783161484100"),
+                                       new Isbn("9783161484100"),
                                        120.44).build();
         assertEquals("Incorrect price", 120.44, tester.getPrice(), EPSILON);
     }
@@ -32,7 +32,7 @@ public class BookTest {
                                        "",
                                        new Publisher(0, ""),
                                        new GregorianCalendar(),
-                                       new Isbn13("9783161484100"),
+                                       new Isbn("9783161484100"),
                                        120.44).discount(100).build();
         assertEquals("Incorrect price", 0, tester.getPrice(), EPSILON);
     }
@@ -44,7 +44,7 @@ public class BookTest {
                                        "",
                                        new Publisher(0, ""),
                                        new GregorianCalendar(),
-                                       new Isbn13("9783161484100"),
+                                       new Isbn("9783161484100"),
                                        120.44).discount(48).build();
         assertEquals("Incorrect price", 120.44 * 0.52, tester.getPrice(), EPSILON);
     }
@@ -59,7 +59,7 @@ public class BookTest {
                                        "",
                                        new Publisher(0, ""),
                                        new GregorianCalendar(),
-                                       new Isbn13("9783161484100"),
+                                       new Isbn("9783161484100"),
                                        120.44).discount(-1).build();
     }
 }

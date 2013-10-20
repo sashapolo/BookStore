@@ -3,16 +3,12 @@
  */
 package service;
 
-import business.Book;
-import business.BookStore;
-import business.Isbn;
-import business.Isbn10;
-import business.Isbn13;
-import business.WrongFormatException;
+import business.*;
 import db.BookMapper;
 import db.ConnectionManager;
 import db.DataMapperException;
 import db.DerbyConnectionManager;
+
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.LinkedList;
@@ -42,7 +38,7 @@ public final class BookCatalogue {
             mapper.insert(book, amount);
         } catch (SQLException | DataMapperException e) {
             LOGGER.log(Level.SEVERE, e.getMessage());
-            throw new IllegalStateException(e.getMessage());
+            throw new IllegalStateException(e);
         }
     }
 
@@ -50,42 +46,38 @@ public final class BookCatalogue {
         assert (search != null);
         
         final ConnectionManager manager = new DerbyConnectionManager();
-        try (Connection connection = manager.getConnection("db")) {
+        try (final Connection connection = manager.getConnection("db")) {
             final BookMapper mapper = new BookMapper(connection);
             
             // first trying to find the book by ISBN
             try {
-                final Isbn isbn = new Isbn13(search);
+                final Isbn isbn = new Isbn(search);
                 final List<Book> result = new LinkedList<>();
                 final Book book = mapper.find(isbn);
-                if (book != null) result.add(book);
+                if (book != null) {
+                    result.add(book);
+                }
                 return result;
             } catch (WrongFormatException e) {}
             
             return mapper.find(search);
         } catch (SQLException | DataMapperException e) {
             LOGGER.log(Level.SEVERE, e.getMessage());
-            throw new IllegalStateException(e.getMessage());
+            throw new IllegalStateException(e);
         }
     }
     
     public static Book getBook(final String isbn) throws WrongFormatException {
         assert (isbn != null);
         
-        Isbn parsedIsbn;
-        try {
-            parsedIsbn = new Isbn10(isbn).toIsbn13();
-        } catch (WrongFormatException e) {
-            parsedIsbn = new Isbn13(isbn);
-        }
-        
+        final Isbn parsedIsbn = new Isbn(isbn);
         final ConnectionManager manager = new DerbyConnectionManager();
-        try (Connection connection = manager.getConnection("db")) {
+        try (final Connection connection = manager.getConnection("db")) {
             final BookMapper mapper = new BookMapper(connection);
             return mapper.find(parsedIsbn);
         } catch (SQLException | DataMapperException e) {
             LOGGER.log(Level.SEVERE, e.getMessage());
-            throw new IllegalStateException(e.getMessage());
+            throw new IllegalStateException(e);
         }
     }
     
@@ -93,14 +85,14 @@ public final class BookCatalogue {
         assert (book != null);
         
         final ConnectionManager manager = new DerbyConnectionManager();
-        try (Connection connection = manager.getConnection("db")) {
+        try (final Connection connection = manager.getConnection("db")) {
             final BookMapper mapper = new BookMapper(connection);
             int result = mapper.getAmount(book.getId());
             if (result == -1) throw new EntryNotFoundException("Book not found");
             return result;
         } catch (SQLException | DataMapperException e) {
             LOGGER.log(Level.SEVERE, e.getMessage());
-            throw new IllegalStateException(e.getMessage());
+            throw new IllegalStateException(e);
         }
     }
     
@@ -108,12 +100,12 @@ public final class BookCatalogue {
         assert (book != null);
         
         final ConnectionManager manager = new DerbyConnectionManager();
-        try (Connection connection = manager.getConnection("db")) {
+        try (final Connection connection = manager.getConnection("db")) {
             final BookMapper mapper = new BookMapper(connection);
             mapper.setAmount(book.getId(), amount);
         } catch (SQLException | DataMapperException e) {
             LOGGER.log(Level.SEVERE, e.getMessage());
-            throw new IllegalStateException(e.getMessage());
+            throw new IllegalStateException(e);
         }
     }
     
@@ -121,12 +113,12 @@ public final class BookCatalogue {
         assert (book != null);
         
         final ConnectionManager manager = new DerbyConnectionManager();
-        try (Connection connection = manager.getConnection("db")) {
+        try (final Connection connection = manager.getConnection("db")) {
             final BookMapper mapper = new BookMapper(connection);
             mapper.delete(book.getId());
         } catch (SQLException | DataMapperException e) {
             LOGGER.log(Level.SEVERE, e.getMessage());
-            throw new IllegalStateException(e.getMessage());
+            throw new IllegalStateException(e);
         }
     }
     
@@ -134,12 +126,12 @@ public final class BookCatalogue {
         assert (book != null);
         
         final ConnectionManager manager = new DerbyConnectionManager();
-        try (Connection connection = manager.getConnection("db")) {
+        try (final Connection connection = manager.getConnection("db")) {
             final BookMapper mapper = new BookMapper(connection);
             mapper.update(book);
         } catch (SQLException | DataMapperException e) {
             LOGGER.log(Level.SEVERE, e.getMessage());
-            throw new IllegalStateException(e.getMessage());
+            throw new IllegalStateException(e);
         }
     }
     
@@ -147,14 +139,16 @@ public final class BookCatalogue {
         assert (book != null);
         
         final ConnectionManager manager = new DerbyConnectionManager();
-        try (Connection connection = manager.getConnection("db")) {
+        try (final Connection connection = manager.getConnection("db")) {
             final BookMapper mapper = new BookMapper(connection);
             int result = mapper.getNumSold(book.getId());
-            if (result == -1) throw new EntryNotFoundException("Book not found");
+            if (result == -1) {
+                throw new EntryNotFoundException("Book not found");
+            }
             return result;
         } catch (SQLException | DataMapperException e) {
             LOGGER.log(Level.SEVERE, e.getMessage());
-            throw new IllegalStateException(e.getMessage());
+            throw new IllegalStateException(e);
         }
     }
 

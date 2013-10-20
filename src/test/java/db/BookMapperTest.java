@@ -1,18 +1,21 @@
 package db;
 
 import business.Book;
-import business.Isbn10;
+import business.Isbn;
 import business.Publisher;
+import org.junit.AfterClass;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
 import java.sql.Connection;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.GregorianCalendar;
 import java.util.List;
+
 import static org.hamcrest.CoreMatchers.instanceOf;
-import org.junit.AfterClass;
 import static org.junit.Assert.*;
-import org.junit.BeforeClass;
-import org.junit.Test;
 
 /**
  * Created with IntelliJ IDEA.
@@ -21,43 +24,42 @@ import org.junit.Test;
  * Time: 9:15 PM
  * To change this template use File | Settings | File Templates.
  */
-public class BookMapperTest {
-    private static int publisherId_;
+public final class BookMapperTest {
+    private static int publisherId = -1;
     public static final double EPSILON = 1e-15;
 
     @BeforeClass
     public static void setUpDatabase() throws Exception {
         final TestConnectionManager manager = new TestConnectionManager();
-        Statement statement = null;
         try (Connection connection = manager.getConnection("testdb")) {
-            String query = "INSERT into Publishers(Name) VALUES ('Mad Jack')";
-            statement = connection.createStatement();
-            statement.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
+            final String query1 = "INSERT into Publishers(Name) VALUES ('Mad Jack')";
+            try (final Statement statement = connection.createStatement()) {
+                statement.executeUpdate(query1, Statement.RETURN_GENERATED_KEYS);
+                publisherId = Mapper.getId(statement);
+            }
 
-            publisherId_ = Mapper.getId(statement);
-
-            query = "INSERT into Books(Name, Author, Genre, Isbn, PublicationDate, Price, Discount, PublisherId)" +
-                    "VALUES ('foo', '', 'bar', '9783161484100', '2012-01-01', 200, 10, " + publisherId_ + ')';
-            statement = connection.createStatement();
-            statement.executeUpdate(query, Statement.RETURN_GENERATED_KEYS);
-        } finally {
-            if (statement != null) statement.close();
+            final String query2 = "INSERT into Books(Name, Author, Genre, Isbn, PublicationDate, Price, Discount, PublisherId)" +
+                                  "VALUES ('foo', '', 'bar', '9783161484100', '2012-01-01', 200, 10, ?)";
+            try (final PreparedStatement statement = connection.prepareStatement(query2, Statement.RETURN_GENERATED_KEYS)) {
+                statement.setInt(1, publisherId);
+                statement.executeUpdate();
+            }
         }
     }
 
     @AfterClass
     public static void clearDatabase() throws SQLException {
         final TestConnectionManager manager = new TestConnectionManager();
-        Statement statement = null;
         try (Connection connection = manager.getConnection("testdb")) {
-            String query = "DELETE from Books";
-            statement = connection.createStatement();
-            statement.executeUpdate(query);
-            query = "DELETE from Users";
-            statement = connection.createStatement();
-            statement.executeUpdate(query);
-        } finally {
-            if (statement != null) statement.close();
+            final String query1 = "DELETE from Books";
+            try (final Statement statement = connection.createStatement()) {
+                statement.executeUpdate(query1);
+            }
+
+            final String query2 = "DELETE from Users";
+            try (final Statement statement = connection.createStatement()) {
+                statement.executeUpdate(query2);
+            }
         }
     }
 
@@ -74,7 +76,7 @@ public class BookMapperTest {
                 assertEquals("Wrong isbn", "9783161484100", book.getIsbn().toString());
                 assertEquals("Wrong price", 180, book.getPrice(), EPSILON);
                 assertNotNull("Publisher not found", book.getPublisher());
-                assertEquals("Incorrect publisher", publisherId_, book.getPublisher().getId());
+                assertEquals("Incorrect publisher", publisherId, book.getPublisher().getId());
             }
         }
     }
@@ -84,7 +86,7 @@ public class BookMapperTest {
         final TestConnectionManager manager = new TestConnectionManager();
         try (Connection connection = manager.getConnection("testdb")) {
             final Mapper<Publisher> pubMapper = new PublisherMapper(connection);
-            final Publisher publisher = pubMapper.find(publisherId_);
+            final Publisher publisher = pubMapper.find(publisherId);
             assertNotNull("Publisher not found", publisher);
             assertThat("Retrieved wrong user type", publisher, instanceOf(Publisher.class));
 
@@ -93,7 +95,7 @@ public class BookMapperTest {
                                                "",
                                                publisher,
                                                new GregorianCalendar(),
-                                               new Isbn10("097522980X").toIsbn13(),
+                                               new Isbn("097522980X"),
                                                120.44).build();
             final BookMapper bookMapper = new BookMapper(connection);
             final int id = bookMapper.insert(book);
@@ -108,7 +110,7 @@ public class BookMapperTest {
         final TestConnectionManager manager = new TestConnectionManager();
         try (Connection connection = manager.getConnection("testdb")) {
             final Mapper<Publisher> pubMapper = new PublisherMapper(connection);
-            final Publisher publisher = pubMapper.find(publisherId_);
+            final Publisher publisher = pubMapper.find(publisherId);
             assertNotNull("Publisher not found", publisher);
             assertThat("Retrieved wrong user type", publisher, instanceOf(Publisher.class));
 
@@ -117,7 +119,7 @@ public class BookMapperTest {
                                                "",
                                                publisher,
                                                new GregorianCalendar(),
-                                               new Isbn10("9992158107").toIsbn13(),
+                                               new Isbn("9992158107"),
                                                120.44).build();
             final BookMapper bookMapper = new BookMapper(connection);
             final int id = bookMapper.insert(book);
@@ -126,7 +128,7 @@ public class BookMapperTest {
                                                "horror",
                                                publisher,
                                                new GregorianCalendar(),
-                                               new Isbn10("9992158107").toIsbn13(),
+                                               new Isbn("9992158107"),
                                                120.44).id(id).build();
             bookMapper.update(test);
             final Book check = bookMapper.find(id);
@@ -141,7 +143,7 @@ public class BookMapperTest {
         final TestConnectionManager manager = new TestConnectionManager();
         try (Connection connection = manager.getConnection("testdb")) {
             final Mapper<Publisher> pubMapper = new PublisherMapper(connection);
-            final Publisher publisher = pubMapper.find(publisherId_);
+            final Publisher publisher = pubMapper.find(publisherId);
             assertNotNull("Publisher not found", publisher);
             assertThat("Retrieved wrong user type", publisher, instanceOf(Publisher.class));
 
@@ -150,7 +152,7 @@ public class BookMapperTest {
                                                "",
                                                publisher,
                                                new GregorianCalendar(),
-                                               new Isbn10("0123456789").toIsbn13(),
+                                               new Isbn("0123456789"),
                                                120.44).build();
             final BookMapper bookMapper = new BookMapper(connection);
             final int id = bookMapper.insert(book);
