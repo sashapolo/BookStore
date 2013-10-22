@@ -18,7 +18,7 @@ import java.util.logging.Logger;
  * @author alexander
  *
  */
-public class OrderCatalogue {
+public final class OrderCatalogue {
     private static final Logger LOGGER = Logger.getLogger(BookStore.class.getName());
     
     public static void createOrder(final Customer user) {

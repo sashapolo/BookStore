@@ -4,8 +4,9 @@
  */
 package gui;
 
+import business.Credentials;
 import service.EntryRedefinitionException;
-import service.UserCatalogue;
+import service.ServiceFacade;
 
 import javax.swing.*;
 
@@ -165,7 +166,7 @@ public class RegistrationFrame extends javax.swing.JFrame {
         }
         
         try {
-            UserCatalogue.createUser(login, password, name, secondName, email);
+            ServiceFacade.createUser(login, password, new Credentials(name, secondName, email));
         } catch (EntryRedefinitionException e) {
             JOptionPane.showMessageDialog(this, "Such login already exists", "Error", JOptionPane.ERROR_MESSAGE);
         }

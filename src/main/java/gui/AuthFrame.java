@@ -10,7 +10,7 @@ import business.Customer;
 import business.User;
 import service.EntryNotFoundException;
 import service.IncorrectPasswordException;
-import service.UserCatalogue;
+import service.ServiceFacade;
 
 import javax.swing.*;
 import java.util.logging.Logger;
@@ -131,7 +131,7 @@ public class AuthFrame extends javax.swing.JFrame {
         final String login = loginField.getText();
         final String password = String.valueOf(passwordField.getPassword());
         try {
-            final User user = UserCatalogue.getUser(login, password);
+            final User user = ServiceFacade.findUser(login, password);
             if (user instanceof Customer) {
                 dispose();
                 new MainCustomerFrame((Customer)user).setVisible(true);

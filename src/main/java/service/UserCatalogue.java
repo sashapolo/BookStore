@@ -24,7 +24,8 @@ import java.util.logging.Logger;
 public final class UserCatalogue {
     private static final Logger LOGGER = Logger.getLogger(BookStore.class.getName());
 
-    public static User getUser(final String login, final String password) throws EntryNotFoundException, IncorrectPasswordException {
+    public static User getUser(final String login, final String password)
+            throws EntryNotFoundException, IncorrectPasswordException {
         final ConnectionManager manager = new DerbyConnectionManager();
         try (final Connection connection = manager.getConnection("db")) {
             final UserMapper mapper = new UserMapper(connection);
@@ -44,16 +45,14 @@ public final class UserCatalogue {
     
     public static void createUser(final String login, 
                                   final String password,
-                                  final String name,
-                                  final String secondName,
-                                  final String email) throws EntryRedefinitionException {
+                                  final Credentials credentials)
+            throws EntryRedefinitionException {
         final ConnectionManager manager = new DerbyConnectionManager();
         try (final Connection connection = manager.getConnection("db")) {
             final UserMapper mapper = new UserMapper(connection);
             final User test = mapper.find(login);
             if (test != null) throw new EntryRedefinitionException("user already exists");
 
-            final Credentials credentials = new Credentials(name, secondName, email);
             final User user = new Customer(-1, login, password.hashCode(), credentials);
             mapper.insert(user);
         } catch (SQLException | DataMapperException e) {

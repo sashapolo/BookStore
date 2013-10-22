@@ -6,8 +6,8 @@ package httpservice;
 
 import business.Book;
 import org.json.JSONObject;
-import service.BookCatalogue;
 import service.EntryNotFoundException;
+import service.ServiceFacade;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,8 +20,8 @@ class JsonBookMapper {
     public static JSONObject mapNumSold(final String isbn) {
         try {
             Map<String, Integer> map = new HashMap<>(1);
-            final Book book = BookCatalogue.getBook(isbn);
-            map.put("numSold", BookCatalogue.getNumSold(book));
+            final Book book = ServiceFacade.getBook(isbn);
+            map.put("numSold", ServiceFacade.getNumOfSoldBooks(book));
             return new JSONObject(map);
         } catch (EntryNotFoundException ex) {
             Map<String, String> map = new HashMap<>(1);

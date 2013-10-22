@@ -4,7 +4,7 @@
  */
 package gui;
 
-import service.PublisherCatalogue;
+import service.ServiceFacade;
 
 import java.io.Serializable;
 
@@ -153,7 +153,7 @@ public class BookInfoPanel extends javax.swing.JPanel implements Serializable {
 
         dateInputPanel.setName("dateInputPanel"); // NOI18N
 
-        pubComboBox.setModel(new javax.swing.DefaultComboBoxModel(PublisherCatalogue.getPublisherNames().toArray()));
+        pubComboBox.setModel(new javax.swing.DefaultComboBoxModel(ServiceFacade.getPublisherNames().toArray()));
         pubComboBox.setName("pubComboBox"); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);

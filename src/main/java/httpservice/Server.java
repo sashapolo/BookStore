@@ -4,14 +4,11 @@
  */
 package httpservice;
 
-import business.BookStore;
 import com.sun.net.httpserver.HttpContext;
 import com.sun.net.httpserver.HttpServer;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *

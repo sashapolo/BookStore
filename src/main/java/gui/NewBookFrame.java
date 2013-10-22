@@ -5,10 +5,9 @@
 package gui;
 
 import business.Book;
-import service.BookCatalogue;
-import service.BookInfoParser;
 import service.BookParseException;
 import service.EntryRedefinitionException;
+import service.ServiceFacade;
 
 import javax.swing.*;
 import java.util.GregorianCalendar;
@@ -105,15 +104,8 @@ public class NewBookFrame extends javax.swing.JFrame {
             final GregorianCalendar date = 
                     new GregorianCalendar(panel.getYear(), panel.getMonth(), panel.getDay());
 
-            final Book book = BookInfoParser.parseBook(name, 
-                                                       author, 
-                                                       genre, 
-                                                       pubName, 
-                                                       isbn, 
-                                                       price, 
-                                                       date, 
-                                                       amount);
-            BookCatalogue.createBook(book, Integer.valueOf(amount));
+            final Book book = ServiceFacade.parseBook(name, author, genre, pubName, isbn, price, date, amount);
+            ServiceFacade.createBook(book, Integer.valueOf(amount));
         } catch (NumberFormatException | EntryRedefinitionException | BookParseException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
             return;

@@ -6,7 +6,7 @@ package gui;
 
 import business.Publisher;
 import service.EntryNotFoundException;
-import service.PublisherCatalogue;
+import service.ServiceFacade;
 
 import javax.swing.*;
 
@@ -44,7 +44,7 @@ public class PublisherChooserFrame extends javax.swing.JFrame {
         jScrollPane1.setName("jScrollPane1"); // NOI18N
 
         pubList.setModel(new javax.swing.AbstractListModel() {
-            String[] publishers = PublisherCatalogue.getPublisherNames().toArray(new String[0]);
+            String[] publishers = ServiceFacade.getPublisherNames().toArray(new String[0]);
             public int getSize() { return publishers.length; }
             public Object getElementAt(int i) { return publishers[i]; }
         });
@@ -122,16 +122,16 @@ public class PublisherChooserFrame extends javax.swing.JFrame {
             return;
         }
         try {
-            final Publisher pub = PublisherCatalogue.getPublisher((String) pubList.getSelectedValue());
+            final Publisher pub = ServiceFacade.getPublisher((String) pubList.getSelectedValue());
             pub.setName(newName);
-            PublisherCatalogue.updatePublisher(pub);
+            ServiceFacade.updatePublisher(pub);
         } catch (EntryNotFoundException ex) {
             // unreachable
             assert false;
         }
         JOptionPane.showMessageDialog(this, "Publisher updated successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
         pubList.setModel(new javax.swing.AbstractListModel() {
-            String[] publishers = PublisherCatalogue.getPublisherNames().toArray(new String[0]);
+            String[] publishers = ServiceFacade.getPublisherNames().toArray(new String[0]);
             @Override
             public int getSize() { return publishers.length; }
             @Override
@@ -148,14 +148,14 @@ public class PublisherChooserFrame extends javax.swing.JFrame {
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
         try {
             final String name = (String) pubList.getSelectedValue();
-            PublisherCatalogue.deletePublisher(PublisherCatalogue.getPublisher(name));
+            ServiceFacade.deletePublisher(ServiceFacade.getPublisher(name));
         } catch (EntryNotFoundException ex) {
             // unreachable
             assert false;
         }
         JOptionPane.showMessageDialog(this, "Publisher deleted successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
         pubList.setModel(new javax.swing.AbstractListModel() {
-            String[] publishers = PublisherCatalogue.getPublisherNames().toArray(new String[0]);
+            String[] publishers = ServiceFacade.getPublisherNames().toArray(new String[0]);
             @Override
             public int getSize() { return publishers.length; }
             @Override

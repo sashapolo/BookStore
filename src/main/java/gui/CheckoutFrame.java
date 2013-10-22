@@ -6,7 +6,7 @@ package gui;
 
 import business.Customer;
 import business.OrderEntry;
-import service.OrderCatalogue;
+import service.ServiceFacade;
 
 import javax.swing.*;
 
@@ -141,7 +141,7 @@ public class CheckoutFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void orderButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_orderButtonActionPerformed
-        OrderCatalogue.createOrder(user_);
+        ServiceFacade.createOrder(user_);
         user_.getCart().clear();
         JOptionPane.showMessageDialog(this, "Purchase successfull!", "Success", JOptionPane.INFORMATION_MESSAGE);
         dispose();

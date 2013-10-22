@@ -6,7 +6,7 @@ package gui;
 
 import business.Book;
 import business.Customer;
-import service.BookCatalogue;
+import service.ServiceFacade;
 
 import javax.swing.*;
 import java.util.List;
@@ -126,7 +126,7 @@ public class MainCustomerFrame extends javax.swing.JFrame {
 
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
         searchResultPanel.removeAll();
-        final List<Book> bookList = BookCatalogue.getBooks(searchField.getText());
+        final List<Book> bookList = ServiceFacade.getBooks(searchField.getText());
         if (bookList.isEmpty()) {
             JOptionPane.showMessageDialog(this, "No books found", "Info", JOptionPane.INFORMATION_MESSAGE);
         } else {

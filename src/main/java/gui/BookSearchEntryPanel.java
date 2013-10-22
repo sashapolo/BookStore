@@ -10,8 +10,8 @@ import httpservice.JsonBookObject;
 import httpservice.Request;
 import httpservice.ServiceException;
 import org.json.JSONException;
-import service.BookCatalogue;
 import service.EntryNotFoundException;
+import service.ServiceFacade;
 
 import javax.swing.*;
 import java.util.GregorianCalendar;
@@ -35,7 +35,7 @@ public class BookSearchEntryPanel extends javax.swing.JPanel {
         book_ = book;
         user_ = user;
         try {
-            amount_ = BookCatalogue.getAmount(book);
+            amount_ = ServiceFacade.getAmountOfBook(book);
         } catch (EntryNotFoundException e) {
             //unreachable
             assert false;

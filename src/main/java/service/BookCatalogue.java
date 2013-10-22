@@ -26,7 +26,8 @@ import java.util.logging.Logger;
 public final class BookCatalogue {
     private static final Logger LOGGER = Logger.getLogger(BookStore.class.getName());
 
-    public static void createBook(final Book book, int amount) throws EntryRedefinitionException {
+    public static void createBook(final Book book, int amount)
+            throws EntryRedefinitionException {
         assert (book != null);
         final ConnectionManager manager = new DerbyConnectionManager();
         try (Connection connection = manager.getConnection("db")) {

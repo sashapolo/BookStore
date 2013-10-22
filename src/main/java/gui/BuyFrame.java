@@ -7,8 +7,8 @@ package gui;
 import business.Book;
 import business.Customer;
 import business.OrderEntry;
-import service.BookCatalogue;
 import service.EntryNotFoundException;
+import service.ServiceFacade;
 
 import javax.swing.*;
 import java.math.RoundingMode;
@@ -29,7 +29,7 @@ public class BuyFrame extends javax.swing.JFrame {
         book_ = book;
         user_ = user;
         try {
-            amount_ = BookCatalogue.getAmount(book);
+            amount_ = ServiceFacade.getAmountOfBook(book);
         } catch (EntryNotFoundException e) {
             //unreachable
             assert false;

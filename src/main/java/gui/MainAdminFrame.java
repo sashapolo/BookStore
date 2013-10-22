@@ -6,8 +6,7 @@ package gui;
 
 import business.Book;
 import business.Isbn;
-import service.BookCatalogue;
-import service.PublisherCatalogue;
+import service.ServiceFacade;
 
 import javax.swing.*;
 
@@ -171,7 +170,7 @@ public class MainAdminFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Wrong isbn format", "Error", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
-        final Book book = BookCatalogue.getBook(isbn);
+        final Book book = ServiceFacade.getBook(isbn);
         dispose();
         new ModifyBookFrame(book).setVisible(true);
     }//GEN-LAST:event_modifyBookButtonActionPerformed
@@ -188,7 +187,7 @@ public class MainAdminFrame extends javax.swing.JFrame {
                 JOptionPane.showMessageDialog(this, "Name field is empty", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
-            PublisherCatalogue.createPublisher(name);
+            ServiceFacade.createPublisher(name);
             JOptionPane.showMessageDialog(this, "Publisher created successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
         }
     }//GEN-LAST:event_addPubButtonActionPerformed
