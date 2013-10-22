@@ -7,7 +7,6 @@ package service;
 import business.Book;
 import business.Isbn;
 import business.Publisher;
-import business.WrongFormatException;
 
 import java.util.GregorianCalendar;
 
@@ -27,12 +26,11 @@ public class BookInfoParser {
         if (name.isEmpty() || author.isEmpty() || genre.isEmpty() || pubName.isEmpty()) {
             throw new BookParseException("Some required fields are empty");
         }
-        final Isbn parsedIsbn;
-        try {
-            parsedIsbn = new Isbn(isbn);
-        } catch (WrongFormatException ex) {
-            throw new BookParseException(ex.getMessage());
+        if (!Isbn.isValid(isbn)) {
+            throw new BookParseException("Invalid isbn format");
         }
+
+        final Isbn parsedIsbn = new Isbn(isbn);
 
         double parsedPrice;
         try {

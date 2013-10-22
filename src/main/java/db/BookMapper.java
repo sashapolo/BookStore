@@ -232,12 +232,7 @@ public final class BookMapper extends Mapper<Book>{
         final String name = rs.getString("Name");
         final String author = rs.getString("Author");
         final String genre = rs.getString("Genre");
-        final Isbn isbn;
-        try {
-            isbn = new Isbn(rs.getString("Isbn"));
-        } catch (WrongFormatException e) {
-            throw new IllegalStateException("Retrieved incorrect isbn from the database", e);
-        }
+        final Isbn isbn = new Isbn(rs.getString("Isbn"));
 
         final GregorianCalendar date = new GregorianCalendar();
         date.setTime(rs.getDate("PublicationDate"));

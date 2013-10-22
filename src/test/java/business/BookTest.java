@@ -16,7 +16,7 @@ public final class BookTest {
     public final ExpectedException exception = ExpectedException.none();
 
     @Test
-    public void testBookGetPrice1() throws WrongFormatException {
+    public void testBookGetPrice1() {
         Book tester = new Book.Builder("",
                                        "",
                                        "",
@@ -28,7 +28,7 @@ public final class BookTest {
     }
 
     @Test
-    public void testBookGetPrice2() throws WrongFormatException {
+    public void testBookGetPrice2() {
         Book tester = new Book.Builder("",
                                        "",
                                        "",
@@ -40,7 +40,7 @@ public final class BookTest {
     }
 
     @Test
-    public void testBookGetPrice3() throws WrongFormatException {
+    public void testBookGetPrice3() {
         Book tester = new Book.Builder("",
                                        "",
                                        "",
@@ -52,7 +52,7 @@ public final class BookTest {
     }
 
     @Test
-    public void testBookIllegalArg() throws WrongFormatException {
+    public void testBookIllegalArg() {
         exception.expect(IllegalArgumentException.class);
         exception.expectMessage("Illegal discount settings");
         @SuppressWarnings("unused")

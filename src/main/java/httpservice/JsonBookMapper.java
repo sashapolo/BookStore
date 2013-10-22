@@ -5,7 +5,6 @@
 package httpservice;
 
 import business.Book;
-import business.WrongFormatException;
 import org.json.JSONObject;
 import service.BookCatalogue;
 import service.EntryNotFoundException;
@@ -24,7 +23,7 @@ class JsonBookMapper {
             final Book book = BookCatalogue.getBook(isbn);
             map.put("numSold", BookCatalogue.getNumSold(book));
             return new JSONObject(map);
-        } catch (WrongFormatException | EntryNotFoundException ex) {
+        } catch (EntryNotFoundException ex) {
             Map<String, String> map = new HashMap<>(1);
             map.put("error", ex.getMessage());
             return new JSONObject(map);

@@ -9,23 +9,7 @@ package business;
  */
 public final class Isbn {
     private final String isbn;
-    
-    public Isbn(final String isbn) throws WrongFormatException {
-        assert (isbn != null);
 
-        String tmp = isbn.replace("-", "");
-        if (tmp.length() == 10) {
-            tmp = toIsbn13(tmp);
-        } else if (tmp.length() != 13) {
-            throw new WrongFormatException("Trying to create 13-digit ISBN from non 13-digit number");
-        }
-        
-        if (!isValid(tmp)) {
-            throw new WrongFormatException("Invalid 13-digit ISBN number");
-        }
-        this.isbn = tmp;
-    }
-    
     private static String toIsbn13(final String isbn) {
         final StringBuilder tmp = new StringBuilder("978");
         tmp.append(isbn.substring(0, 9));
@@ -48,7 +32,23 @@ public final class Isbn {
         return result == 0 ? '0' : (char) ((10 - result) + '0');
     }
 
-    private static boolean isValid(final String isbn) {
+    public Isbn(final String isbn) {
+        assert (isbn != null);
+
+        String tmp = isbn.replace("-", "");
+        if (tmp.length() == 10) {
+            tmp = toIsbn13(tmp);
+        } else if (tmp.length() != 13) {
+            throw new IllegalArgumentException("Trying to create 13-digit ISBN from non 13-digit number");
+        }
+
+        if (!isValid(tmp)) {
+            throw new IllegalArgumentException("Invalid 13-digit ISBN number");
+        }
+        this.isbn = tmp;
+    }
+
+    public static boolean isValid(final String isbn) {
         int check = 0;
         final char digits[] = isbn.toCharArray();
         final int isbnLength = isbn.length();

@@ -175,7 +175,7 @@ public final class OrderMapperTest {
     }
 
     private Order createOrder(final Connection connection, final String isbn10)
-            throws DataMapperException, WrongFormatException {
+            throws DataMapperException {
         final Mapper<User> userMapper = new UserMapper(connection);
         final Mapper<Publisher> pubMapper = new PublisherMapper(connection);
         final Mapper<Book> bookMapper = new BookMapper(connection);

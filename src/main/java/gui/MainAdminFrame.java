@@ -5,7 +5,7 @@
 package gui;
 
 import business.Book;
-import business.WrongFormatException;
+import business.Isbn;
 import service.BookCatalogue;
 import service.PublisherCatalogue;
 
@@ -167,13 +167,13 @@ public class MainAdminFrame extends javax.swing.JFrame {
 
     private void modifyBookButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modifyBookButtonActionPerformed
         final String isbn = JOptionPane.showInputDialog(this, "Type book isbn");
-        try {
-            final Book book = BookCatalogue.getBook(isbn);
-            dispose();
-            new ModifyBookFrame(book).setVisible(true);
-        } catch (WrongFormatException ex) {
+        if (!Isbn.isValid(isbn)) {
             JOptionPane.showMessageDialog(this, "Wrong isbn format", "Error", JOptionPane.INFORMATION_MESSAGE);
+            return;
         }
+        final Book book = BookCatalogue.getBook(isbn);
+        dispose();
+        new ModifyBookFrame(book).setVisible(true);
     }//GEN-LAST:event_modifyBookButtonActionPerformed
 
     private void modifyPubButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modifyPubButtonActionPerformed

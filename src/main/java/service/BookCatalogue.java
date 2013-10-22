@@ -6,7 +6,6 @@ package service;
 import business.Book;
 import business.BookStore;
 import business.Isbn;
-import business.WrongFormatException;
 import db.BookMapper;
 import db.ConnectionManager;
 import db.DataMapperException;
@@ -49,7 +48,7 @@ public final class BookCatalogue {
             final BookMapper mapper = new BookMapper(connection);
             
             // first trying to find the book by ISBN
-            try {
+            if (Isbn.isValid(search)) {
                 final Isbn isbn = new Isbn(search);
                 final List<Book> result = new LinkedList<>();
                 final Book book = mapper.find(isbn);
@@ -57,8 +56,8 @@ public final class BookCatalogue {
                     result.add(book);
                 }
                 return result;
-            } catch (WrongFormatException e) {}
-            
+            }
+
             return mapper.find(search);
         } catch (SQLException | DataMapperException e) {
             LOGGER.log(Level.SEVERE, e.getMessage());
@@ -66,7 +65,7 @@ public final class BookCatalogue {
         }
     }
     
-    public static Book getBook(final String isbn) throws WrongFormatException {
+    public static Book getBook(final String isbn) {
         assert (isbn != null);
         
         final Isbn parsedIsbn = new Isbn(isbn);

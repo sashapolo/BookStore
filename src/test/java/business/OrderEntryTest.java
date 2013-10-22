@@ -18,7 +18,7 @@ public final class OrderEntryTest {
     public final ExpectedException exception = ExpectedException.none();
 
     @Before
-    public void init() throws WrongFormatException {
+    public void init() {
         book = new Book.Builder("",
                                 "",
                                 "",
