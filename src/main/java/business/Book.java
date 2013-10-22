@@ -3,6 +3,10 @@
  */
 package business;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.GregorianCalendar;
 
 
@@ -10,18 +14,13 @@ import java.util.GregorianCalendar;
  * @author alexander
  * 
  */
-public final class Book {
-    private final Builder builder;
+public final class Book implements Serializable {
+    private static final long serialVersionUID = 3133657525962185632L;
+    private final Book.Builder builder;
 
-    private Book(final Builder builder) {
-        assert (builder != null);
+    private Book(final Book.Builder builder) {
+        assert builder != null;
         this.builder = builder;
-    }
-    
-    public boolean matchesString(final String match) {
-    	return builder.name.contains(match) ||
-               builder.genre.contains(match) ||
-               builder.publisher.getName().contains(match);
     }
 
     public int getId() {
@@ -74,38 +73,36 @@ public final class Book {
     }
 
     @Override
-    public boolean equals(final Object o) {
-        if (this == o) return true;
-        if (!(o instanceof Book)) return false;
+    public boolean equals(final Object obj) {
+        if (this == obj) return true;
+        if (!(obj instanceof Book)) return false;
 
-        final Book book = (Book) o;
+        final Book book = (Book) obj;
         return builder.isbn.equals(book.builder.isbn);
     }
 
-    public static final class Builder {
-        private int id = 0;
+    public static final class Builder implements Serializable {
+        private static final long serialVersionUID = 3934274355868228594L;
+        private int id;
         private final String name;
         private final String author;
         private final String genre;
         private final Publisher publisher;
         private final GregorianCalendar publicationDate;
-        private final Isbn isbn;
+        private transient Isbn isbn;
         private double price;
-        private Discount discount = new Discount(0);
+        private transient Discount discount = new Discount(0);
 
-        public Builder(final String name,
-                       final String author,
-                       final String genre,
-                       final Publisher publisher,
-                       final GregorianCalendar publicationDate,
-                       final Isbn isbn,
+        public Builder(final String name, final String author,
+                       final String genre, final Publisher publisher,
+                       final GregorianCalendar publicationDate, final Isbn isbn,
                        final double price) {
-            assert (name != null);
-            assert (author != null);
-            assert (genre != null);
-            assert (publisher != null);
-            assert (publicationDate != null);
-            assert (isbn != null);
+            assert name != null;
+            assert author != null;
+            assert genre != null;
+            assert publisher != null;
+            assert publicationDate != null;
+            assert isbn != null;
             
             this.name = name;
             this.author = author;
@@ -116,24 +113,39 @@ public final class Book {
             this.price = price;
         }
 
-        public Builder id(final int id) {
+        public Book.Builder id(final int id) {
             this.id = id;
             return this;
         }
         
-        public Builder discount(final int discount) {
+        public Book.Builder discount(final int discount) {
             this.discount = new Discount(discount);
             return this;
         }
 
-        public Builder discount(final Discount discount) {
-            assert (discount != null);
+        public Book.Builder discount(final Discount discount) {
+            assert discount != null;
             this.discount = discount;
             return this;
         }
 
         public Book build() {
             return new Book(this);
+        }
+
+        private void readObject(final ObjectInputStream inputStream)
+                throws ClassNotFoundException, IOException {
+            inputStream.defaultReadObject();
+
+            isbn = new Isbn((String) inputStream.readObject());
+            discount = new Discount(inputStream.readInt());
+        }
+
+        private void writeObject(final ObjectOutputStream outputStream) throws IOException {
+            outputStream.defaultWriteObject();
+
+            outputStream.writeObject(isbn.toString());
+            outputStream.writeInt(discount.integerValue());
         }
     }
 }

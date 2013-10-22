@@ -2,12 +2,12 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package gui;
+package client.gui;
 
 import business.Book;
 import service.BookParseException;
 import service.EntryRedefinitionException;
-import service.ServiceFacade;
+import rmi.ServiceFacade;
 
 import javax.swing.*;
 import java.util.GregorianCalendar;
@@ -37,7 +37,7 @@ public class NewBookFrame extends javax.swing.JFrame {
 
         javax.swing.JButton backButton = new javax.swing.JButton();
         javax.swing.JButton createButton = new javax.swing.JButton();
-        bookInfoPanel = new gui.BookInfoPanel();
+        bookInfoPanel = new client.gui.BookInfoPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -114,6 +114,6 @@ public class NewBookFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_createButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private gui.BookInfoPanel bookInfoPanel;
+    private client.gui.BookInfoPanel bookInfoPanel;
     // End of variables declaration//GEN-END:variables
 }

@@ -19,7 +19,7 @@ public final class Isbn {
 
     private static char getLastDigit(final String isbn) {
         int result = 0;
-        final char digits[] = isbn.toCharArray();
+        final char[] digits = isbn.toCharArray();
         final int isbnLength = isbn.length();
         for (int i = 1; i < isbnLength; i += 2) {
             result += digits[i] - '0';
@@ -29,11 +29,11 @@ public final class Isbn {
             result += digits[i] - '0';
         }
         result %= 10;
-        return result == 0 ? '0' : (char) ((10 - result) + '0');
+        return result == 0 ? '0' : (char) (10 - result + '0');
     }
 
     public Isbn(final String isbn) {
-        assert (isbn != null);
+        assert isbn != null;
 
         String tmp = isbn.replace("-", "");
         if (tmp.length() == 10) {
@@ -50,24 +50,24 @@ public final class Isbn {
 
     public static boolean isValid(final String isbn) {
         int check = 0;
-        final char digits[] = isbn.toCharArray();
+        final char[] digits = isbn.toCharArray();
         final int isbnLength = isbn.length();
         for (int i = 1; i < isbnLength; i += 2) {
-            check += (digits[i] - '0');
+            check += digits[i] - '0';
         }
         check *= 3;
         for (int i = 0; i < isbnLength; i += 2) {
-            check += (digits[i] - '0');
+            check += digits[i] - '0';
         }
         return check % 10 == 0;
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+    public boolean equals(final Object obj) {
+        if (this == obj) return true;
+        if (obj == null || getClass() != obj.getClass()) return false;
 
-        Isbn isbn1 = (Isbn) o;
+        final Isbn isbn1 = (Isbn) obj;
 
         return isbn.equals(isbn1.isbn);
     }

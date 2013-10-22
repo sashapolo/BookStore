@@ -2,25 +2,31 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package gui;
+package client.gui;
 
 import business.Customer;
 import business.OrderEntry;
-import service.ServiceFacade;
+import client.ServiceWrapper;
+import rmi.ServiceFacade;
 
 import javax.swing.*;
+import java.rmi.RemoteException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author alexander
  */
-public class CheckoutFrame extends javax.swing.JFrame {
+@SuppressWarnings("serial")
+public final class CheckoutFrame extends JFrame {
+    private static final Logger LOGGER = Logger.getLogger("BookStore");
 
     /**
      * Creates new form CheckoutFrame
      */
     public CheckoutFrame(final Customer user) {
-        user_ = user;
+        this.user = user;
         initComponents();
     }
     
@@ -41,21 +47,21 @@ public class CheckoutFrame extends javax.swing.JFrame {
     private void initComponents() {
 
         javax.swing.JScrollPane jScrollPane1 = new javax.swing.JScrollPane();
-        orderEntryPanel = new javax.swing.JPanel();
+        orderEntryPanel = new JPanel();
         javax.swing.JButton orderButton = new javax.swing.JButton();
         javax.swing.JLabel jLabel1 = new javax.swing.JLabel();
         javax.swing.JLabel jLabel2 = new javax.swing.JLabel();
         javax.swing.JLabel jLabel3 = new javax.swing.JLabel();
-        priceField = new javax.swing.JFormattedTextField();
-        jLabel4 = new javax.swing.JLabel();
+        priceField = new JFormattedTextField();
+        javax.swing.JLabel jLabel4 = new javax.swing.JLabel();
         javax.swing.JButton backButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
         orderEntryPanel.setLayout(new javax.swing.BoxLayout(orderEntryPanel, javax.swing.BoxLayout.Y_AXIS));
         jScrollPane1.setViewportView(orderEntryPanel);
-        for (final OrderEntry entry : user_.getCart()) {
-            orderEntryPanel.add(new BookOrderEntryPanel(entry, user_));
+        for (final OrderEntry entry : user.getCart()) {
+            orderEntryPanel.add(new BookOrderEntryPanel(entry, user));
         }
 
         orderEntryPanel.revalidate();
@@ -69,13 +75,13 @@ public class CheckoutFrame extends javax.swing.JFrame {
 
         jLabel1.setText("Your discount:");
 
-        jLabel2.setText(user_.getPersonalDiscount().integerValue() + "%");
+        jLabel2.setText(user.getPersonalDiscount().integerValue() + "%");
 
         jLabel3.setText("Total Price:");
 
         priceField.setEditable(false);
         priceField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
-        priceField.setText(String.valueOf(user_.getCartPrice()));
+        priceField.setText(String.valueOf(user.getCartPrice()));
 
         jLabel4.setText("$");
 
@@ -141,22 +147,26 @@ public class CheckoutFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void orderButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_orderButtonActionPerformed
-        ServiceFacade.createOrder(user_);
-        user_.getCart().clear();
+        try {
+            ServiceWrapper.getBookStoreService().createOrder(user);
+        } catch (RemoteException e) {
+            LOGGER.log(Level.SEVERE, null, e);
+            throw new IllegalStateException();
+        }
+        user.getCart().clear();
         JOptionPane.showMessageDialog(this, "Purchase successfull!", "Success", JOptionPane.INFORMATION_MESSAGE);
         dispose();
-        new MainCustomerFrame(user_).setVisible(true);
+        new MainCustomerFrame(user).setVisible(true);
     }//GEN-LAST:event_orderButtonActionPerformed
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         dispose();
-        new MainCustomerFrame(user_).setVisible(true);
+        new MainCustomerFrame(user).setVisible(true);
     }//GEN-LAST:event_backButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel4;
-    private javax.swing.JPanel orderEntryPanel;
-    private javax.swing.JFormattedTextField priceField;
+    private JPanel orderEntryPanel;
+    private JFormattedTextField priceField;
     // End of variables declaration//GEN-END:variables
-    private final Customer user_;
+    private final Customer user;
 }

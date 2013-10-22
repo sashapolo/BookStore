@@ -2,11 +2,11 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package gui;
+package client.gui;
 
 import business.Book;
 import business.Customer;
-import service.ServiceFacade;
+import rmi.ServiceFacade;
 
 import javax.swing.*;
 import java.util.List;

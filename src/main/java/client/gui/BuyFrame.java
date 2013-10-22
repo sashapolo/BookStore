@@ -2,37 +2,42 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package gui;
+package client.gui;
 
 import business.Book;
 import business.Customer;
 import business.OrderEntry;
+import client.ServiceWrapper;
 import service.EntryNotFoundException;
-import service.ServiceFacade;
+import rmi.ServiceFacade;
 
 import javax.swing.*;
 import java.math.RoundingMode;
+import java.rmi.RemoteException;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author alexander
  */
 @SuppressWarnings("serial")
-public class BuyFrame extends javax.swing.JFrame {
+public class BuyFrame extends JFrame {
+    private static final Logger LOGGER = Logger.getLogger("BookStore");
 
     /**
      * Creates new form BuyFrame
      */
     public BuyFrame(final Book book, final Customer user) {
-        book_ = book;
-        user_ = user;
+        this.book = book;
+        this.user = user;
         try {
-            amount_ = ServiceFacade.getAmountOfBook(book);
-        } catch (EntryNotFoundException e) {
-            //unreachable
-            assert false;
+            amount = ServiceWrapper.getBookStoreService().getAmountOfBook(book);
+        } catch (EntryNotFoundException | RemoteException e) {
+            LOGGER.log(Level.SEVERE, null, e);
+            throw new IllegalStateException();
         }
         initComponents();
     }
@@ -47,24 +52,24 @@ public class BuyFrame extends javax.swing.JFrame {
 
         javax.swing.JLabel nameLabel = new javax.swing.JLabel();
         javax.swing.JLabel jLabel2 = new javax.swing.JLabel();
-        numSpinner = new javax.swing.JSpinner();
+        numSpinner = new JSpinner();
         javax.swing.JLabel jLabel3 = new javax.swing.JLabel();
         javax.swing.JLabel numLabel = new javax.swing.JLabel();
         javax.swing.JButton backButton = new javax.swing.JButton();
         javax.swing.JButton buyButton = new javax.swing.JButton();
         javax.swing.JLabel jLabel5 = new javax.swing.JLabel();
-        priceField = new javax.swing.JFormattedTextField();
+        priceField = new JFormattedTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
         nameLabel.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        nameLabel.setText(book_.getName());
+        nameLabel.setText(book.getName());
 
         jLabel2.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
         jLabel2.setText("Number:");
 
         numSpinner.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        numSpinner.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(1), Integer.valueOf(amount_), Integer.valueOf(1)));
+        numSpinner.setModel(new javax.swing.SpinnerNumberModel(Integer.valueOf(1), Integer.valueOf(1), Integer.valueOf(amount), Integer.valueOf(1)));
         numSpinner.addChangeListener(new javax.swing.event.ChangeListener() {
             public void stateChanged(javax.swing.event.ChangeEvent evt) {
                 numSpinnerStateChanged(evt);
@@ -76,7 +81,7 @@ public class BuyFrame extends javax.swing.JFrame {
         jLabel3.setText("Avaliable:");
 
         numLabel.setFont(new java.awt.Font("Dialog", 0, 12)); // NOI18N
-        numLabel.setText(String.valueOf(amount_));
+        numLabel.setText(String.valueOf(amount));
 
         backButton.setText("Back");
         backButton.addActionListener(new java.awt.event.ActionListener() {
@@ -97,7 +102,7 @@ public class BuyFrame extends javax.swing.JFrame {
 
         priceField.setEditable(false);
         priceField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
-        priceField.setText("$" + book_.getPrice());
+        priceField.setText("$" + book.getPrice());
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -159,27 +164,27 @@ public class BuyFrame extends javax.swing.JFrame {
         df.setMinimumFractionDigits(2);
         df.setMaximumFractionDigits(4);
         df.setRoundingMode(RoundingMode.DOWN);
-        priceField.setText("$" + df.format((Integer) numSpinner.getValue() * book_.getPrice()));
+        priceField.setText("$" + df.format((Integer) numSpinner.getValue() * book.getPrice()));
     }//GEN-LAST:event_numSpinnerStateChanged
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
         dispose();
-        new MainCustomerFrame(user_).setVisible(true);
+        new MainCustomerFrame(user).setVisible(true);
     }//GEN-LAST:event_backButtonActionPerformed
 
     private void buyButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_buyButtonActionPerformed
-        OrderEntry entry = new OrderEntry(book_, (Integer) numSpinner.getValue());
-        user_.addOrderEntry(entry);
+        OrderEntry entry = new OrderEntry(book, (Integer) numSpinner.getValue());
+        user.addOrderEntry(entry);
         JOptionPane.showMessageDialog(this, "Purchase successfull!", "Success", JOptionPane.INFORMATION_MESSAGE);
         dispose();
-        new MainCustomerFrame(user_).setVisible(true);
+        new MainCustomerFrame(user).setVisible(true);
     }//GEN-LAST:event_buyButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JSpinner numSpinner;
-    private javax.swing.JFormattedTextField priceField;
+    private JSpinner numSpinner;
+    private JFormattedTextField priceField;
     // End of variables declaration//GEN-END:variables
-    private final Book book_;
-    private final Customer user_;
-    private int amount_ = 0;
+    private final Book book;
+    private final Customer user;
+    private final int amount;
 }

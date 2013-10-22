@@ -7,7 +7,7 @@ package httpservice;
 import business.Book;
 import org.json.JSONObject;
 import service.EntryNotFoundException;
-import service.ServiceFacade;
+import rmi.ServiceFacade;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,15 +16,16 @@ import java.util.Map;
  *
  * @author alexander
  */
-class JsonBookMapper {
+final class JsonBookMapper {
     public static JSONObject mapNumSold(final String isbn) {
         try {
-            Map<String, Integer> map = new HashMap<>(1);
-            final Book book = ServiceFacade.getBook(isbn);
-            map.put("numSold", ServiceFacade.getNumOfSoldBooks(book));
+            final Map<String, Integer> map = new HashMap<>(1);
+            final ServiceFacade service = new ServiceFacade();
+            final Book book = service.getBook(isbn);
+            map.put("numSold", service.getNumOfSoldBooks(book));
             return new JSONObject(map);
         } catch (EntryNotFoundException ex) {
-            Map<String, String> map = new HashMap<>(1);
+            final Map<String, String> map = new HashMap<>(1);
             map.put("error", ex.getMessage());
             return new JSONObject(map);
         } 

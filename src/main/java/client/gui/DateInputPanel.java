@@ -2,16 +2,14 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package gui;
-
-import java.io.Serializable;
+package client.gui;
 
 /**
  *
  * @author alexander
  */
 @SuppressWarnings("serial")
-public class DateInputPanel extends javax.swing.JPanel implements Serializable {
+public final class DateInputPanel extends javax.swing.JPanel {
 
     /**
      * Creates new form DateInputPanel
@@ -21,7 +19,7 @@ public class DateInputPanel extends javax.swing.JPanel implements Serializable {
     }
     
     public int getDay() {
-        int result = Integer.valueOf(day.getText());
+        final int result = Integer.valueOf(day.getText());
         if (result <= 0 ) throw new NumberFormatException("Invalid day");
         switch (getMonth()) {
             case 1: case 3: case 5: case 7:

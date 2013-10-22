@@ -14,10 +14,17 @@ import java.util.Map;
  * 
  */
 public final class Cart implements Iterable<OrderEntry> {
-    private final Map<Book, OrderEntry> entries = new HashMap<>();
+    private final Map<Book, OrderEntry> entries;
+
+    public Cart() {
+        entries = new HashMap<>();
+    }
+    public Cart(final int size) {
+        entries = new HashMap<>(size);
+    }
 
     public void put(final OrderEntry entry) {
-        assert (entry != null);
+        assert entry != null;
 
         final Book book = entry.getBook();
         final OrderEntry tmp = entries.get(book);
@@ -29,14 +36,14 @@ public final class Cart implements Iterable<OrderEntry> {
     }
 
     public OrderEntry remove(final Book book) {
-        assert (book != null);
+        assert book != null;
         return entries.remove(book);
     }
 
     public double getPrice(final Discount userDiscount) {
-        assert (userDiscount != null);
+        assert userDiscount != null;
 
-        double result = 0;
+        double result = 0.0;
         for (final OrderEntry e : entries.values()) {
             result += e.getPrice();
         }

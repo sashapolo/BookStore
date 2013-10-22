@@ -2,12 +2,12 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package gui;
+package client.gui;
 
 import business.Book;
 import service.BookParseException;
 import service.EntryNotFoundException;
-import service.ServiceFacade;
+import rmi.ServiceFacade;
 
 import javax.swing.*;
 import java.util.Calendar;
@@ -54,7 +54,7 @@ public class ModifyBookFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        bookInfoPanel = new gui.BookInfoPanel();
+        bookInfoPanel = new client.gui.BookInfoPanel();
         javax.swing.JButton modifyButton = new javax.swing.JButton();
         javax.swing.JButton deleteButton = new javax.swing.JButton();
         javax.swing.JButton backButton = new javax.swing.JButton();
@@ -155,7 +155,7 @@ public class ModifyBookFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_backButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private gui.BookInfoPanel bookInfoPanel;
+    private client.gui.BookInfoPanel bookInfoPanel;
     // End of variables declaration//GEN-END:variables
     private final Book book_;
 }

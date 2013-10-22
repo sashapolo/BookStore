@@ -2,20 +2,25 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package gui;
+package client.gui;
 
 import business.Book;
 import business.Isbn;
-import service.ServiceFacade;
+import client.ServiceWrapper;
+import rmi.ServiceFacade;
 
 import javax.swing.*;
+import java.rmi.RemoteException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author alexander
  */
 @SuppressWarnings("serial")
-public class MainAdminFrame extends javax.swing.JFrame {
+public class MainAdminFrame extends JFrame {
+    private static final Logger LOGGER = Logger.getLogger("BookStore");
 
     /**
      * Creates new form MainAdminFrame
@@ -170,7 +175,13 @@ public class MainAdminFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Wrong isbn format", "Error", JOptionPane.INFORMATION_MESSAGE);
             return;
         }
-        final Book book = ServiceFacade.getBook(isbn);
+        final Book book;
+        try {
+            book = ServiceWrapper.getBookStoreService().getBook(isbn);
+        } catch (RemoteException e) {
+            LOGGER.log(Level.SEVERE, null, e);
+            throw new IllegalStateException();
+        }
         dispose();
         new ModifyBookFrame(book).setVisible(true);
     }//GEN-LAST:event_modifyBookButtonActionPerformed
@@ -182,14 +193,17 @@ public class MainAdminFrame extends javax.swing.JFrame {
 
     private void addPubButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addPubButtonActionPerformed
         final String name = JOptionPane.showInputDialog(this, "Input publisher's name");
-        if (name != null) {
-            if (name.isEmpty()) {
-                JOptionPane.showMessageDialog(this, "Name field is empty", "Error", JOptionPane.ERROR_MESSAGE);
-                return;
-            }
-            ServiceFacade.createPublisher(name);
-            JOptionPane.showMessageDialog(this, "Publisher created successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
+        if (name == null || name.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Name field is empty", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
         }
+        try {
+            ServiceWrapper.getBookStoreService().createPublisher(name);
+        } catch (RemoteException e) {
+            LOGGER.log(Level.SEVERE, null, e);
+            throw new IllegalStateException();
+        }
+        JOptionPane.showMessageDialog(this, "Publisher created successfully", "Success", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_addPubButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

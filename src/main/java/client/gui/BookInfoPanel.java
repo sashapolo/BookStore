@@ -2,23 +2,28 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package gui;
+package client.gui;
 
-import service.ServiceFacade;
+import client.ServiceWrapper;
+import rmi.BookStoreService;
 
-import java.io.Serializable;
+import javax.swing.*;
+import java.rmi.RemoteException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author alexander
  */
 @SuppressWarnings("serial")
-public class BookInfoPanel extends javax.swing.JPanel implements Serializable {
+public final class BookInfoPanel extends JPanel {
 
     /**
      * Creates new form BookInfoPanel
      */
-    public BookInfoPanel() {
+    public BookInfoPanel(final String hostname) {
+        this.service = ServiceWrapper.getBookStoreService(hostname);
         initComponents();
     }
 
@@ -105,14 +110,13 @@ public class BookInfoPanel extends javax.swing.JPanel implements Serializable {
         javax.swing.JLabel jLabel6 = new javax.swing.JLabel();
         javax.swing.JLabel jLabel7 = new javax.swing.JLabel();
         javax.swing.JLabel jLabel8 = new javax.swing.JLabel();
-        nameField = new javax.swing.JTextField();
-        authorField = new javax.swing.JTextField();
-        genreField = new javax.swing.JTextField();
-        isbnField = new javax.swing.JTextField();
-        priceField = new javax.swing.JFormattedTextField();
-        amountField = new javax.swing.JTextField();
-        dateInputPanel = new gui.DateInputPanel();
-        pubComboBox = new javax.swing.JComboBox();
+        nameField = new JTextField();
+        authorField = new JTextField();
+        genreField = new JTextField();
+        isbnField = new JTextField();
+        priceField = new JFormattedTextField();
+        amountField = new JTextField();
+        pubComboBox = new JComboBox();
 
         jLabel1.setText("Name:");
         jLabel1.setName("jLabel1"); // NOI18N
@@ -151,10 +155,15 @@ public class BookInfoPanel extends javax.swing.JPanel implements Serializable {
 
         amountField.setName("amountField"); // NOI18N
 
-        dateInputPanel.setName("dateInputPanel"); // NOI18N
-
-        pubComboBox.setModel(new javax.swing.DefaultComboBoxModel(ServiceFacade.getPublisherNames().toArray()));
+        try {
+            pubComboBox.setModel(new javax.swing.DefaultComboBoxModel(service.getPublisherNames().toArray()));
+        } catch (RemoteException e) {
+            JOptionPane.showMessageDialog(this, "RMI error! See the log for the details", "Error", JOptionPane.ERROR_MESSAGE);
+            LOGGER.log(Level.SEVERE, null, e);
+        }
         pubComboBox.setName("pubComboBox"); // NOI18N
+
+        dateInputPanel.setName("dateInputPanel"); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
         this.setLayout(layout);
@@ -178,10 +187,10 @@ public class BookInfoPanel extends javax.swing.JPanel implements Serializable {
                     .addComponent(isbnField)
                     .addComponent(priceField)
                     .addComponent(amountField)
+                    .addComponent(pubComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(dateInputPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 114, Short.MAX_VALUE))
-                    .addComponent(pubComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                            .addComponent(dateInputPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGap(0, 0, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -203,8 +212,8 @@ public class BookInfoPanel extends javax.swing.JPanel implements Serializable {
                     .addComponent(pubComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(dateInputPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel5))
+                        .addComponent(jLabel5)
+                        .addComponent(dateInputPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
@@ -221,13 +230,15 @@ public class BookInfoPanel extends javax.swing.JPanel implements Serializable {
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField amountField;
-    private javax.swing.JTextField authorField;
-    private gui.DateInputPanel dateInputPanel;
-    private javax.swing.JTextField genreField;
-    private javax.swing.JTextField isbnField;
-    private javax.swing.JTextField nameField;
-    private javax.swing.JFormattedTextField priceField;
-    private javax.swing.JComboBox pubComboBox;
+    private JTextField amountField;
+    private JTextField authorField;
+    private final DateInputPanel dateInputPanel = new DateInputPanel();
+    private JTextField genreField;
+    private JTextField isbnField;
+    private JTextField nameField;
+    private JFormattedTextField priceField;
+    private JComboBox pubComboBox;
     // End of variables declaration//GEN-END:variables
+    private final BookStoreService service;
+    private static final Logger LOGGER = Logger.getLogger("BookStore");
 }

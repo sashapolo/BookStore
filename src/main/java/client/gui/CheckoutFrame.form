@@ -95,7 +95,7 @@
       <SubComponents>
         <Container class="javax.swing.JPanel" name="orderEntryPanel">
           <AuxValues>
-            <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="for (final OrderEntry entry : user_.getCart()) {&#xa;    orderEntryPanel.add(new BookOrderEntryPanel(entry, user_));&#xa;}&#xa;&#xa;orderEntryPanel.revalidate();"/>
+            <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="for (final OrderEntry entry : user.getCart()) {&#xa;    orderEntryPanel.add(new BookOrderEntryPanel(entry, user));&#xa;}&#xa;&#xa;orderEntryPanel.revalidate();"/>
           </AuxValues>
 
           <Layout class="org.netbeans.modules.form.compat2.layouts.DesignBoxLayout">
@@ -128,7 +128,7 @@
     <Component class="javax.swing.JLabel" name="jLabel2">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="user_.getPersonalDiscount().integerValue() + &quot;%&quot;" type="code"/>
+          <Connection code="user.getPersonalDiscount().integerValue() + &quot;%&quot;" type="code"/>
         </Property>
       </Properties>
       <AuxValues>
@@ -152,7 +152,7 @@
           <Format format="#0.00" subtype="-1" type="0"/>
         </Property>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="String.valueOf(user_.getCartPrice())" type="code"/>
+          <Connection code="String.valueOf(user.getCartPrice())" type="code"/>
         </Property>
       </Properties>
     </Component>
@@ -160,6 +160,10 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="$"/>
       </Properties>
+      <AuxValues>
+        <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="true"/>
+        <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
+      </AuxValues>
     </Component>
     <Component class="javax.swing.JButton" name="backButton">
       <Properties>

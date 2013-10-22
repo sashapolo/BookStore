@@ -2,17 +2,20 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package gui;
+package client.gui;
 
 import business.Administrator;
 import business.BookStore;
 import business.Customer;
 import business.User;
+import client.ServiceWrapper;
+import rmi.BookStoreService;
 import service.EntryNotFoundException;
 import service.IncorrectPasswordException;
-import service.ServiceFacade;
 
 import javax.swing.*;
+import java.rmi.RemoteException;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**
@@ -20,8 +23,8 @@ import java.util.logging.Logger;
  * @author alexander
  */
 @SuppressWarnings("serial")
-public class AuthFrame extends javax.swing.JFrame {
-    private static final Logger LOGGER = Logger.getLogger(BookStore.class.getName());
+public class AuthFrame extends JFrame {
+    private static final Logger LOGGER = Logger.getLogger("BookStore");
     
     /**
      * Creates new form AuthFrame
@@ -39,7 +42,7 @@ public class AuthFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jPanel1 = new javax.swing.JPanel();
+        javax.swing.JPanel jPanel1 = new javax.swing.JPanel();
         javax.swing.JLabel loginLabel = new javax.swing.JLabel();
         javax.swing.JLabel passwordLabel = new javax.swing.JLabel();
         loginField = new javax.swing.JTextField();
@@ -131,7 +134,8 @@ public class AuthFrame extends javax.swing.JFrame {
         final String login = loginField.getText();
         final String password = String.valueOf(passwordField.getPassword());
         try {
-            final User user = ServiceFacade.findUser(login, password);
+            final BookStoreService service = ServiceWrapper.getBookStoreService();
+            final User user = service.findUser(login, password);
             if (user instanceof Customer) {
                 dispose();
                 new MainCustomerFrame((Customer)user).setVisible(true);
@@ -143,6 +147,9 @@ public class AuthFrame extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(this, "Incorrect password!", "Error", JOptionPane.ERROR_MESSAGE);
         } catch (EntryNotFoundException e) {
             JOptionPane.showMessageDialog(this, "User not found!", "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (RemoteException e) {
+            LOGGER.log(Level.SEVERE, null, e);
+            throw new IllegalStateException();
         }
     }//GEN-LAST:event_enterButtonActionPerformed
 
@@ -156,7 +163,6 @@ public class AuthFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_formWindowClosing
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JPanel jPanel1;
     private javax.swing.JTextField loginField;
     private javax.swing.JPasswordField passwordField;
     // End of variables declaration//GEN-END:variables

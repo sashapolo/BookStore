@@ -4,22 +4,25 @@
 package business;
 
 
+import java.io.Serializable;
+
 /**
  * @author alexander
  * 
  */
-public final class Publisher {
+public final class Publisher implements Serializable {
+    private static final long serialVersionUID = 4146237754773412375L;
     private final int id;
     private String name;
     
-    public Publisher(int id, final String name) {
-        assert (name != null);
+    public Publisher(final int id, final String name) {
+        assert name != null;
         this.id = id;
         this.name = name;
     }
     
     public Publisher(final String name) {
-        assert (name != null);
+        assert name != null;
         this.id = 0;
         this.name = name;
     }
