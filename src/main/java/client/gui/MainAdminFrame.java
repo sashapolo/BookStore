@@ -7,7 +7,6 @@ package client.gui;
 import business.Book;
 import business.Isbn;
 import client.ServiceWrapper;
-import rmi.ServiceFacade;
 
 import javax.swing.*;
 import java.rmi.RemoteException;

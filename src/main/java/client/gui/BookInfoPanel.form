@@ -36,7 +36,7 @@
                   <Component id="priceField" alignment="0" max="32767" attributes="0"/>
                   <Component id="amountField" alignment="0" max="32767" attributes="0"/>
                   <Component id="pubComboBox" max="32767" attributes="0"/>
-                  <Group type="102" attributes="0">
+                  <Group type="102" alignment="1" attributes="0">
                       <Component id="dateInputPanel" min="-2" max="-2" attributes="0"/>
                       <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
                   </Group>
@@ -199,12 +199,13 @@
     <Component class="javax.swing.JComboBox" name="pubComboBox">
       <Properties>
         <Property name="model" type="javax.swing.ComboBoxModel" editor="org.netbeans.modules.form.RADConnectionPropertyEditor" postCode="} catch (RemoteException e) {&#xa;    JOptionPane.showMessageDialog(this, &quot;RMI error! See the log for the details&quot;, &quot;Error&quot;, JOptionPane.ERROR_MESSAGE);&#xa;    LOGGER.log(Level.SEVERE, null, e);&#xa;}">
-          <Connection code="new javax.swing.DefaultComboBoxModel(service.getPublisherNames().toArray())" type="code"/>
+          <Connection code="new DefaultComboBoxModel&lt;&gt;(publisherNames.toArray(new String[publisherNames.size()]))" type="code"/>
         </Property>
         <Property name="name" type="java.lang.String" value="pubComboBox" noResource="true"/>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="try {"/>
+        <AuxValue name="JavaCodeGenerator_InitCodePre" type="java.lang.String" value="try {&#xa;    final List&lt;String&gt; publisherNames = service.getPublisherNames();"/>
+        <AuxValue name="JavaCodeGenerator_TypeParameters" type="java.lang.String" value="&lt;String&gt;"/>
         <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="false"/>
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="2"/>
       </AuxValues>

@@ -5,16 +5,21 @@
 package client.gui;
 
 import business.Credentials;
+import client.ServiceWrapper;
+import rmi.BookStoreService;
 import service.EntryRedefinitionException;
-import rmi.ServiceFacade;
 
 import javax.swing.*;
+import java.rmi.RemoteException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author alexander
  */
-public class RegistrationFrame extends javax.swing.JFrame {
+public class RegistrationFrame extends JFrame {
+    private static final Logger LOGGER = Logger.getLogger("BookStore");
 
     /**
      * Creates new form RegistrationFrame
@@ -166,11 +171,15 @@ public class RegistrationFrame extends javax.swing.JFrame {
         }
         
         try {
-            ServiceFacade.createUser(login, password, new Credentials(name, secondName, email));
+            final BookStoreService service = ServiceWrapper.getBookStoreService();
+            service.createUser(login, password, new Credentials(name, secondName, email));
         } catch (EntryRedefinitionException e) {
             JOptionPane.showMessageDialog(this, "Such login already exists", "Error", JOptionPane.ERROR_MESSAGE);
+        } catch (RemoteException e) {
+            LOGGER.log(Level.SEVERE, null, e);
+            throw new IllegalStateException();
         }
-        
+
         JOptionPane.showMessageDialog(this, "You have sucessfully registered!", "Success", JOptionPane.INFORMATION_MESSAGE);
         dispose();
         new AuthFrame().setVisible(true);

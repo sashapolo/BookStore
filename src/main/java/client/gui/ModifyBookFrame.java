@@ -5,27 +5,32 @@
 package client.gui;
 
 import business.Book;
+import client.ServiceWrapper;
+import rmi.BookStoreService;
 import service.BookParseException;
 import service.EntryNotFoundException;
-import rmi.ServiceFacade;
 
 import javax.swing.*;
+import java.rmi.RemoteException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author alexander
  */
 @SuppressWarnings("serial")
-public class ModifyBookFrame extends javax.swing.JFrame {
+public class ModifyBookFrame extends JFrame {
+    private static final Logger LOGGER = Logger.getLogger("BookStore");
 
     /**
      * Creates new form ModifyBookFrame
      */
     public ModifyBookFrame(final Book book) {
-        assert (book != null);
-        book_ = book;
+        assert book != null;
+        this.book = book;
         initComponents();
         bookInfoPanel.setBookName(book.getName());
         bookInfoPanel.setAuthor(book.getAuthor());
@@ -38,10 +43,11 @@ public class ModifyBookFrame extends javax.swing.JFrame {
                               date.get(Calendar.MONTH), 
                               date.get(Calendar.YEAR));
         try {
-            bookInfoPanel.setAmount(String.valueOf(ServiceFacade.getAmountOfBook(book)));
-        } catch (EntryNotFoundException ex) {
-            // unreachable
-            assert false;
+            final BookStoreService service = ServiceWrapper.getBookStoreService();
+            bookInfoPanel.setAmount(String.valueOf(service.getAmountOfBook(book)));
+        } catch (RemoteException | EntryNotFoundException e) {
+            LOGGER.log(Level.SEVERE, null, e);
+            throw new IllegalStateException();
         }
     }
 
@@ -54,7 +60,7 @@ public class ModifyBookFrame extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        bookInfoPanel = new client.gui.BookInfoPanel();
+        bookInfoPanel = new BookInfoPanel();
         javax.swing.JButton modifyButton = new javax.swing.JButton();
         javax.swing.JButton deleteButton = new javax.swing.JButton();
         javax.swing.JButton backButton = new javax.swing.JButton();
@@ -131,10 +137,16 @@ public class ModifyBookFrame extends javax.swing.JFrame {
             final GregorianCalendar date = 
                     new GregorianCalendar(panel.getYear(), panel.getMonth(), panel.getDay());
 
-            final Book book = ServiceFacade.parseBook(name, author, genre, pubName, isbn, price, date, amount);
-            book.setId(book_.getId());
-            ServiceFacade.updateBook(book);
-            ServiceFacade.setAmountOfBook(book, Integer.valueOf(amount));
+            final BookStoreService service = ServiceWrapper.getBookStoreService();
+            try {
+                final Book b = service.parseBook(name, author, genre, pubName, isbn, price, date, amount);
+                b.setId(this.book.getId());
+                service.updateBook(b);
+                service.setAmountOfBook(b, Integer.valueOf(amount));
+            } catch (RemoteException e) {
+                LOGGER.log(Level.SEVERE, null, e);
+                throw new IllegalStateException();
+            }
         } catch (NumberFormatException | BookParseException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
             return;
@@ -143,7 +155,13 @@ public class ModifyBookFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_modifyButtonActionPerformed
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-        ServiceFacade.deleteBook(book_);
+        final BookStoreService service = ServiceWrapper.getBookStoreService();
+        try {
+            service.deleteBook(book);
+        } catch (RemoteException e) {
+            LOGGER.log(Level.SEVERE, null, e);
+            throw new IllegalStateException();
+        }
         JOptionPane.showMessageDialog(this, "Book deleted successfully!", "Success!", JOptionPane.INFORMATION_MESSAGE);
         dispose();
         new MainAdminFrame().setVisible(true);
@@ -155,7 +173,7 @@ public class ModifyBookFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_backButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private client.gui.BookInfoPanel bookInfoPanel;
+    private BookInfoPanel bookInfoPanel;
     // End of variables declaration//GEN-END:variables
-    private final Book book_;
+    private final Book book;
 }

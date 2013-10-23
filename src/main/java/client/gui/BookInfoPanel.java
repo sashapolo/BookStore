@@ -9,6 +9,7 @@ import rmi.BookStoreService;
 
 import javax.swing.*;
 import java.rmi.RemoteException;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -18,12 +19,12 @@ import java.util.logging.Logger;
  */
 @SuppressWarnings("serial")
 public final class BookInfoPanel extends JPanel {
+    private static final Logger LOGGER = Logger.getLogger("BookStore");
 
     /**
      * Creates new form BookInfoPanel
      */
-    public BookInfoPanel(final String hostname) {
-        this.service = ServiceWrapper.getBookStoreService(hostname);
+    public BookInfoPanel() {
         initComponents();
     }
 
@@ -110,13 +111,13 @@ public final class BookInfoPanel extends JPanel {
         javax.swing.JLabel jLabel6 = new javax.swing.JLabel();
         javax.swing.JLabel jLabel7 = new javax.swing.JLabel();
         javax.swing.JLabel jLabel8 = new javax.swing.JLabel();
-        nameField = new JTextField();
-        authorField = new JTextField();
-        genreField = new JTextField();
-        isbnField = new JTextField();
-        priceField = new JFormattedTextField();
-        amountField = new JTextField();
-        pubComboBox = new JComboBox();
+        nameField = new javax.swing.JTextField();
+        authorField = new javax.swing.JTextField();
+        genreField = new javax.swing.JTextField();
+        isbnField = new javax.swing.JTextField();
+        priceField = new javax.swing.JFormattedTextField();
+        amountField = new javax.swing.JTextField();
+        pubComboBox = new javax.swing.JComboBox<String>();
 
         jLabel1.setText("Name:");
         jLabel1.setName("jLabel1"); // NOI18N
@@ -156,7 +157,8 @@ public final class BookInfoPanel extends JPanel {
         amountField.setName("amountField"); // NOI18N
 
         try {
-            pubComboBox.setModel(new javax.swing.DefaultComboBoxModel(service.getPublisherNames().toArray()));
+            final List<String> publisherNames = service.getPublisherNames();
+            pubComboBox.setModel(new DefaultComboBoxModel<>(publisherNames.toArray(new String[publisherNames.size()])));
         } catch (RemoteException e) {
             JOptionPane.showMessageDialog(this, "RMI error! See the log for the details", "Error", JOptionPane.ERROR_MESSAGE);
             LOGGER.log(Level.SEVERE, null, e);
@@ -188,9 +190,9 @@ public final class BookInfoPanel extends JPanel {
                     .addComponent(priceField)
                     .addComponent(amountField)
                     .addComponent(pubComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                            .addComponent(dateInputPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addGap(0, 0, Short.MAX_VALUE))))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(dateInputPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(0, 0, Short.MAX_VALUE))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -212,8 +214,8 @@ public final class BookInfoPanel extends JPanel {
                     .addComponent(pubComboBox, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                        .addComponent(jLabel5)
-                        .addComponent(dateInputPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel5)
+                    .addComponent(dateInputPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel6)
@@ -230,15 +232,14 @@ public final class BookInfoPanel extends JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private JTextField amountField;
-    private JTextField authorField;
-    private final DateInputPanel dateInputPanel = new DateInputPanel();
-    private JTextField genreField;
-    private JTextField isbnField;
-    private JTextField nameField;
-    private JFormattedTextField priceField;
-    private JComboBox pubComboBox;
+    private javax.swing.JTextField amountField;
+    private javax.swing.JTextField authorField;
+    private final client.gui.DateInputPanel dateInputPanel = new client.gui.DateInputPanel();
+    private javax.swing.JTextField genreField;
+    private javax.swing.JTextField isbnField;
+    private javax.swing.JTextField nameField;
+    private javax.swing.JFormattedTextField priceField;
+    private javax.swing.JComboBox<String> pubComboBox;
     // End of variables declaration//GEN-END:variables
-    private final BookStoreService service;
-    private static final Logger LOGGER = Logger.getLogger("BookStore");
+    private final BookStoreService service = ServiceWrapper.getBookStoreService();
 }

@@ -9,7 +9,6 @@ import business.Customer;
 import business.OrderEntry;
 import client.ServiceWrapper;
 import service.EntryNotFoundException;
-import rmi.ServiceFacade;
 
 import javax.swing.*;
 import java.math.RoundingMode;

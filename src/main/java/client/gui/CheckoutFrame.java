@@ -7,7 +7,6 @@ package client.gui;
 import business.Customer;
 import business.OrderEntry;
 import client.ServiceWrapper;
-import rmi.ServiceFacade;
 
 import javax.swing.*;
 import java.rmi.RemoteException;

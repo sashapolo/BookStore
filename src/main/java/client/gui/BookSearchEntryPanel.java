@@ -12,7 +12,6 @@ import httpservice.Request;
 import httpservice.ServiceException;
 import org.json.JSONException;
 import service.EntryNotFoundException;
-import rmi.ServiceFacade;
 
 import javax.swing.*;
 import java.rmi.RemoteException;

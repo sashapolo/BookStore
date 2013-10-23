@@ -8,12 +8,12 @@ package client.gui;
 
 import client.ServiceWrapper;
 
+import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.swing.*;
 
 /**
  *

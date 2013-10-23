@@ -5,19 +5,24 @@
 package client.gui;
 
 import business.Book;
+import client.ServiceWrapper;
+import rmi.BookStoreService;
 import service.BookParseException;
 import service.EntryRedefinitionException;
-import rmi.ServiceFacade;
 
 import javax.swing.*;
+import java.rmi.RemoteException;
 import java.util.GregorianCalendar;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author alexander
  */
 @SuppressWarnings("serial")
-public class NewBookFrame extends javax.swing.JFrame {
+public class NewBookFrame extends JFrame {
+    private static final Logger LOGGER = Logger.getLogger("BookStore");
 
     /**
      * Creates new form NewBookFrame
@@ -38,6 +43,7 @@ public class NewBookFrame extends javax.swing.JFrame {
         javax.swing.JButton backButton = new javax.swing.JButton();
         javax.swing.JButton createButton = new javax.swing.JButton();
         bookInfoPanel = new client.gui.BookInfoPanel();
+        javax.swing.Box.Filler filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 10), new java.awt.Dimension(0, 10), new java.awt.Dimension(32767, 10));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -59,14 +65,16 @@ public class NewBookFrame extends javax.swing.JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(bookInfoPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 448, Short.MAX_VALUE)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(backButton)
-                            .addComponent(createButton))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(bookInfoPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addComponent(backButton)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(createButton))
+                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                        .addComponent(filler1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE)))
                 .addContainerGap())
         );
@@ -75,10 +83,12 @@ public class NewBookFrame extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(bookInfoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(24, 24, 24)
-                .addComponent(createButton)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 88, Short.MAX_VALUE)
-                .addComponent(backButton)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(filler1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(backButton)
+                    .addComponent(createButton))
                 .addContainerGap())
         );
 
@@ -104,8 +114,14 @@ public class NewBookFrame extends javax.swing.JFrame {
             final GregorianCalendar date = 
                     new GregorianCalendar(panel.getYear(), panel.getMonth(), panel.getDay());
 
-            final Book book = ServiceFacade.parseBook(name, author, genre, pubName, isbn, price, date, amount);
-            ServiceFacade.createBook(book, Integer.valueOf(amount));
+            final BookStoreService service = ServiceWrapper.getBookStoreService();
+            try {
+                final Book book = service.parseBook(name, author, genre, pubName, isbn, price, date, amount);
+                service.createBook(book, Integer.valueOf(amount));
+            } catch (RemoteException e) {
+                LOGGER.log(Level.SEVERE, null, e);
+                throw new IllegalStateException();
+            }
         } catch (NumberFormatException | EntryRedefinitionException | BookParseException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
             return;
@@ -114,6 +130,6 @@ public class NewBookFrame extends javax.swing.JFrame {
     }//GEN-LAST:event_createButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private client.gui.BookInfoPanel bookInfoPanel;
+    client.gui.BookInfoPanel bookInfoPanel;
     // End of variables declaration//GEN-END:variables
 }

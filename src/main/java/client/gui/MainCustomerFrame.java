@@ -6,21 +6,27 @@ package client.gui;
 
 import business.Book;
 import business.Customer;
-import rmi.ServiceFacade;
+import client.ServiceWrapper;
+import rmi.BookStoreService;
 
 import javax.swing.*;
+import java.rmi.RemoteException;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author alexander
  */
 public class MainCustomerFrame extends javax.swing.JFrame {
+    private static final Logger LOGGER = Logger.getLogger("BookStore");
+
     /**
      * Creates new form MainCustomerFrame
      */
     public MainCustomerFrame(final Customer user) {
-        user_ = user;
+        this.user = user;
         initComponents();
     }
     
@@ -39,7 +45,7 @@ public class MainCustomerFrame extends javax.swing.JFrame {
         javax.swing.JScrollPane jScrollPane2 = new javax.swing.JScrollPane();
         searchResultPanel = new javax.swing.JPanel();
         javax.swing.JButton exitButton = new javax.swing.JButton();
-        checkoutButton = new javax.swing.JButton();
+        javax.swing.JButton checkoutButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
 
@@ -126,12 +132,19 @@ public class MainCustomerFrame extends javax.swing.JFrame {
 
     private void searchButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_searchButtonActionPerformed
         searchResultPanel.removeAll();
-        final List<Book> bookList = ServiceFacade.getBooks(searchField.getText());
+        final BookStoreService service = ServiceWrapper.getBookStoreService();
+        final List<Book> bookList;
+        try {
+            bookList = service.getBooks(searchField.getText());
+        } catch (RemoteException e) {
+            LOGGER.log(Level.SEVERE, null, e);
+            throw new IllegalStateException();
+        }
         if (bookList.isEmpty()) {
             JOptionPane.showMessageDialog(this, "No books found", "Info", JOptionPane.INFORMATION_MESSAGE);
         } else {
             for (final Book book : bookList) {
-                searchResultPanel.add(new BookSearchEntryPanel(book, user_));
+                searchResultPanel.add(new BookSearchEntryPanel(book, user));
             }
         }
         searchResultPanel.revalidate();
@@ -144,14 +157,13 @@ public class MainCustomerFrame extends javax.swing.JFrame {
 
     private void checkoutButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_checkoutButtonActionPerformed
         dispose();
-        new CheckoutFrame(user_).setVisible(true);
+        new CheckoutFrame(user).setVisible(true);
     }//GEN-LAST:event_checkoutButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton checkoutButton;
     private javax.swing.JTextField searchField;
     private javax.swing.JPanel searchResultPanel;
     // End of variables declaration//GEN-END:variables
-    private final Customer user_;
+    private final Customer user;
 
 }
