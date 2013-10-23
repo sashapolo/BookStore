@@ -1,7 +1,5 @@
 package business;
 
-import java.io.Serializable;
-
 /**
  * Created with IntelliJ IDEA.
  * User: alexander
@@ -9,8 +7,7 @@ import java.io.Serializable;
  * Time: 10:38 PM
  * To change this template use File | Settings | File Templates.
  */
-public final class Credentials implements Serializable {
-    private static final long serialVersionUID = 3725964855570862300L;
+public final class Credentials {
     private final String name;
     private final String secondName;
     private final String email;

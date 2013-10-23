@@ -83,7 +83,7 @@ public final class Book implements Serializable {
 
     public static final class Builder implements Serializable {
         private static final long serialVersionUID = 3934274355868228594L;
-        private int id;
+        private int id = -1;
         private final String name;
         private final String author;
         private final String genre;

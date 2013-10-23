@@ -4,14 +4,11 @@
 package business;
 
 
-import java.io.Serializable;
-
 /**
  * @author alexander
  * 
  */
-public final class OrderEntry implements Serializable {
-    private static final long serialVersionUID = -2244053755189602328L;
+public final class OrderEntry {
     private final int id;
     private final int amount;
     private final Book book;

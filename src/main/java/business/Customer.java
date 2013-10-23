@@ -59,7 +59,10 @@ public final class Customer extends User {
         final int size = inputStream.readInt();
         currentCart = new Cart(size);
         for (int i = 0; i < size; ++i) {
-            currentCart.put((OrderEntry) inputStream.readObject());
+            final int id = inputStream.readInt();
+            final int amount = inputStream.readInt();
+            final Book book = (Book) inputStream.readObject();
+            currentCart.put(new OrderEntry(id, book, amount));
         }
     }
 
@@ -69,7 +72,9 @@ public final class Customer extends User {
         outputStream.writeInt(personalDiscount.integerValue());
         outputStream.writeInt(currentCart.size());
         for (final OrderEntry entry : currentCart) {
-            outputStream.writeObject(entry);
+            outputStream.writeInt(entry.getId());
+            outputStream.writeInt(entry.getAmount());
+            outputStream.writeObject(entry.getBook());
         }
     }
 }
