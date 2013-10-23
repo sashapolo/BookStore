@@ -18,8 +18,9 @@ import java.util.logging.Logger;
  *
  * @author alexander
  */
+@SuppressWarnings("serial")
 public class RegistrationFrame extends JFrame {
-    private static final Logger LOGGER = Logger.getLogger("BookStore");
+    private static final Logger LOGGER = Logger.getLogger(RegistrationFrame.class.getName());
 
     /**
      * Creates new form RegistrationFrame

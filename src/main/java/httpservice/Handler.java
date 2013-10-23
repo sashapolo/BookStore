@@ -18,19 +18,19 @@ import java.util.Map;
  */
 final class Handler implements HttpHandler {
     @Override
-    public void handle(HttpExchange he) throws IOException {
+    public void handle(final HttpExchange he) throws IOException {
         @SuppressWarnings("unchecked")
-        Map<String, Object> params = (Map<String, Object>) he.getAttribute("parameters");
-        try (OutputStream ostream = he.getResponseBody()) {
+        final Map<String, Object> params = (Map<String, Object>) he.getAttribute("parameters");
+        try (final OutputStream ostream = he.getResponseBody()) {
             if (!params.containsKey("isbn")) {
-                String response = "Wrong parameters. Need parameter isbn=<string>.";
+                final String response = "Wrong parameters. Need parameter isbn=<string>.";
                 he.sendResponseHeaders(400, response.length()); 
                 ostream.write(response.getBytes());
                 return;
             }
             
             final String isbn = (String) params.get("isbn");
-            JSONObject object = JsonBookMapper.mapNumSold(isbn);
+            final JSONObject object = JsonBookMapper.mapNumSold(isbn);
             final String response = object.toString();
             he.sendResponseHeaders(200, response.length());
             ostream.write(response.getBytes());

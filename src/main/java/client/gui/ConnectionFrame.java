@@ -20,7 +20,7 @@ import java.util.logging.Logger;
  * @author alexander
  */
 public class ConnectionFrame extends JFrame {
-    private static final Logger LOGGER = Logger.getLogger("BookStore");
+    private static final Logger LOGGER = Logger.getLogger(ConnectionFrame.class.getName());
 
     /**
      * Creates new form ConnectionFrame

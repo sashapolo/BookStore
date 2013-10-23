@@ -21,7 +21,7 @@ import java.util.logging.Logger;
  */
 @SuppressWarnings("serial")
 public class PublisherChooserFrame extends JFrame {
-    private static final Logger LOGGER = Logger.getLogger("BookStore");
+    private static final Logger LOGGER = Logger.getLogger(PublisherChooserFrame.class.getName());
 
     /**
      * Creates new form PublisherChooserFrame
@@ -138,7 +138,6 @@ public class PublisherChooserFrame extends JFrame {
         }
 
         final String[] publishers;
-        final BookStoreService service = ServiceWrapper.getBookStoreService();
         try {
             final Publisher pub = service.getPublisher(pubList.getSelectedValue());
             pub.setName(newName);

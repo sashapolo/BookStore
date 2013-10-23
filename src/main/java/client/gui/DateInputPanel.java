@@ -4,12 +4,14 @@
  */
 package client.gui;
 
+import javax.swing.*;
+
 /**
  *
  * @author alexander
  */
 @SuppressWarnings("serial")
-public final class DateInputPanel extends javax.swing.JPanel {
+public final class DateInputPanel extends JPanel {
 
     /**
      * Creates new form DateInputPanel
@@ -40,7 +42,7 @@ public final class DateInputPanel extends javax.swing.JPanel {
     }
     
     public int getMonth() {
-        int result = Integer.valueOf(month.getText());
+        final int result = Integer.valueOf(month.getText());
         if (result < 1 || result > 12) {
             throw new NumberFormatException("Invalid month");
         }
@@ -63,8 +65,8 @@ public final class DateInputPanel extends javax.swing.JPanel {
         this.year.setText(String.valueOf(year));
     }
     
-    private boolean isLeap(int year) {
-        return (year % 4 == 0) && ((year % 100 != 0) || (year % 400 == 0)); 
+    private static boolean isLeap(int year) {
+        return (year % 4 == 0) && ((year % 100 != 0) || (year % 400 == 0));
     }
 
     /**

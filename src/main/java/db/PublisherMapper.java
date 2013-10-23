@@ -37,7 +37,7 @@ public final class PublisherMapper extends Mapper<Publisher> {
     }
     
     public Publisher find(final String name) throws DataMapperException {
-        assert(name != null);
+        assert name != null;
 
         final String query = "SELECT * from Publishers where Name=?";
         try (final PreparedStatement statement = connection.prepareStatement(query)) {
@@ -45,7 +45,7 @@ public final class PublisherMapper extends Mapper<Publisher> {
             
             final ResultSet rs = statement.executeQuery();
             if (rs.next()) {
-                int id = rs.getInt("Id");
+                final int id = rs.getInt("Id");
                 return new Publisher(id, name);
             }
             return null;
@@ -83,7 +83,7 @@ public final class PublisherMapper extends Mapper<Publisher> {
     
     @Override
     public void update(final Publisher pub) throws DataMapperException {
-        assert (pub != null);
+        assert pub != null;
         final String query = "UPDATE Publishers SET Name=? WHERE Id=?";
         try (final PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setString(1, pub.getName());
@@ -96,7 +96,7 @@ public final class PublisherMapper extends Mapper<Publisher> {
     
     @Override
     public int insert(final Publisher pub) throws DataMapperException {
-        assert (pub != null);
+        assert pub != null;
         final String query = "INSERT into Publishers(Name) " +
                              "VALUES (?)";
         try (final PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {

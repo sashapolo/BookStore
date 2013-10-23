@@ -43,7 +43,7 @@ public final class OrderEntryMapper extends Mapper<OrderEntry> {
 
     @Override
     public int insert(final OrderEntry entry) throws DataMapperException {
-        assert (entry != null);
+        assert entry != null;
         final String query = "INSERT into OrderEntries (BookId, Amount) VALUES (?, ?)";
         try (final PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
             statement.setInt(1, entry.getBook().getId());
@@ -57,7 +57,7 @@ public final class OrderEntryMapper extends Mapper<OrderEntry> {
 
     @Override
     public void update(final OrderEntry entry) throws DataMapperException {
-        assert (entry != null);
+        assert entry != null;
         throw new DataMapperException("Orders should never be updated!");
     }
 

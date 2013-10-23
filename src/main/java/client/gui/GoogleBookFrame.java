@@ -17,7 +17,7 @@ public class GoogleBookFrame extends javax.swing.JFrame {
      * Creates new form GoogleBookFrame
      */
     public GoogleBookFrame(final JsonBookObject book) {
-        book_ = book;
+        this.book = book;
         initComponents();
     }
 
@@ -35,11 +35,11 @@ public class GoogleBookFrame extends javax.swing.JFrame {
         javax.swing.JLabel jLabel3 = new javax.swing.JLabel();
         javax.swing.JLabel jLabel4 = new javax.swing.JLabel();
         javax.swing.JLabel jLabel5 = new javax.swing.JLabel();
-        dateField = new javax.swing.JTextField();
-        publisherField = new javax.swing.JTextField();
-        authorField = new javax.swing.JTextField();
-        titleField = new javax.swing.JTextField();
-        ratingField = new javax.swing.JFormattedTextField();
+        javax.swing.JTextField dateField = new javax.swing.JTextField();
+        javax.swing.JTextField publisherField = new javax.swing.JTextField();
+        javax.swing.JTextField authorField = new javax.swing.JTextField();
+        javax.swing.JTextField titleField = new javax.swing.JTextField();
+        javax.swing.JFormattedTextField ratingField = new javax.swing.JFormattedTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
@@ -59,24 +59,24 @@ public class GoogleBookFrame extends javax.swing.JFrame {
         jLabel5.setName("jLabel5"); // NOI18N
 
         dateField.setEditable(false);
-        dateField.setText(book_.getPublishedDate());
+        dateField.setText(book.getPublishedDate());
         dateField.setName("dateField"); // NOI18N
 
         publisherField.setEditable(false);
-        publisherField.setText(book_.getPublisher());
+        publisherField.setText(book.getPublisher());
         publisherField.setName("publisherField"); // NOI18N
 
         authorField.setEditable(false);
-        authorField.setText(book_.getAuthor());
+        authorField.setText(book.getAuthor());
         authorField.setName("authorField"); // NOI18N
 
         titleField.setEditable(false);
-        titleField.setText(book_.getName());
+        titleField.setText(book.getName());
         titleField.setName("titleField"); // NOI18N
 
         ratingField.setEditable(false);
         ratingField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
-        ratingField.setText(String.valueOf(book_.getRating()));
+        ratingField.setText(String.valueOf(book.getRating()));
         ratingField.setName("ratingField"); // NOI18N
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -131,11 +131,6 @@ public class GoogleBookFrame extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField authorField;
-    private javax.swing.JTextField dateField;
-    private javax.swing.JTextField publisherField;
-    private javax.swing.JFormattedTextField ratingField;
-    private javax.swing.JTextField titleField;
     // End of variables declaration//GEN-END:variables
-    private final JsonBookObject book_;
+    private final JsonBookObject book;
 }

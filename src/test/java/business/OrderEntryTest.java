@@ -11,8 +11,8 @@ import static org.junit.Assert.assertEquals;
 
 
 public final class OrderEntryTest {
-    public static final double EPSILON = 1e-15;
-    private Book book = null;
+    public static final double EPSILON = 1.0e-15;
+    private Book book;
 
     @Rule
     public final ExpectedException exception = ExpectedException.none();

@@ -8,7 +8,7 @@ import static org.junit.Assert.assertEquals;
 
 
 public final class CartTest {
-    private static final double EPSILON = 1e-15;
+    private static final double EPSILON = 1.0e-15;
     private final Book book;
 
     public CartTest() {

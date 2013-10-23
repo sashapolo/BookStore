@@ -38,7 +38,7 @@ public final class OrderMapper extends Mapper<Order> {
                     throw new DataMapperException("Customer not found");
                 }
 
-                assert (customer instanceof Customer);
+                assert customer instanceof Customer;
 
                 final Cart cart = getCart(id);
                 return new Order.Builder(cart, (Customer)customer)
@@ -56,14 +56,14 @@ public final class OrderMapper extends Mapper<Order> {
 
     @Override
     public int insert(final Order order) throws DataMapperException {
-        assert(order != null);
+        assert order != null;
         final String query = "INSERT into Orders (CreationDate, Status, CustomerId) " +
                              "VALUES (?, ?, ?)";
         try (final PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
 
             statement.setDate(1, new Date(order.getDateCreated().getTimeInMillis()));
             statement.setInt(2, order.getStatus().convert());
-            statement.setInt(3, order.getOrderer().getId());
+            statement.setInt(3, order.getCustomer().getId());
             statement.executeUpdate();
 
             final int id = getId(statement);
@@ -107,7 +107,7 @@ public final class OrderMapper extends Mapper<Order> {
                 final int amount = rs.getInt("Amount");
                 final int entryId = rs.getInt("Id");
                 final Book book = bookMapper.find(bookId);
-                assert (book != null);
+                assert book != null;
                 result.put(new OrderEntry(entryId, book, amount));
             }
 
@@ -122,7 +122,7 @@ public final class OrderMapper extends Mapper<Order> {
         try (final PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, id);
 
-            Mapper<OrderEntry> entryMapper = new OrderEntryMapper(connection);
+            final Mapper<OrderEntry> entryMapper = new OrderEntryMapper(connection);
             for (final OrderEntry entry : cart.values()) {
                 final int entryId = entryMapper.insert(entry);
                 statement.setInt(2, entryId);

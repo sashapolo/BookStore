@@ -19,8 +19,9 @@ import java.util.logging.Logger;
  *
  * @author alexander
  */
-public class MainCustomerFrame extends javax.swing.JFrame {
-    private static final Logger LOGGER = Logger.getLogger("BookStore");
+@SuppressWarnings("serial")
+public class MainCustomerFrame extends JFrame {
+    private static final Logger LOGGER = Logger.getLogger(MainCustomerFrame.class.getName());
 
     /**
      * Creates new form MainCustomerFrame

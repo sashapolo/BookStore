@@ -20,8 +20,8 @@ public class BookOrderEntryPanel extends javax.swing.JPanel {
      * Creates new form BookOrderEntryPanel
      */
     public BookOrderEntryPanel(final OrderEntry entry, final Customer user) {
-        user_ = user;
-        entry_ = entry;
+        this.user = user;
+        this.entry = entry;
         initComponents();
     }
 
@@ -36,11 +36,11 @@ public class BookOrderEntryPanel extends javax.swing.JPanel {
         javax.swing.JLabel jLabel1 = new javax.swing.JLabel();
         javax.swing.JButton deleteButton = new javax.swing.JButton();
         javax.swing.JLabel jLabel3 = new javax.swing.JLabel();
-        priceField = new javax.swing.JFormattedTextField();
-        jLabel2 = new javax.swing.JLabel();
+        javax.swing.JFormattedTextField priceField = new javax.swing.JFormattedTextField();
+        javax.swing.JLabel jLabel2 = new javax.swing.JLabel();
 
         jLabel1.setFont(new java.awt.Font("Dialog", 1, 18)); // NOI18N
-        jLabel1.setText(entry_.getBook().getName() + " x " + entry_.getAmount());
+        jLabel1.setText(entry.getBook().getName() + " x " + entry.getAmount());
 
         deleteButton.setText("delete");
         deleteButton.addActionListener(new java.awt.event.ActionListener() {
@@ -49,11 +49,11 @@ public class BookOrderEntryPanel extends javax.swing.JPanel {
             }
         });
 
-        jLabel3.setText(entry_.getBook().getAuthor());
+        jLabel3.setText(entry.getBook().getAuthor());
 
         priceField.setEditable(false);
         priceField.setFormatterFactory(new javax.swing.text.DefaultFormatterFactory(new javax.swing.text.NumberFormatter(new java.text.DecimalFormat("#0.00"))));
-        priceField.setText(String.valueOf(entry_.getPrice()));
+        priceField.setText(String.valueOf(entry.getPrice()));
 
         jLabel2.setText("$");
 
@@ -92,18 +92,16 @@ public class BookOrderEntryPanel extends javax.swing.JPanel {
     }// </editor-fold>//GEN-END:initComponents
 
     private void deleteButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_deleteButtonActionPerformed
-        user_.deleteOrderEntry(entry_);
+        user.deleteOrderEntry(entry);
         final CheckoutFrame parent = (CheckoutFrame) SwingUtilities.getWindowAncestor(this);
-        parent.getPriceField().setText("$" + user_.getCartPrice());
+        parent.getPriceField().setText("$" + user.getCartPrice());
         // TODO
         parent.getOrderEntryPanel().remove(this);
         parent.getOrderEntryPanel().revalidate();
     }//GEN-LAST:event_deleteButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JLabel jLabel2;
-    private javax.swing.JFormattedTextField priceField;
     // End of variables declaration//GEN-END:variables
-    private final OrderEntry entry_;
-    private final Customer user_;
+    private final OrderEntry entry;
+    private final Customer user;
 }

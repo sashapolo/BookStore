@@ -19,7 +19,7 @@ import java.util.logging.Logger;
  */
 @SuppressWarnings("serial")
 public class MainAdminFrame extends JFrame {
-    private static final Logger LOGGER = Logger.getLogger("BookStore");
+    private static final Logger LOGGER = Logger.getLogger(MainAdminFrame.class.getName());
 
     /**
      * Creates new form MainAdminFrame

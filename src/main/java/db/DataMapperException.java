@@ -8,6 +8,8 @@ package db;
  * To change this template use File | Settings | File Templates.
  */
 public class DataMapperException extends Exception {
-    public DataMapperException() { super(); }
+    private static final long serialVersionUID = -7064022905093758737L;
+
+    public DataMapperException() {}
     public DataMapperException(final String message) { super(message); }
 }

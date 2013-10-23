@@ -22,7 +22,7 @@ import java.util.logging.Logger;
  *
  * @author alexander
  */
-public class PublisherCatalogue {
+public final class PublisherCatalogue {
     private static final Logger LOGGER = Logger.getLogger(BookStore.class.getName());
     
     public static List<String> getPublisherNames() {
@@ -48,7 +48,7 @@ public class PublisherCatalogue {
             final PublisherMapper mapper = new PublisherMapper(connection);
             final Publisher result = mapper.find(name);
 
-            if (result == null) throw new EntryNotFoundException(("Publisher not found"));
+            if (result == null) throw new EntryNotFoundException("Publisher not found");
             return result;
         } catch (SQLException | DataMapperException e) {
             LOGGER.log(Level.SEVERE, e.getMessage());
@@ -57,7 +57,7 @@ public class PublisherCatalogue {
     }
     
     public static void updatePublisher(final Publisher pub) {
-        assert (pub != null);
+        assert pub != null;
         
         final ConnectionManager manager = new DerbyConnectionManager();
         try (final Connection connection = manager.getConnection("db")) {
@@ -70,7 +70,7 @@ public class PublisherCatalogue {
     }
     
     public static void deletePublisher(final Publisher pub) {
-        assert (pub != null);
+        assert pub != null;
         
         final ConnectionManager manager = new DerbyConnectionManager();
         try (final Connection connection = manager.getConnection("db")) {
@@ -83,7 +83,7 @@ public class PublisherCatalogue {
     }
     
     public static void createPublisher(final String name) {
-        assert (name != null);
+        assert name != null;
         
         final ConnectionManager manager = new DerbyConnectionManager();
         try (Connection connection = manager.getConnection("db")) {

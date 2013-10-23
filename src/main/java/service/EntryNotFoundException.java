@@ -8,5 +8,7 @@ package service;
  * To change this template use File | Settings | File Templates.
  */
 public class EntryNotFoundException extends Exception {
+    private static final long serialVersionUID = -2166287089772809405L;
+
     public EntryNotFoundException(final String message) { super(message); }
 }

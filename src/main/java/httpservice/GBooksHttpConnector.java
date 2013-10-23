@@ -18,7 +18,7 @@ import java.net.URLConnection;
  *
  * @author alexander
  */
-public class GBooksHttpConnecter {
+public final class GBooksHttpConnector {
     public static JSONObject executeRequest(final Request request) throws ServiceException {
         try {
             final URL url = request.getUrl();
@@ -45,5 +45,5 @@ public class GBooksHttpConnecter {
         return stringBuilder.toString();
     }
 
-    private GBooksHttpConnecter() {}
+    private GBooksHttpConnector() {}
 }

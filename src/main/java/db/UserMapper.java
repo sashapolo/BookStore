@@ -22,7 +22,7 @@ public final class UserMapper extends Mapper<User>{
     }
 
     public User find(final String login) throws DataMapperException {
-        assert(login != null);
+        assert login != null;
 
         final String query = "SELECT * from USERS where Login=?";
         try (final PreparedStatement statement = connection.prepareStatement(query)) {
@@ -46,7 +46,7 @@ public final class UserMapper extends Mapper<User>{
 
     @Override
     public int insert(final User user) throws DataMapperException {
-        assert (user != null);
+        assert user != null;
 
         try {
             if (user instanceof Administrator) {
@@ -69,7 +69,7 @@ public final class UserMapper extends Mapper<User>{
 
     @Override
     public void update(final User user) throws DataMapperException {
-        assert (user != null);
+        assert user != null;
 
         try {
             if (user instanceof Administrator) {
@@ -99,8 +99,8 @@ public final class UserMapper extends Mapper<User>{
         }
     }
 
-    private User createUser(final PreparedStatement statement) throws SQLException {
-        assert(statement != null);
+    private static User createUser(final PreparedStatement statement) throws SQLException {
+        assert statement != null;
 
         final ResultSet result = statement.executeQuery();
         if (result.next()) {
@@ -120,6 +120,8 @@ public final class UserMapper extends Mapper<User>{
                 return new Customer(id, login, password, credentials, discount);
             case ADMIN:
                 return new Administrator(id, login, password, credentials);
+            case PUBLISHER:
+                throw new IllegalArgumentException("There must be no Publishers in this table!");
             }
         }
         return null;

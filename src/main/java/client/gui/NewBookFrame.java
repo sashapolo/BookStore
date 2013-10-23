@@ -22,7 +22,7 @@ import java.util.logging.Logger;
  */
 @SuppressWarnings("serial")
 public class NewBookFrame extends JFrame {
-    private static final Logger LOGGER = Logger.getLogger("BookStore");
+    private static final Logger LOGGER = Logger.getLogger(NewBookFrame.class.getName());
 
     /**
      * Creates new form NewBookFrame

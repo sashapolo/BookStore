@@ -12,6 +12,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URI;
 import java.net.URLDecoder;
 import java.util.*;
+import java.util.regex.Pattern;
 
 /**
  *
@@ -19,8 +20,11 @@ import java.util.*;
  */
 final class ParametersFilter extends Filter {
 
+    private static final Pattern AMPERS = Pattern.compile("[&]");
+    private static final Pattern EQ = Pattern.compile("[=]");
+
     @Override
-    public void doFilter(HttpExchange he, Chain chain) throws IOException {
+    public void doFilter(final HttpExchange he, final Chain chain) throws IOException {
         parseParameters(he);
         chain.doFilter(he);
     }
@@ -30,23 +34,23 @@ final class ParametersFilter extends Filter {
         return "parameters parser";
     }
     
-    private void parseParameters(final HttpExchange he) throws UnsupportedEncodingException {
+    private static void parseParameters(final HttpExchange he) throws UnsupportedEncodingException {
         final URI requestedUri = he.getRequestURI();
         final String query = requestedUri.getRawQuery();
         he.setAttribute("parameters", parseQuery(query));
     }
     
     @SuppressWarnings("unchecked")
-    private Map<String, Object> parseQuery(final String query) throws UnsupportedEncodingException {
-        Map<String, Object> result = new HashMap<>();
+    private static Map<String, Object> parseQuery(final String query) throws UnsupportedEncodingException {
+        final Map<String, Object> result = new HashMap<>();
         if (query == null) return result;
         
-        final String[] pairs = query.split("[&]");
+        final String[] pairs = AMPERS.split(query);
         for (final String pair : pairs) {
-            String[] params = pair.split("[=]");
+            final String[] params = EQ.split(pair);
+
             String key = null;
             String value = null;
-            
             if (params.length > 0) {
                 key = URLDecoder.decode(params[0], System.getProperty("file.encoding"));
             }

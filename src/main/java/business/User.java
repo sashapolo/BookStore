@@ -16,7 +16,7 @@ public abstract class User implements Serializable {
     private final int password;
     private transient Credentials credentials;
 
-    public User(final int id, final String login,
+    protected User(final int id, final String login,
          final int password, final Credentials credentials) {
         assert login != null;
 

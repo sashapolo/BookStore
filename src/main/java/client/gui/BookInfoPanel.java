@@ -19,7 +19,7 @@ import java.util.logging.Logger;
  */
 @SuppressWarnings("serial")
 public final class BookInfoPanel extends JPanel {
-    private static final Logger LOGGER = Logger.getLogger("BookStore");
+    private static final Logger LOGGER = Logger.getLogger(BookInfoPanel.class.getName());
 
     /**
      * Creates new form BookInfoPanel

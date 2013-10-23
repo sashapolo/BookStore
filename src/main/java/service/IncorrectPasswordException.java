@@ -8,5 +8,7 @@ package service;
  * To change this template use File | Settings | File Templates.
  */
 public class IncorrectPasswordException extends Exception {
+    private static final long serialVersionUID = -897263154997206528L;
+
     public IncorrectPasswordException() { super("Incorrect password"); }
 }

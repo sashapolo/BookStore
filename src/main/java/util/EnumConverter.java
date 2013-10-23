@@ -8,5 +8,5 @@ package util;
  * To change this template use File | Settings | File Templates.
  */
 public interface EnumConverter {
-    public int convert();
+    int convert();
 }

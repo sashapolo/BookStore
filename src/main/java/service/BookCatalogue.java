@@ -26,9 +26,9 @@ import java.util.logging.Logger;
 public final class BookCatalogue {
     private static final Logger LOGGER = Logger.getLogger(BookStore.class.getName());
 
-    public static void createBook(final Book book, int amount)
+    public static void createBook(final Book book, final int amount)
             throws EntryRedefinitionException {
-        assert (book != null);
+        assert book != null;
         final ConnectionManager manager = new DerbyConnectionManager();
         try (Connection connection = manager.getConnection("db")) {
             final BookMapper mapper = new BookMapper(connection);
@@ -42,7 +42,7 @@ public final class BookCatalogue {
     }
 
     public static List<Book> getBooks(final String search) {
-        assert (search != null);
+        assert search != null;
         
         final ConnectionManager manager = new DerbyConnectionManager();
         try (final Connection connection = manager.getConnection("db")) {
@@ -67,7 +67,7 @@ public final class BookCatalogue {
     }
     
     public static Book getBook(final String isbn) {
-        assert (isbn != null);
+        assert isbn != null;
         
         final Isbn parsedIsbn = new Isbn(isbn);
         final ConnectionManager manager = new DerbyConnectionManager();
@@ -81,12 +81,12 @@ public final class BookCatalogue {
     }
     
     public static int getAmount(final Book book) throws EntryNotFoundException {
-        assert (book != null);
+        assert book != null;
         
         final ConnectionManager manager = new DerbyConnectionManager();
         try (final Connection connection = manager.getConnection("db")) {
             final BookMapper mapper = new BookMapper(connection);
-            int result = mapper.getAmount(book.getId());
+            final int result = mapper.getAmount(book.getId());
             if (result == -1) throw new EntryNotFoundException("Book not found");
             return result;
         } catch (SQLException | DataMapperException e) {
@@ -95,8 +95,8 @@ public final class BookCatalogue {
         }
     }
     
-    public static void setAmount(final Book book, int amount) {
-        assert (book != null);
+    public static void setAmount(final Book book, final int amount) {
+        assert book != null;
         
         final ConnectionManager manager = new DerbyConnectionManager();
         try (final Connection connection = manager.getConnection("db")) {
@@ -109,7 +109,7 @@ public final class BookCatalogue {
     }
     
     public static void deleteBook(final Book book) {
-        assert (book != null);
+        assert book != null;
         
         final ConnectionManager manager = new DerbyConnectionManager();
         try (final Connection connection = manager.getConnection("db")) {
@@ -122,7 +122,7 @@ public final class BookCatalogue {
     }
     
     public static void updateBook(final Book book) {
-        assert (book != null);
+        assert book != null;
         
         final ConnectionManager manager = new DerbyConnectionManager();
         try (final Connection connection = manager.getConnection("db")) {
@@ -135,12 +135,12 @@ public final class BookCatalogue {
     }
     
     public static int getNumSold(final Book book) throws EntryNotFoundException {
-        assert (book != null);
+        assert book != null;
         
         final ConnectionManager manager = new DerbyConnectionManager();
         try (final Connection connection = manager.getConnection("db")) {
             final BookMapper mapper = new BookMapper(connection);
-            int result = mapper.getNumSold(book.getId());
+            final int result = mapper.getNumSold(book.getId());
             if (result == -1) {
                 throw new EntryNotFoundException("Book not found");
             }

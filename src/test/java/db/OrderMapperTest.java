@@ -27,7 +27,7 @@ public final class OrderMapperTest {
     private static int bookId = -1;
     private static int userId = -1;
     private static int pubId = -1;
-    public static final double EPSILON = 1e-15;
+    public static final double EPSILON = 1.0e-15;
 
     @BeforeClass
     public static void setUpDatabase() throws Exception {
@@ -109,7 +109,7 @@ public final class OrderMapperTest {
             final Mapper<Order> mapper = new OrderMapper(connection);
             final Order test = mapper.find(orderId);
             assertNotNull("Order not found", test);
-            assertEquals("Incorrect customer", "Elvis", test.getOrderer().getName());
+            assertEquals("Incorrect customer", "Elvis", test.getCustomer().getName());
             assertEquals("Incorrect status", Order.OrderStatus.CREATED, test.getStatus());
             assertEquals("Incorrect cart size", 1, test.getCart().size());
             assertEquals("Incorrect price", 200 * 10 * 0.9, test.getPrice(), EPSILON);
@@ -137,7 +137,7 @@ public final class OrderMapperTest {
             final int id = orderMapper.insert(createOrder(connection, "9992158107"));
             final Order test = orderMapper.find(id);
             assertNotNull("Order not found", test);
-            assertEquals("Incorrect customer", "Elvis", test.getOrderer().getName());
+            assertEquals("Incorrect customer", "Elvis", test.getCustomer().getName());
             assertEquals("Incorrect cart size", 2, test.getCart().size());
             assertEquals("Incorrect price", 200 * 0.9 * 100 + 50 * 120.44, test.getPrice(), EPSILON);
         }

@@ -23,24 +23,13 @@ public final class JsonBookObject {
         final JSONArray items = object.getJSONArray("items");
         final JSONObject item = items.getJSONObject(0);
         final JSONObject volumeInfo = item.getJSONObject("volumeInfo");
-        name = volumeInfo.getString("title");
         final JSONArray array = volumeInfo.getJSONArray("authors");
+
+        name = volumeInfo.getString("title");
         author = array.getString(0);
-        if (volumeInfo.has("publisher")) {
-            publisher = volumeInfo.getString("publisher");
-        } else {
-            publisher = "";
-        } 
-        if (volumeInfo.has("publishedDate")) {
-            publishedDate = volumeInfo.getString("publishedDate");
-        } else {
-            publishedDate = "";
-        }
-        if (volumeInfo.has("averageRating")) {
-            rating = volumeInfo.getDouble("averageRating");
-        } else {
-            rating = 0;
-        }
+        publisher = volumeInfo.has("publisher") ? volumeInfo.getString("publisher") : "";
+        publishedDate = volumeInfo.has("publishedDate") ? volumeInfo.getString("publishedDate") : "";
+        rating = volumeInfo.has("averageRating") ? volumeInfo.getDouble("averageRating") : 0;
     }
 
     public String getName() {

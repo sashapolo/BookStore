@@ -24,7 +24,7 @@ public final class BookMapper extends Mapper<Book>{
     }
 
     public List<Book> find(final String bookName) throws DataMapperException {
-        assert(bookName != null);
+        assert bookName != null;
 
         final List<Book> result = new LinkedList<>();
         final String query = "SELECT * from Books where Name=?";
@@ -43,7 +43,7 @@ public final class BookMapper extends Mapper<Book>{
     }
     
     public Book find(final Isbn isbn) throws DataMapperException {
-        assert(isbn != null);
+        assert isbn != null;
 
         final String query = "SELECT * from Books where Isbn=?";
         try (final PreparedStatement statement = connection.prepareStatement(query)) {
@@ -80,10 +80,10 @@ public final class BookMapper extends Mapper<Book>{
         return insert(book, 0);
     }
     
-    public int insert(final Book book, int amount) throws DataMapperException {
-        assert (book != null);
+    public int insert(final Book book, final int amount) throws DataMapperException {
+        assert book != null;
 
-        int id;
+        final int id;
         final String query = "INSERT into Books(Name, Author, Genre, Isbn, PublicationDate, Price, Discount, PublisherId)" +
                              "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try (final PreparedStatement statement = connection.prepareStatement(query, Statement.RETURN_GENERATED_KEYS)) {
@@ -116,7 +116,7 @@ public final class BookMapper extends Mapper<Book>{
     
     @Override
     public void update(final Book book) throws DataMapperException {
-        assert (book != null);
+        assert book != null;
 
         final String query = "UPDATE Books SET " +
                              "Name=?, Author=?, Genre=?, Isbn=?, PublicationDate=?, Price=?, Discount=?, PublisherId=?" +
@@ -184,7 +184,7 @@ public final class BookMapper extends Mapper<Book>{
         }
     }
 
-    public void buy(final int id, final int amount) throws DataMapperException {
+    public void buy(int id, int amount) throws DataMapperException {
         final String query = "SELECT * from Stock where Id=?";
         try (final PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, id);
@@ -192,9 +192,9 @@ public final class BookMapper extends Mapper<Book>{
             
             final ResultSet rs = statement.executeQuery();
             if (rs.next()) {
-                int numSold = rs.getInt("NumSold");
-                int numAvailable = rs.getInt("Amount");
-                assert (numAvailable >= amount);
+                final int numSold = rs.getInt("NumSold");
+                final int numAvailable = rs.getInt("Amount");
+                assert numAvailable >= amount;
 
                 final String query2 = "UPDATE Stock SET NumSold=?, Amount=? where Id=?";
                 try (final PreparedStatement statement2 = connection.prepareStatement(query2)) {
@@ -250,8 +250,6 @@ public final class BookMapper extends Mapper<Book>{
         }
 
         return new Book.Builder(name, author, genre, publisher, date, isbn, price)
-                            .id(id)
-                            .discount(discount)
-                            .build();
+                            .id(id).discount(discount).build();
     }
 }

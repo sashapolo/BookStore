@@ -10,7 +10,7 @@ package service;
  */
 @SuppressWarnings("serial")
 public class BookParseException extends Exception {
-    public BookParseException(String msg) {
+    public BookParseException(final String msg) {
         super(msg);
     }
 }

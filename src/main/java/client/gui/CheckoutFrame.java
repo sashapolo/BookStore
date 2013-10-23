@@ -19,7 +19,7 @@ import java.util.logging.Logger;
  */
 @SuppressWarnings("serial")
 public final class CheckoutFrame extends JFrame {
-    private static final Logger LOGGER = Logger.getLogger("BookStore");
+    private static final Logger LOGGER = Logger.getLogger(CheckoutFrame.class.getName());
 
     /**
      * Creates new form CheckoutFrame

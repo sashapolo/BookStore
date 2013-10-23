@@ -26,7 +26,7 @@ import static org.junit.Assert.*;
  */
 public final class BookMapperTest {
     private static int publisherId = -1;
-    private static final double EPSILON = 1e-15;
+    private static final double EPSILON = 1.0e-15;
 
     @BeforeClass
     public static void setUpDatabase() throws Exception {

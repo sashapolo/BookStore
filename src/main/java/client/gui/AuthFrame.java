@@ -24,7 +24,7 @@ import java.util.logging.Logger;
  */
 @SuppressWarnings("serial")
 public class AuthFrame extends JFrame {
-    private static final Logger LOGGER = Logger.getLogger("BookStore");
+    private static final Logger LOGGER = Logger.getLogger(AuthFrame.class.getName());
     
     /**
      * Creates new form AuthFrame

@@ -22,7 +22,7 @@ public final class OrderCatalogue {
     private static final Logger LOGGER = Logger.getLogger(BookStore.class.getName());
     
     public static void createOrder(final Customer user) {
-        assert (user != null);
+        assert user != null;
         
         final ConnectionManager manager = new DerbyConnectionManager();
         try (final Connection connection = manager.getConnection("db")) {

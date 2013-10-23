@@ -99,7 +99,7 @@
           <Font name="Dialog" size="18" style="1"/>
         </Property>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="book_.getName()" type="code"/>
+          <Connection code="book.getName()" type="code"/>
         </Property>
       </Properties>
       <AuxValues>
@@ -125,7 +125,7 @@
           <Font name="Dialog" size="12" style="0"/>
         </Property>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="book_.getIsbn().toString()" type="code"/>
+          <Connection code="book.getIsbn().toString()" type="code"/>
         </Property>
       </Properties>
       <AuxValues>
@@ -151,7 +151,7 @@
           <Font name="Dialog" size="12" style="0"/>
         </Property>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="book_.getPublisher().getName()" type="code"/>
+          <Connection code="book.getPublisher().getName()" type="code"/>
         </Property>
       </Properties>
       <AuxValues>
@@ -173,7 +173,7 @@
     </Component>
     <Component class="javax.swing.JLabel" name="pubDateLabel">
       <Properties>
-        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor" postCode="final GregorianCalendar date = book_.getPublicationDate();&#xa;int year = date.get(GregorianCalendar.YEAR);&#xa;int month = date.get(GregorianCalendar.MONTH);&#xa;int day = date.get(GregorianCalendar.DAY_OF_MONTH);">
+        <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor" postCode="final GregorianCalendar date = book.getPublicationDate();&#xa;final int year = date.get(Calendar.YEAR);&#xa;final int month = date.get(Calendar.MONTH);&#xa;final int day = date.get(Calendar.DAY_OF_MONTH);">
           <Font name="Dialog" size="12" style="0"/>
         </Property>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
@@ -193,7 +193,7 @@
         <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="buyButtonActionPerformed"/>
       </Events>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="if (amount_ == 0) {&#xa;    buyButton.setEnabled(false);&#xa;}"/>
+        <AuxValue name="JavaCodeGenerator_InitCodePost" type="java.lang.String" value="if (amount == 0) {&#xa;    buyButton.setEnabled(false);&#xa;}"/>
         <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="true"/>
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
       </AuxValues>
@@ -204,7 +204,7 @@
           <Font name="Dialog" size="18" style="1"/>
         </Property>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="&quot;$&quot; + book_.getPrice()" type="code"/>
+          <Connection code="&quot;$&quot; + book.getPrice()" type="code"/>
         </Property>
       </Properties>
       <AuxValues>
@@ -224,7 +224,7 @@
     <Component class="javax.swing.JLabel" name="authorLabel">
       <Properties>
         <Property name="text" type="java.lang.String" editor="org.netbeans.modules.form.RADConnectionPropertyEditor">
-          <Connection code="book_.getAuthor()" type="code"/>
+          <Connection code="book.getAuthor()" type="code"/>
         </Property>
       </Properties>
       <AuxValues>
@@ -243,7 +243,7 @@
         <Property name="text" type="java.lang.String" value="Not avaliable"/>
       </Properties>
       <AuxValues>
-        <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="if (amount_ != 0) {&#xa;    avaliableLabel.setVisible(false);&#xa;}"/>
+        <AuxValue name="JavaCodeGenerator_AddingCodePost" type="java.lang.String" value="if (amount != 0) {&#xa;    avaliableLabel.setVisible(false);&#xa;}"/>
         <AuxValue name="JavaCodeGenerator_VariableLocal" type="java.lang.Boolean" value="true"/>
         <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="0"/>
       </AuxValues>

@@ -16,7 +16,7 @@ public final class Order {
     private final Builder builder;
     
     private Order(final Builder builder) {
-        assert(builder != null);
+        assert builder != null;
         this.builder = builder;
     }
 
@@ -36,7 +36,7 @@ public final class Order {
         return builder.status;
     }
 
-    public Customer getOrderer() {
+    public Customer getCustomer() {
         return builder.customer;
     }
 
@@ -48,8 +48,8 @@ public final class Order {
         builder.id = id;
     }
 
-    public final static class Builder {
-        private int id = 0;
+    public static final class Builder {
+        private int id = -1;
         private GregorianCalendar dateCreated = new GregorianCalendar();
         private final Cart cart;
         private final double cartPrice;
@@ -57,9 +57,9 @@ public final class Order {
         private final Customer customer;
 
         public Builder(final Cart cart, final Customer customer) {
-            assert (cart != null);
-            assert (customer != null);
-            assert (!cart.isEmpty()): "Creating an order with an empty cart";
+            assert cart != null;
+            assert customer != null;
+            assert !cart.isEmpty() : "Creating an order with an empty cart";
 
             this.cart = cart;
             cartPrice = cart.getPrice(customer.getPersonalDiscount());

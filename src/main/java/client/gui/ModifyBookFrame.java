@@ -23,7 +23,7 @@ import java.util.logging.Logger;
  */
 @SuppressWarnings("serial")
 public class ModifyBookFrame extends JFrame {
-    private static final Logger LOGGER = Logger.getLogger("BookStore");
+    private static final Logger LOGGER = Logger.getLogger(ModifyBookFrame.class.getName());
 
     /**
      * Creates new form ModifyBookFrame
@@ -140,7 +140,7 @@ public class ModifyBookFrame extends JFrame {
             final BookStoreService service = ServiceWrapper.getBookStoreService();
             try {
                 final Book b = service.parseBook(name, author, genre, pubName, isbn, price, date, amount);
-                b.setId(this.book.getId());
+                b.setId(book.getId());
                 service.updateBook(b);
                 service.setAmountOfBook(b, Integer.valueOf(amount));
             } catch (RemoteException e) {

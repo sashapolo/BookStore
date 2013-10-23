@@ -14,7 +14,7 @@ import java.util.GregorianCalendar;
  *
  * @author alexander
  */
-public class BookInfoParser {
+public final class BookInfoParser {
     public static Book parseBook(final String name,
                                  final String author,
                                  final String genre,
@@ -32,14 +32,14 @@ public class BookInfoParser {
 
         final Isbn parsedIsbn = new Isbn(isbn);
 
-        double parsedPrice;
+        final double parsedPrice;
         try {
             parsedPrice = Double.valueOf(price);
         } catch (NumberFormatException e) {
             throw new BookParseException(e.getMessage());
         }
 
-        int parsedAmount;
+        final int parsedAmount;
         try {
             parsedAmount = Integer.valueOf(amount);
             if (parsedAmount <= 0) {

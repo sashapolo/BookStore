@@ -24,7 +24,7 @@ import java.util.logging.Logger;
  */
 @SuppressWarnings("serial")
 public class BuyFrame extends JFrame {
-    private static final Logger LOGGER = Logger.getLogger("BookStore");
+    private static final Logger LOGGER = Logger.getLogger(BuyFrame.class.getName());
 
     /**
      * Creates new form BuyFrame
@@ -159,11 +159,11 @@ public class BuyFrame extends JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void numSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_numSpinnerStateChanged
-        NumberFormat df = DecimalFormat.getInstance();
+        final NumberFormat df = DecimalFormat.getInstance();
         df.setMinimumFractionDigits(2);
         df.setMaximumFractionDigits(4);
         df.setRoundingMode(RoundingMode.DOWN);
-        priceField.setText("$" + df.format((Integer) numSpinner.getValue() * book.getPrice()));
+        priceField.setText('$' + df.format((Integer) numSpinner.getValue() * book.getPrice()));
     }//GEN-LAST:event_numSpinnerStateChanged
 
     private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed

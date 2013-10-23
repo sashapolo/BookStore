@@ -18,7 +18,7 @@ public final class Request {
     private final Isbn isbn;
     
     public Request(final Isbn isbn) {
-        assert (isbn != null);
+        assert isbn != null;
         this.isbn = isbn;
     }
     

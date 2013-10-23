@@ -6,7 +6,7 @@ import org.junit.runners.Suite.SuiteClasses;
 
 
 @RunWith(Suite.class)
-@SuiteClasses({ IsbnTest.class })
+@SuiteClasses(IsbnTest.class)
 public interface IsbnTests {
     /*
      * Test suite for all ISBN classes

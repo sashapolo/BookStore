@@ -28,7 +28,9 @@ public final class ServiceWrapper {
     }
 
     public static BookStoreService getBookStoreService() {
-        assert service != null;
+        if (service == null) {
+            throw new NullPointerException("Uninitialized service!");
+        }
         return service;
     }
 }

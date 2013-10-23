@@ -16,9 +16,9 @@ import java.util.GregorianCalendar;
  */
 public final class Book implements Serializable {
     private static final long serialVersionUID = 3133657525962185632L;
-    private final Book.Builder builder;
+    private final Builder builder;
 
-    private Book(final Book.Builder builder) {
+    private Book(final Builder builder) {
         assert builder != null;
         this.builder = builder;
     }
@@ -113,17 +113,17 @@ public final class Book implements Serializable {
             this.price = price;
         }
 
-        public Book.Builder id(final int id) {
+        public Builder id(final int id) {
             this.id = id;
             return this;
         }
         
-        public Book.Builder discount(final int discount) {
+        public Builder discount(final int discount) {
             this.discount = new Discount(discount);
             return this;
         }
 
-        public Book.Builder discount(final Discount discount) {
+        public Builder discount(final Discount discount) {
             assert discount != null;
             this.discount = discount;
             return this;

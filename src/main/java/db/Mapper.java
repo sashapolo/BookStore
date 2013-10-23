@@ -17,7 +17,7 @@ abstract class Mapper<T> {
 
     public static int getId(final Statement statement) throws SQLException, DataMapperException {
         try (ResultSet keys = statement.getGeneratedKeys()) {
-            assert (keys != null): "Forgot to add Statement.RETURN_GENERATED_KEYS";
+            assert keys != null : "Forgot to add Statement.RETURN_GENERATED_KEYS";
             if (keys.next()) {
                 return keys.getInt(1);
             }
@@ -27,7 +27,7 @@ abstract class Mapper<T> {
     protected Connection connection;
 
     protected Mapper(final Connection connection) {
-        assert (connection != null);
+        assert connection != null;
         this.connection = connection;
     }
 

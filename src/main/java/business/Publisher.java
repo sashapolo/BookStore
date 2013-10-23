@@ -23,7 +23,7 @@ public final class Publisher implements Serializable {
     
     public Publisher(final String name) {
         assert name != null;
-        this.id = 0;
+        id = 0;
         this.name = name;
     }
     

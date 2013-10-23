@@ -10,7 +10,7 @@ import static org.junit.Assert.assertEquals;
 
 
 public final class BookTest {
-    private static final double EPSILON = 1e-15;
+    private static final double EPSILON = 1.0e-15;
 
     @Rule
     public final ExpectedException exception = ExpectedException.none();
