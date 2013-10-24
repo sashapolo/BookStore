@@ -4,7 +4,7 @@
  */
 package edu.gui;
 
-import edu.httpservice.JsonBookObject;
+import business.GoogleBook;
 
 /**
  *
@@ -16,7 +16,7 @@ public class GoogleBookFrame extends javax.swing.JFrame {
     /**
      * Creates new form GoogleBookFrame
      */
-    public GoogleBookFrame(final JsonBookObject book) {
+    public GoogleBookFrame(final GoogleBook book) {
         this.book = book;
         initComponents();
     }
@@ -132,5 +132,5 @@ public class GoogleBookFrame extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     // End of variables declaration//GEN-END:variables
-    private final JsonBookObject book;
+    private final GoogleBook book;
 }

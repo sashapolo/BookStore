@@ -6,8 +6,10 @@ package edu.gui;
 
 import business.Book;
 import business.Customer;
+import business.GoogleBook;
 import edu.ServiceWrapper;
 import exception.EntryNotFoundException;
+import exception.ServiceException;
 
 import javax.swing.*;
 import java.rmi.RemoteException;
@@ -15,6 +17,7 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import rmi.BookStoreService;
 
 
 /**
@@ -35,7 +38,7 @@ public class BookSearchEntryPanel extends JPanel {
         this.book = book;
         this.user = user;
         try {
-            amount = ServiceWrapper.getBookStoreService().getAmountOfBook(book);
+            amount = service.getAmountOfBook(book);
         } catch (EntryNotFoundException | RemoteException e) {
             LOGGER.log(Level.SEVERE, null, e);
             throw new IllegalStateException();
@@ -193,13 +196,17 @@ public class BookSearchEntryPanel extends JPanel {
     }//GEN-LAST:event_buyButtonActionPerformed
 
     private void viewGoogleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewGoogleButtonActionPerformed
+        final GoogleBook b;
         try {
-            final Request request = new Request(book.getIsbn());
-            final JsonBookObject b = new JsonBookObject(executeRequest(request));
-            new GoogleBookFrame(b).setVisible(true);
-        } catch (ServiceException | JSONException ex) {
-            JOptionPane.showMessageDialog(this, ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            b = service.getGoogleBook(book.getIsbn());
+        } catch (ServiceException e) {
+            JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        } catch (RemoteException e) {
+            LOGGER.log(Level.SEVERE, null, e);
+            throw new IllegalStateException();
         }
+        new GoogleBookFrame(b).setVisible(true);
     }//GEN-LAST:event_viewGoogleButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
@@ -207,4 +214,5 @@ public class BookSearchEntryPanel extends JPanel {
     private final Book book;
     private final Customer user;
     private final int amount;
+    private final BookStoreService service = ServiceWrapper.getBookStoreService();
 }

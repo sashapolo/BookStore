@@ -4,12 +4,13 @@
  */
 package edu.gui;
 
-import rmi.BookStoreService;
-
-import javax.swing.*;
+import edu.ServiceWrapper;
 import java.rmi.RemoteException;
 import java.util.List;
 import java.util.logging.Level;
+import rmi.BookStoreService;
+
+import javax.swing.*;
 import java.util.logging.Logger;
 
 /**
@@ -189,9 +190,7 @@ public final class BookInfoPanel extends JPanel {
                     .addComponent(priceField)
                     .addComponent(amountField)
                     .addComponent(pubComboBox, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addComponent(dateInputPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE))))
+                    .addComponent(dateInputPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -226,14 +225,15 @@ public final class BookInfoPanel extends JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel8)
-                    .addComponent(amountField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addComponent(amountField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(109, Short.MAX_VALUE))
         );
     }// </editor-fold>//GEN-END:initComponents
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField amountField;
     private javax.swing.JTextField authorField;
-    private final client.gui.DateInputPanel dateInputPanel = new client.gui.DateInputPanel();
+    private final edu.gui.DateInputPanel dateInputPanel = new edu.gui.DateInputPanel();
     private javax.swing.JTextField genreField;
     private javax.swing.JTextField isbnField;
     private javax.swing.JTextField nameField;

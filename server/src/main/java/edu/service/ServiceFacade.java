@@ -1,14 +1,20 @@
 package edu.service;
 
 import business.*;
+import static edu.httpservice.GBooksHttpConnector.executeRequest;
+import edu.httpservice.JsonBookObject;
+import edu.httpservice.Request;
 import exception.BookParseException;
 import exception.EntryNotFoundException;
 import exception.EntryRedefinitionException;
 import exception.IncorrectPasswordException;
 import edu.service.*;
+import exception.ServiceException;
+import java.rmi.RemoteException;
 
 import java.util.GregorianCalendar;
 import java.util.List;
+import org.json.JSONException;
 import rmi.BookStoreService;
 
 /**
@@ -20,14 +26,13 @@ import rmi.BookStoreService;
  */
 public final class ServiceFacade implements BookStoreService {
     @Override
-    public User findUser(final String login, final String password)
+    public User findUser(String login, String password)
             throws EntryNotFoundException, IncorrectPasswordException {
         return UserCatalogue.getUser(login, password);
     }
 
     @Override
-    public void createUser(final String login, final String password,
-                           final Credentials credentials)
+    public void createUser(String login, String password, Credentials credentials)
             throws EntryRedefinitionException {
         UserCatalogue.createUser(login, password, credentials);
     }
@@ -38,76 +43,93 @@ public final class ServiceFacade implements BookStoreService {
     }
 
     @Override
-    public Publisher getPublisher(final String name) throws EntryNotFoundException {
+    public Publisher getPublisher(String name) throws EntryNotFoundException {
         return PublisherCatalogue.getPublisher(name);
     }
 
     @Override
-    public void deletePublisher(final Publisher pub) {
+    public void deletePublisher(Publisher pub) {
         PublisherCatalogue.deletePublisher(pub);
     }
 
     @Override
-    public void createPublisher(final String name) {
+    public void createPublisher(String name) {
         PublisherCatalogue.createPublisher(name);
     }
 
     @Override
-    public void updatePublisher(final Publisher pub) {
+    public void updatePublisher(Publisher pub) {
         PublisherCatalogue.updatePublisher(pub);
     }
 
     @Override
-    public void createBook(final Book book, int amount) throws EntryRedefinitionException {
+    public void createBook(Book book, int amount) throws EntryRedefinitionException {
         BookCatalogue.createBook(book, amount);
     }
 
     @Override
-    public Book parseBook(final String name, final String author,
-                          final String genre, final String pubName,
-                          final String isbn, final String price,
-                          final GregorianCalendar date, final String amount)
+    public Book parseBook(String name, String author, String genre, 
+                          String pubName, String isbn, String price,
+                          GregorianCalendar date, String amount)
             throws BookParseException {
         return BookInfoParser.parseBook(name, author, genre, pubName, isbn, price, date, amount);
     }
 
     @Override
-    public List<Book> getBooks(final String search) {
+    public List<Book> getBooks(String search) {
         return BookCatalogue.getBooks(search);
     }
 
     @Override
-    public Book getBook(final String isbn) {
+    public Book getBook(String isbn) {
         return BookCatalogue.getBook(isbn);
     }
 
     @Override
-    public int getAmountOfBook(final Book book) throws EntryNotFoundException {
+    public int getAmountOfBook(Book book) throws EntryNotFoundException {
         return BookCatalogue.getAmount(book);
     }
 
     @Override
-    public void setAmountOfBook(final Book book, int amount) {
+    public void setAmountOfBook(Book book, int amount) {
         BookCatalogue.setAmount(book, amount);
     }
 
     @Override
-    public void deleteBook(final Book book) {
+    public void deleteBook(Book book) {
         BookCatalogue.deleteBook(book);
     }
 
     @Override
-    public void updateBook(final Book book) {
+    public void updateBook(Book book) {
         BookCatalogue.updateBook(book);
     }
 
     @Override
-    public int getNumOfSoldBooks(final Book book) throws EntryNotFoundException {
+    public int getNumOfSoldBooks(Book book) throws EntryNotFoundException {
         return BookCatalogue.getNumSold(book);
     }
 
     @Override
-    public void createOrder(final Customer user) {
+    public void createOrder(Customer user) {
         OrderCatalogue.createOrder(user);
+    }
+
+    @Override
+    public GoogleBook getGoogleBook(Isbn isbn) throws ServiceException {
+        try {
+            final Request request = new Request(isbn);
+            final JsonBookObject b = new JsonBookObject(executeRequest(request));
+            
+            final String name = b.getName();
+            final String author = b.getAuthor();
+            final String date = b.getPublishedDate();
+            final String publisher = b.getPublisher();
+            final double rating = b.getRating();
+            
+            return new GoogleBook(name, author, publisher, date, rating);
+        } catch (JSONException e) {
+            throw new ServiceException(e.getMessage());
+        }
     }
 }

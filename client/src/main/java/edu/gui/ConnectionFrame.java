@@ -6,8 +6,7 @@
 
 package edu.gui;
 
-import ServiceWrapper;
-
+import edu.ServiceWrapper;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.rmi.NotBoundException;
@@ -103,7 +102,6 @@ public class ConnectionFrame extends JFrame {
         } catch (RemoteException e) {
             JOptionPane.showMessageDialog(this, "Rmi error! See log for details", "Error", JOptionPane.ERROR_MESSAGE);
             LOGGER.log(Level.SEVERE, null, e);
-            dispose();
         } catch (NotBoundException e) {
             JOptionPane.showMessageDialog(this, "BookStoreService not bound! See log for details", "Error", JOptionPane.ERROR_MESSAGE);
             LOGGER.log(Level.SEVERE, null, e);

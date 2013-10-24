@@ -5,9 +5,9 @@
 package edu.gui;
 
 import business.Credentials;
-import ServiceWrapper;
+import edu.ServiceWrapper;
+import exception.EntryRedefinitionException;
 import rmi.BookStoreService;
-import edu.service.EntryRedefinitionException;
 
 import javax.swing.*;
 import java.rmi.RemoteException;

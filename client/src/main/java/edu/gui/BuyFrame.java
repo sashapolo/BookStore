@@ -7,8 +7,8 @@ package edu.gui;
 import business.Book;
 import business.Customer;
 import business.OrderEntry;
-import ServiceWrapper;
-import edu.service.EntryNotFoundException;
+import edu.ServiceWrapper;
+import exception.EntryNotFoundException;
 
 import javax.swing.*;
 import java.math.RoundingMode;

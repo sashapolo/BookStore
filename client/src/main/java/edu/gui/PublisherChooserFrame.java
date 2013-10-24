@@ -5,9 +5,9 @@
 package edu.gui;
 
 import business.Publisher;
-import ServiceWrapper;
+import edu.ServiceWrapper;
+import exception.EntryNotFoundException;
 import rmi.BookStoreService;
-import edu.service.EntryNotFoundException;
 
 import javax.swing.*;
 import java.rmi.RemoteException;

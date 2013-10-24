@@ -6,7 +6,7 @@ package edu.gui;
 
 import business.Book;
 import business.Customer;
-import ServiceWrapper;
+import edu.ServiceWrapper;
 import rmi.BookStoreService;
 
 import javax.swing.*;

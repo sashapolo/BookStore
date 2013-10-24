@@ -5,11 +5,13 @@ import exception.BookParseException;
 import exception.EntryNotFoundException;
 import exception.EntryRedefinitionException;
 import exception.IncorrectPasswordException;
+import exception.ServiceException;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.util.GregorianCalendar;
 import java.util.List;
+import sun.org.mozilla.javascript.json.JsonParser;
 
 /**
  * Created with IntelliJ IDEA.
@@ -60,4 +62,6 @@ public interface BookStoreService extends Remote {
     int getNumOfSoldBooks(final Book book) throws EntryNotFoundException, RemoteException;
 
     void createOrder(final Customer user) throws RemoteException;
+    
+    GoogleBook getGoogleBook(final Isbn isbn) throws ServiceException, RemoteException;
 }

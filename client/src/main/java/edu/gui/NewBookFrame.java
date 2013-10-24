@@ -5,10 +5,10 @@
 package edu.gui;
 
 import business.Book;
-import ServiceWrapper;
+import edu.ServiceWrapper;
+import exception.BookParseException;
+import exception.EntryRedefinitionException;
 import rmi.BookStoreService;
-import edu.service.BookParseException;
-import edu.service.EntryRedefinitionException;
 
 import javax.swing.*;
 import java.rmi.RemoteException;
@@ -42,8 +42,6 @@ public class NewBookFrame extends JFrame {
 
         javax.swing.JButton backButton = new javax.swing.JButton();
         javax.swing.JButton createButton = new javax.swing.JButton();
-        bookInfoPanel = new client.gui.BookInfoPanel();
-        javax.swing.Box.Filler filler1 = new javax.swing.Box.Filler(new java.awt.Dimension(0, 10), new java.awt.Dimension(0, 10), new java.awt.Dimension(32767, 10));
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -65,30 +63,25 @@ public class NewBookFrame extends JFrame {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+            .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(bookInfoPanel, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(backButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(createButton))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, layout.createSequentialGroup()
-                        .addComponent(filler1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addComponent(createButton)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(bookInfoPanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(filler1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(bookInfoPanel, javax.swing.GroupLayout.DEFAULT_SIZE, 211, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(backButton)
-                    .addComponent(createButton))
+                    .addComponent(createButton)
+                    .addComponent(backButton))
                 .addContainerGap())
         );
 
@@ -96,13 +89,8 @@ public class NewBookFrame extends JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
-        dispose();
-        new MainAdminFrame().setVisible(true);
-    }//GEN-LAST:event_backButtonActionPerformed
-
     private void createButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_createButtonActionPerformed
-        try {
+    try {
             final String name = bookInfoPanel.getBookName();
             final String author = bookInfoPanel.getAuthor();
             final String genre = bookInfoPanel.getGenre();
@@ -111,17 +99,17 @@ public class NewBookFrame extends JFrame {
             final String price = bookInfoPanel.getPrice();
             final String amount = bookInfoPanel.getAmount();
             final DateInputPanel panel = bookInfoPanel.getDateInputPanel();
-            final GregorianCalendar date = 
+            final GregorianCalendar date =
                     new GregorianCalendar(panel.getYear(), panel.getMonth(), panel.getDay());
 
             final BookStoreService service = ServiceWrapper.getBookStoreService();
             try {
-                final Book book = service.parseBook(name, author, genre, pubName, isbn, price, date, amount);
-                service.createBook(book, Integer.valueOf(amount));
-            } catch (RemoteException e) {
-                LOGGER.log(Level.SEVERE, null, e);
-                throw new IllegalStateException();
-            }
+                    final Book book = service.parseBook(name, author, genre, pubName, isbn, price, date, amount);
+                    service.createBook(book, Integer.valueOf(amount));
+                } catch (RemoteException e) {
+                    LOGGER.log(Level.SEVERE, null, e);
+                    throw new IllegalStateException();
+                }
         } catch (NumberFormatException | EntryRedefinitionException | BookParseException ex) {
             JOptionPane.showMessageDialog(this, ex.getMessage(), "Error!", JOptionPane.ERROR_MESSAGE);
             return;
@@ -129,7 +117,12 @@ public class NewBookFrame extends JFrame {
         JOptionPane.showMessageDialog(this, "Book created successfully", "Success!", JOptionPane.INFORMATION_MESSAGE);
     }//GEN-LAST:event_createButtonActionPerformed
 
+    private void backButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backButtonActionPerformed
+        dispose();
+        new MainAdminFrame().setVisible(true);
+    }//GEN-LAST:event_backButtonActionPerformed
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    client.gui.BookInfoPanel bookInfoPanel;
+    private final edu.gui.BookInfoPanel bookInfoPanel = new edu.gui.BookInfoPanel();
     // End of variables declaration//GEN-END:variables
 }

@@ -17,7 +17,7 @@ import java.net.InetSocketAddress;
 public final class Server {
     private final HttpServer server;
     
-    public Server() throws IOException{
+    public Server() throws IOException {
         server = HttpServer.create(new InetSocketAddress(9_999), 0);
         final HttpContext context = server.createContext("/applications/bookstore", new Handler());
         context.getFilters().add(new ParametersFilter());

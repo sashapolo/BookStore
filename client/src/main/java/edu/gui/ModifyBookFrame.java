@@ -5,10 +5,10 @@
 package edu.gui;
 
 import business.Book;
-import ServiceWrapper;
+import edu.ServiceWrapper;
+import exception.BookParseException;
+import exception.EntryNotFoundException;
 import rmi.BookStoreService;
-import edu.service.BookParseException;
-import edu.service.EntryNotFoundException;
 
 import javax.swing.*;
 import java.rmi.RemoteException;

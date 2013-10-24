@@ -6,7 +6,7 @@ package edu.gui;
 
 import business.Book;
 import business.Isbn;
-import ServiceWrapper;
+import edu.ServiceWrapper;
 
 import javax.swing.*;
 import java.rmi.RemoteException;
