@@ -1,0 +1,22 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0
+                             http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <parent>
+        <groupId>com.github.bookstore</groupId>
+        <artifactId>bookstore</artifactId>
+        <version>1.0</version>
+    </parent>
+    <artifactId>bookstore-client</artifactId>
+    <packaging>jar</packaging>
+    <name>Bookstore Client</name>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.github.bookstore</groupId>
+            <artifactId>bookstore-common</artifactId>
+            <version>1.0</version>
+        </dependency>
+    </dependencies>
+</project>
