@@ -159,7 +159,7 @@ public class BuyFrame extends JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void numSpinnerStateChanged(javax.swing.event.ChangeEvent evt) {//GEN-FIRST:event_numSpinnerStateChanged
-        final NumberFormat df = DecimalFormat.getInstance();
+        final NumberFormat df = NumberFormat.getInstance();
         df.setMinimumFractionDigits(2);
         df.setMaximumFractionDigits(4);
         df.setRoundingMode(RoundingMode.DOWN);

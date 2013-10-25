@@ -3,9 +3,9 @@
  */
 package edu.service;
 
-import edu.Main;
 import business.Book;
 import business.Isbn;
+import edu.Main;
 import edu.db.BookMapper;
 import edu.db.ConnectionManager;
 import edu.db.DataMapperException;
@@ -25,7 +25,7 @@ import java.util.logging.Logger;
  * @author alexander
  * 
  */
-public final class BookCatalogue {
+final class BookCatalogue {
     private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
 
     public static void createBook(final Book book, final int amount)

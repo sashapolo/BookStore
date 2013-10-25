@@ -1,9 +1,9 @@
 package edu.service;
 
-import edu.Main;
 import business.Credentials;
 import business.Customer;
 import business.User;
+import edu.Main;
 import edu.db.ConnectionManager;
 import edu.db.DataMapperException;
 import edu.db.DerbyConnectionManager;
@@ -24,7 +24,7 @@ import java.util.logging.Logger;
  * Time: 3:20 PM
  * To change this template use File | Settings | File Templates.
  */
-public final class UserCatalogue {
+final class UserCatalogue {
     private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
 
     public static User getUser(final String login, final String password)

@@ -28,7 +28,7 @@ public final class Book implements Serializable {
     }
 
     public double getPrice() {
-        return builder.price * builder.discount.getInvertedValue();
+        return builder.price * builder.discount.invertedValue();
     }
 
     public String getName() {

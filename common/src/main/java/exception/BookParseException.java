@@ -8,8 +8,9 @@ package exception;
  *
  * @author alexander
  */
-@SuppressWarnings("serial")
 public class BookParseException extends Exception {
+    private static final long serialVersionUID = 1726469632752798961L;
+
     public BookParseException(final String msg) {
         super(msg);
     }

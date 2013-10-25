@@ -11,15 +11,18 @@ import java.util.Map;
  * To change this template use File | Settings | File Templates.
  */
 public final class ReverseEnumMap<V extends Enum<V> & EnumConverter> {
-    private final Map<Integer, V> map = new HashMap<>();
+    private final Map<Integer, V> map;
 
-    public ReverseEnumMap(Class<V> valueType) {
-        for (V v : valueType.getEnumConstants()) {
+    public ReverseEnumMap(final Class<V> valueType) {
+        final V[] enums = valueType.getEnumConstants();
+        map = new HashMap<>(enums.length);
+
+        for (final V v : valueType.getEnumConstants()) {
             map.put(v.convert(), v);
         }
     }
 
-    public V get(int num) {
+    public V get(final int num) {
         return map.get(num);
     }
 }

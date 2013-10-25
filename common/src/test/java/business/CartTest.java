@@ -23,7 +23,7 @@ public final class CartTest {
 
     @Test
     public void testCartGetPrice1() {
-        final Cart tester = new Cart();
+        final Cart tester = new Cart(3);
         tester.put(new OrderEntry(0, book, 2));
         tester.put(new OrderEntry(0, book, 2));
         tester.put(new OrderEntry(0, book, 2));

@@ -7,6 +7,7 @@
 package edu.gui;
 
 import edu.ServiceWrapper;
+
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.rmi.NotBoundException;
@@ -18,6 +19,7 @@ import java.util.logging.Logger;
  *
  * @author alexander
  */
+@SuppressWarnings("serial")
 public class ConnectionFrame extends JFrame {
     private static final Logger LOGGER = Logger.getLogger(ConnectionFrame.class.getName());
 

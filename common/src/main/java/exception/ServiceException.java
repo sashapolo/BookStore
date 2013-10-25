@@ -9,7 +9,9 @@ package exception;
  * @author alexander
  */
 public class ServiceException extends Exception {
-    public ServiceException(String msg) {
+    private static final long serialVersionUID = 4574000203155339457L;
+
+    public ServiceException(final String msg) {
         super(msg);
     }
 }

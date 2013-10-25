@@ -35,9 +35,9 @@ public final class Cart implements Iterable<OrderEntry> {
         }
     }
 
-    public OrderEntry remove(final Book book) {
+    public void remove(final Book book) {
         assert book != null;
-        return entries.remove(book);
+        entries.remove(book);
     }
 
     public double getPrice(final Discount userDiscount) {
@@ -47,7 +47,7 @@ public final class Cart implements Iterable<OrderEntry> {
         for (final OrderEntry e : entries.values()) {
             result += e.getPrice();
         }
-        return result * userDiscount.getInvertedValue();
+        return result * userDiscount.invertedValue();
     }
 
     public boolean isEmpty() {

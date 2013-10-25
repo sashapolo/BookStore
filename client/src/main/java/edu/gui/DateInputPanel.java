@@ -53,19 +53,19 @@ public final class DateInputPanel extends JPanel {
         return Integer.valueOf(year.getText());
     }
     
-    public void setDay(int day) {
+    public void setDay(final int day) {
         this.day.setText(String.valueOf(day));
     }
     
-    public void setMonth(int month) {
+    public void setMonth(final int month) {
         this.month.setText(String.valueOf(month));
     }
     
-    public void setYear(int year) {
+    public void setYear(final int year) {
         this.year.setText(String.valueOf(year));
     }
     
-    private static boolean isLeap(int year) {
+    private static boolean isLeap(final int year) {
         return (year % 4 == 0) && ((year % 100 != 0) || (year % 400 == 0));
     }
 

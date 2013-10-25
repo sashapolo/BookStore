@@ -5,12 +5,12 @@
 package edu.gui;
 
 import edu.ServiceWrapper;
-import java.rmi.RemoteException;
-import java.util.List;
-import java.util.logging.Level;
 import rmi.BookStoreService;
 
 import javax.swing.*;
+import java.rmi.RemoteException;
+import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 /**

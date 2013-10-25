@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
  */
 final class ParametersFilter extends Filter {
 
-    private static final Pattern AMPERS = Pattern.compile("[&]");
+    private static final Pattern AMPERSAND = Pattern.compile("[&]");
     private static final Pattern EQ = Pattern.compile("[=]");
 
     @Override
@@ -42,10 +42,11 @@ final class ParametersFilter extends Filter {
     
     @SuppressWarnings("unchecked")
     private static Map<String, Object> parseQuery(final String query) throws UnsupportedEncodingException {
-        final Map<String, Object> result = new HashMap<>();
-        if (query == null) return result;
-        
-        final String[] pairs = AMPERS.split(query);
+        if (query == null) return Collections.EMPTY_MAP;
+
+        final String[] pairs = AMPERSAND.split(query);
+        final Map<String, Object> result = new HashMap<>(pairs.length);
+
         for (final String pair : pairs) {
             final String[] params = EQ.split(pair);
 
@@ -58,12 +59,14 @@ final class ParametersFilter extends Filter {
                 value = URLDecoder.decode(params[1], System.getProperty("file.encoding"));
             }
 
+            if (key == null || value == null) return Collections.EMPTY_MAP;
+
             if (result.containsKey(key)) {
                 final Object obj = result.get(key);
                 if (obj instanceof List<?>) {
                     ((Collection<String>) obj).add(value);
                 } else if (obj instanceof String) {
-                    final Collection<String> values = new ArrayList<>();
+                    final Collection<String> values = new ArrayList<>(2);
                     values.add((String) obj);
                     values.add(value);
                     result.put(key, values);

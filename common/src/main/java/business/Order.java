@@ -44,10 +44,6 @@ public final class Order {
     	return builder.cart;
     }
 
-    public void setId(final int id) {
-        builder.id = id;
-    }
-
     public static final class Builder {
         private int id = -1;
         private GregorianCalendar dateCreated = new GregorianCalendar();

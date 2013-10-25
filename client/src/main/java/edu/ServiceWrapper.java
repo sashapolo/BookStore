@@ -20,11 +20,10 @@ public final class ServiceWrapper {
     private ServiceWrapper() {
     }
 
-    public static BookStoreService createBookStoreService(final String hostname) throws RemoteException, NotBoundException {
+    public static void createBookStoreService(final String hostname) throws RemoteException, NotBoundException {
         final String name = "BookStoreService";
         final Registry registry = LocateRegistry.getRegistry(hostname);
         service = (BookStoreService) registry.lookup(name);
-        return service;
     }
 
     public static BookStoreService getBookStoreService() {

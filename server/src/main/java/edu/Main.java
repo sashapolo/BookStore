@@ -50,12 +50,9 @@ public final class Main {
             registry.rebind(name, stub);
 
             LOGGER.info("BookStoreService bound");
+            SERVER.stop();
         } catch (RemoteException e) {
             LOGGER.log(Level.SEVERE, null, e);
         }
-    }
-    
-    public static void exit() {
-        SERVER.stop();
     }
 }

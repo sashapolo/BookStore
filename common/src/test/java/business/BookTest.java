@@ -17,7 +17,7 @@ public final class BookTest {
 
     @Test
     public void testBookGetPrice1() {
-        Book tester = new Book.Builder("",
+        final Book tester = new Book.Builder("",
                                        "",
                                        "",
                                        new Publisher(0, ""),
@@ -29,7 +29,7 @@ public final class BookTest {
 
     @Test
     public void testBookGetPrice2() {
-        Book tester = new Book.Builder("",
+        final Book tester = new Book.Builder("",
                                        "",
                                        "",
                                        new Publisher(0, ""),
@@ -41,7 +41,7 @@ public final class BookTest {
 
     @Test
     public void testBookGetPrice3() {
-        Book tester = new Book.Builder("",
+        final Book tester = new Book.Builder("",
                                        "",
                                        "",
                                        new Publisher(0, ""),
@@ -56,7 +56,7 @@ public final class BookTest {
         exception.expect(IllegalArgumentException.class);
         exception.expectMessage("Illegal discount settings");
         @SuppressWarnings("unused")
-        Book tester = new Book.Builder("",
+        final Book tester = new Book.Builder("",
                                        "",
                                        "",
                                        new Publisher(0, ""),

@@ -16,7 +16,7 @@ import java.util.GregorianCalendar;
  *
  * @author alexander
  */
-public final class BookInfoParser {
+final class BookInfoParser {
     public static Book parseBook(final String name,
                                  final String author,
                                  final String genre,

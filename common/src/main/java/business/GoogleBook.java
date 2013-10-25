@@ -10,15 +10,15 @@ package business;
  *
  * @author alexander
  */
-public class GoogleBook {
+public final class GoogleBook {
     private final String name;
     private final String author;
     private final String publisher;
     private final String publishedDate;
     private final double rating;
     
-    public GoogleBook(String name, String author, String publisher, 
-                      String publishedDate, double rating) {
+    public GoogleBook(final String name, final String author, final String publisher,
+                      final String publishedDate, final double rating) {
         this.name = name;
         this.author = author;
         this.publisher = publisher;

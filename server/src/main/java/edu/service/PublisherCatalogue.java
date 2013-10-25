@@ -4,8 +4,8 @@
  */
 package edu.service;
 
-import edu.Main;
 import business.Publisher;
+import edu.Main;
 import edu.db.ConnectionManager;
 import edu.db.DataMapperException;
 import edu.db.DerbyConnectionManager;
@@ -23,7 +23,7 @@ import java.util.logging.Logger;
  *
  * @author alexander
  */
-public final class PublisherCatalogue {
+final class PublisherCatalogue {
     private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
     
     public static List<String> getPublisherNames() {

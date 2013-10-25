@@ -1,9 +1,9 @@
 package edu.service;
 
-import edu.Main;
 import business.Customer;
 import business.Order;
 import business.OrderEntry;
+import edu.Main;
 import edu.db.*;
 
 import java.sql.Connection;
@@ -15,7 +15,7 @@ import java.util.logging.Logger;
  * @author alexander
  *
  */
-public final class OrderCatalogue {
+final class OrderCatalogue {
     private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
     
     public static void createOrder(final Customer user) {

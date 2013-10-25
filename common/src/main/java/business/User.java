@@ -9,7 +9,7 @@ import java.io.*;
  * @author alexander
  * 
  */
-public abstract class User implements Serializable {
+public class User implements Serializable {
     private static final long serialVersionUID = 3577630894764478936L;
     private final int id;
     private final String login;

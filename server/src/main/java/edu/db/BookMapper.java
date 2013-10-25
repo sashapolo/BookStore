@@ -15,7 +15,6 @@ import java.util.List;
  * User: alexander
  * Date: 5/13/13
  * Time: 7:01 PM
- * To change this template use File | Settings | File Templates.
  */
 public final class BookMapper extends Mapper<Book>{
 
@@ -173,7 +172,7 @@ public final class BookMapper extends Mapper<Book>{
         }
     }
     
-    public void setAmount(int id, int amount) throws DataMapperException {
+    public void setAmount(final int id, final int amount) throws DataMapperException {
         final String query = "UPDATE Stock SET Amount=? where Id=?";
         try (final PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, amount);
@@ -184,7 +183,7 @@ public final class BookMapper extends Mapper<Book>{
         }
     }
 
-    public void buy(int id, int amount) throws DataMapperException {
+    public void buy(final int id, final int amount) throws DataMapperException {
         final String query = "SELECT * from Stock where Id=?";
         try (final PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, id);
@@ -214,7 +213,7 @@ public final class BookMapper extends Mapper<Book>{
         }
     }
     
-    public int getNumSold(int id) throws DataMapperException {
+    public int getNumSold(final int id) throws DataMapperException {
         final String query = "SELECT * from Stock where Id=?";
         try (final PreparedStatement statement = connection.prepareStatement(query)) {
             statement.setInt(1, id);
