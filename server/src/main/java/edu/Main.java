@@ -20,23 +20,22 @@ import java.util.logging.Logger;
  * To change this template use File | Settings | File Templates.
  */
 public final class Main {
-    private static final Server SERVER;
+//    private static Server SERVER = null;
     private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
-
-    static {
-       try {
-           SERVER = new Server();
-       } catch (IOException e) {
-           LOGGER.log(Level.SEVERE, null, e);
-           throw new IllegalStateException();
-       }
-    }
+//
+//    static {
+//       try {
+//           SERVER = new Server();
+//       } catch (IOException e) {
+//           LOGGER.log(Level.SEVERE, null, e);
+//       }
+//    }
 
     private Main() {
     }
 
     public static void main(final String[] args) {
-        SERVER.start();
+//        if (SERVER != null) SERVER.start();
 
         if (System.getSecurityManager() == null) {
             System.setSecurityManager(new SecurityManager());
@@ -50,7 +49,7 @@ public final class Main {
             registry.rebind(name, stub);
 
             LOGGER.info("BookStoreService bound");
-            SERVER.stop();
+//            if (SERVER != null) SERVER.stop();
         } catch (RemoteException e) {
             LOGGER.log(Level.SEVERE, null, e);
         }
