@@ -1,7 +1,9 @@
 #! /bin/bash
 
 java \
- -Djava.rmi.server.codebase=file:$(pwd)/target/bookstore-client-1.0.jar \
+ -cp target/lib:target/bookstore-client-1.0.jar \
+ -Djava.rmi.server.codebase=file://$(pwd)/target/bookstore-client-1.0.jar \
+ -Djava.rmi.server.useCodebaseOnly=false \
  -Djava.security.policy=client.policy \
- -jar target/bookstore-client-1.0.jar
-
+ -Djava.rmi.server.hostname=localhost \
+ edu.Main
