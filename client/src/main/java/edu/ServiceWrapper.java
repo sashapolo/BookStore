@@ -1,6 +1,6 @@
 package edu;
 
-import rmi.BookStoreService;
+import edu.rmi.BookStoreService;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;

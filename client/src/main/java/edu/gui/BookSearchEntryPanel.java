@@ -4,13 +4,13 @@
  */
 package edu.gui;
 
-import business.Book;
-import business.Customer;
-import business.GoogleBook;
+import edu.business.Book;
+import edu.business.Customer;
+import edu.business.GoogleBook;
 import edu.ServiceWrapper;
-import exception.EntryNotFoundException;
-import exception.ServiceException;
-import rmi.BookStoreService;
+import edu.exception.EntryNotFoundException;
+import edu.exception.ServiceException;
+import edu.rmi.BookStoreService;
 
 import javax.swing.*;
 import java.rmi.RemoteException;

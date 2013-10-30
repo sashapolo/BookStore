@@ -1,7 +1,7 @@
 package edu.db;
 
-import business.Book;
-import business.OrderEntry;
+import edu.business.Book;
+import edu.business.OrderEntry;
 
 import java.sql.*;
 

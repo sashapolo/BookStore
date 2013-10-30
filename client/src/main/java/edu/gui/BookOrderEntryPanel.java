@@ -4,8 +4,8 @@
  */
 package edu.gui;
 
-import business.Customer;
-import business.OrderEntry;
+import edu.business.Customer;
+import edu.business.OrderEntry;
 
 import javax.swing.*;
 

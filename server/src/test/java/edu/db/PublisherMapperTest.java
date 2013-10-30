@@ -4,7 +4,7 @@
  */
 package edu.db;
 
-import business.Publisher;
+import edu.business.Publisher;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;

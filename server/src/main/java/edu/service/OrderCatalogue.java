@@ -1,8 +1,8 @@
 package edu.service;
 
-import business.Customer;
-import business.Order;
-import business.OrderEntry;
+import edu.business.Customer;
+import edu.business.Order;
+import edu.business.OrderEntry;
 import edu.Main;
 import edu.db.*;
 

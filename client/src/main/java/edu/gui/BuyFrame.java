@@ -4,16 +4,15 @@
  */
 package edu.gui;
 
-import business.Book;
-import business.Customer;
-import business.OrderEntry;
+import edu.business.Book;
+import edu.business.Customer;
+import edu.business.OrderEntry;
 import edu.ServiceWrapper;
-import exception.EntryNotFoundException;
+import edu.exception.EntryNotFoundException;
 
 import javax.swing.*;
 import java.math.RoundingMode;
 import java.rmi.RemoteException;
-import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.logging.Level;
 import java.util.logging.Logger;

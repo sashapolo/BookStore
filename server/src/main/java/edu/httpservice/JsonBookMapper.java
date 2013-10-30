@@ -4,9 +4,9 @@
  */
 package edu.httpservice;
 
-import business.Book;
+import edu.business.Book;
 import edu.service.ServiceFacade;
-import exception.EntryNotFoundException;
+import edu.exception.EntryNotFoundException;
 import org.json.JSONObject;
 
 import java.util.HashMap;

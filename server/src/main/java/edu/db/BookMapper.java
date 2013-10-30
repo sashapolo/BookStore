@@ -1,9 +1,9 @@
 package edu.db;
 
-import business.Book;
-import business.Discount;
-import business.Isbn;
-import business.Publisher;
+import edu.business.Book;
+import edu.business.Discount;
+import edu.business.Isbn;
+import edu.business.Publisher;
 
 import java.sql.*;
 import java.util.GregorianCalendar;

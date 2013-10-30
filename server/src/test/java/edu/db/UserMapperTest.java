@@ -1,9 +1,9 @@
 package edu.db;
 
-import business.Administrator;
-import business.Credentials;
-import business.Customer;
-import business.User;
+import edu.business.Administrator;
+import edu.business.Credentials;
+import edu.business.Customer;
+import edu.business.User;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;

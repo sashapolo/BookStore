@@ -4,7 +4,7 @@
  */
 package edu.httpservice;
 
-import exception.ServiceException;
+import edu.exception.ServiceException;
 import org.json.JSONException;
 import org.json.JSONObject;
 

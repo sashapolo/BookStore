@@ -4,13 +4,13 @@
  */
 package edu.gui;
 
-import business.Administrator;
-import business.Customer;
-import business.User;
+import edu.business.Administrator;
+import edu.business.Customer;
+import edu.business.User;
 import edu.ServiceWrapper;
-import exception.EntryNotFoundException;
-import exception.IncorrectPasswordException;
-import rmi.BookStoreService;
+import edu.exception.EntryNotFoundException;
+import edu.exception.IncorrectPasswordException;
+import edu.rmi.BookStoreService;
 
 import javax.swing.*;
 import java.rmi.RemoteException;

@@ -4,13 +4,13 @@
  */
 package edu.service;
 
-import business.Publisher;
+import edu.business.Publisher;
 import edu.Main;
 import edu.db.ConnectionManager;
 import edu.db.DataMapperException;
 import edu.db.DerbyConnectionManager;
 import edu.db.PublisherMapper;
-import exception.EntryNotFoundException;
+import edu.exception.EntryNotFoundException;
 
 import java.sql.Connection;
 import java.sql.SQLException;

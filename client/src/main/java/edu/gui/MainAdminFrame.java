@@ -4,8 +4,8 @@
  */
 package edu.gui;
 
-import business.Book;
-import business.Isbn;
+import edu.business.Book;
+import edu.business.Isbn;
 import edu.ServiceWrapper;
 
 import javax.swing.*;

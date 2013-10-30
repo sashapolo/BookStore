@@ -4,7 +4,7 @@
  */
 package edu.gui;
 
-import business.GoogleBook;
+import edu.business.GoogleBook;
 
 /**
  *

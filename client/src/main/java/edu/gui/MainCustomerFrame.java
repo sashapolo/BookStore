@@ -4,10 +4,10 @@
  */
 package edu.gui;
 
-import business.Book;
-import business.Customer;
+import edu.business.Book;
+import edu.business.Customer;
 import edu.ServiceWrapper;
-import rmi.BookStoreService;
+import edu.rmi.BookStoreService;
 
 import javax.swing.*;
 import java.rmi.RemoteException;

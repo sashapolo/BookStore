@@ -3,15 +3,15 @@
  */
 package edu.service;
 
-import business.Book;
-import business.Isbn;
+import edu.business.Book;
+import edu.business.Isbn;
 import edu.Main;
 import edu.db.BookMapper;
 import edu.db.ConnectionManager;
 import edu.db.DataMapperException;
 import edu.db.DerbyConnectionManager;
-import exception.EntryNotFoundException;
-import exception.EntryRedefinitionException;
+import edu.exception.EntryNotFoundException;
+import edu.exception.EntryRedefinitionException;
 
 import java.sql.Connection;
 import java.sql.SQLException;

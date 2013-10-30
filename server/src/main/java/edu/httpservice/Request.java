@@ -4,7 +4,7 @@
  */
 package edu.httpservice;
 
-import business.Isbn;
+import edu.business.Isbn;
 
 import java.net.MalformedURLException;
 import java.net.URL;

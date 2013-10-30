@@ -5,7 +5,7 @@
 package edu.gui;
 
 import edu.ServiceWrapper;
-import rmi.BookStoreService;
+import edu.rmi.BookStoreService;
 
 import javax.swing.*;
 import java.rmi.RemoteException;

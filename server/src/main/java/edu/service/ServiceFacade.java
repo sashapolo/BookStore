@@ -1,11 +1,11 @@
 package edu.service;
 
-import business.*;
+import edu.business.*;
 import edu.httpservice.JsonBookObject;
 import edu.httpservice.Request;
-import exception.*;
+import edu.exception.*;
 import org.json.JSONException;
-import rmi.BookStoreService;
+import edu.rmi.BookStoreService;
 
 import java.util.GregorianCalendar;
 import java.util.List;

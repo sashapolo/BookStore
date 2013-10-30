@@ -4,10 +4,10 @@
  */
 package edu.gui;
 
-import business.Publisher;
+import edu.business.Publisher;
 import edu.ServiceWrapper;
-import exception.EntryNotFoundException;
-import rmi.BookStoreService;
+import edu.exception.EntryNotFoundException;
+import edu.rmi.BookStoreService;
 
 import javax.swing.*;
 import java.rmi.RemoteException;

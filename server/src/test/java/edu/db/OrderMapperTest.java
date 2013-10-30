@@ -1,6 +1,6 @@
 package edu.db;
 
-import business.*;
+import edu.business.*;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Rule;

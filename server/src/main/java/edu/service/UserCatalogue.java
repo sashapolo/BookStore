@@ -1,16 +1,16 @@
 package edu.service;
 
-import business.Credentials;
-import business.Customer;
-import business.User;
+import edu.business.Credentials;
+import edu.business.Customer;
+import edu.business.User;
 import edu.Main;
 import edu.db.ConnectionManager;
 import edu.db.DataMapperException;
 import edu.db.DerbyConnectionManager;
 import edu.db.UserMapper;
-import exception.EntryNotFoundException;
-import exception.EntryRedefinitionException;
-import exception.IncorrectPasswordException;
+import edu.exception.EntryNotFoundException;
+import edu.exception.EntryRedefinitionException;
+import edu.exception.IncorrectPasswordException;
 
 import java.sql.Connection;
 import java.sql.SQLException;

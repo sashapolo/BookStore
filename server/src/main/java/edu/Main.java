@@ -1,10 +1,8 @@
 package edu;
 
-import edu.httpservice.Server;
 import edu.service.ServiceFacade;
-import rmi.BookStoreService;
+import edu.rmi.BookStoreService;
 
-import java.io.IOException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -41,11 +39,11 @@ public final class Main {
             System.setSecurityManager(new SecurityManager());
         }
         try {
-            final String name = "BookStoreService";
             final BookStoreService service = new ServiceFacade();
             final BookStoreService stub =
                     (BookStoreService) UnicastRemoteObject.exportObject(service, 0);
             final Registry registry = LocateRegistry.getRegistry();
+            final String name = "BookStoreService";
             registry.rebind(name, stub);
 
             LOGGER.info("BookStoreService bound");

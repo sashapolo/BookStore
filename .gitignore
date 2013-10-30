@@ -25,3 +25,5 @@ db-derby/
 derby.log
 
 .directory
+
+dependency-reduced-pom.xml

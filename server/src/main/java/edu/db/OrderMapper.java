@@ -1,7 +1,7 @@
 package edu.db;
 
-import business.*;
-import util.ReverseEnumMap;
+import edu.business.*;
+import edu.util.ReverseEnumMap;
 
 import java.sql.*;
 import java.util.GregorianCalendar;

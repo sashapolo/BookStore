@@ -4,7 +4,7 @@
  */
 package edu.db;
 
-import business.Publisher;
+import edu.business.Publisher;
 
 import java.sql.*;
 import java.util.LinkedList;

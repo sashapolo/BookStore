@@ -4,11 +4,11 @@
  */
 package edu.service;
 
-import business.Book;
-import business.Isbn;
-import business.Publisher;
-import exception.BookParseException;
-import exception.EntryNotFoundException;
+import edu.business.Book;
+import edu.business.Isbn;
+import edu.business.Publisher;
+import edu.exception.BookParseException;
+import edu.exception.EntryNotFoundException;
 
 import java.util.GregorianCalendar;
 

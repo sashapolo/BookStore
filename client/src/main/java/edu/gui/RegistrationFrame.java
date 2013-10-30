@@ -4,10 +4,10 @@
  */
 package edu.gui;
 
-import business.Credentials;
+import edu.business.Credentials;
 import edu.ServiceWrapper;
-import exception.EntryRedefinitionException;
-import rmi.BookStoreService;
+import edu.exception.EntryRedefinitionException;
+import edu.rmi.BookStoreService;
 
 import javax.swing.*;
 import java.rmi.RemoteException;

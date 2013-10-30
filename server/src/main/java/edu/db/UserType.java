@@ -4,7 +4,7 @@
  */
 package edu.db;
 
-import util.EnumConverter;
+import edu.util.EnumConverter;
 
 /**
  *
