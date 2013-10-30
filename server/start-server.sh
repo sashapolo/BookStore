@@ -6,4 +6,4 @@ java \
  -Djava.rmi.server.useCodebaseOnly=false \
  -Djava.security.policy=server.policy \
  -Djava.rmi.server.hostname=localhost \
- edu.Main
+edu.Main

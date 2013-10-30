@@ -27,7 +27,6 @@ public final class IsbnTest {
     @Test
     public void testIsbn13NotValid() {
         exception.expect(IllegalArgumentException.class);
-        exception.expectMessage("Invalid 13-digit ISBN number");
         @SuppressWarnings("unused")
         final Isbn tester = new Isbn("9783161484103");
     }
@@ -35,7 +34,6 @@ public final class IsbnTest {
     @Test
     public void testIsbn13WithLetters() {
         exception.expect(IllegalArgumentException.class);
-        exception.expectMessage("Invalid 13-digit ISBN number");
         @SuppressWarnings("unused")
         final Isbn tester = new Isbn("9783161A84103");
     }
@@ -43,7 +41,6 @@ public final class IsbnTest {
     @Test
     public void testIsbn13IncorrectLength() {
         exception.expect(IllegalArgumentException.class);
-        exception.expectMessage("Trying to create 13-digit ISBN from non 13-digit number");
         @SuppressWarnings("unused")
         final Isbn tester = new Isbn("97831614841");
     }

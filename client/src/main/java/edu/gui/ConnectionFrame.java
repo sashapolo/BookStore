@@ -39,7 +39,7 @@ public class ConnectionFrame extends JFrame {
     private void initComponents() {
 
         javax.swing.JLabel jLabel1 = new javax.swing.JLabel();
-        hostNameField = new JTextField();
+        hostNameField = new javax.swing.JTextField();
         javax.swing.JButton connectButton = new javax.swing.JButton();
         javax.swing.JButton cancelButton = new javax.swing.JButton();
 
@@ -49,14 +49,14 @@ public class ConnectionFrame extends JFrame {
 
         connectButton.setText("Connect!");
         connectButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 connectButtonActionPerformed(evt);
             }
         });
 
         cancelButton.setText("Cancel");
         cancelButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(ActionEvent evt) {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cancelButtonActionPerformed(evt);
             }
         });
@@ -94,6 +94,7 @@ public class ConnectionFrame extends JFrame {
         );
 
         pack();
+        setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
     private void connectButtonActionPerformed(ActionEvent evt) {//GEN-FIRST:event_connectButtonActionPerformed
@@ -115,6 +116,6 @@ public class ConnectionFrame extends JFrame {
     }//GEN-LAST:event_cancelButtonActionPerformed
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private JTextField hostNameField;
+    private javax.swing.JTextField hostNameField;
     // End of variables declaration//GEN-END:variables
 }

@@ -1,5 +1,7 @@
 package edu.business;
 
+import java.io.Serializable;
+
 /**
  * Created with IntelliJ IDEA.
  * User: alexander
@@ -7,7 +9,7 @@ package edu.business;
  * Time: 10:38 PM
  * To change this template use File | Settings | File Templates.
  */
-public final class Credentials {
+public final class Credentials implements Serializable {
     private final String name;
     private final String secondName;
     private final String email;

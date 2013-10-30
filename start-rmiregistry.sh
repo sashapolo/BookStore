@@ -1,1 +1,1 @@
-rmiregistry -J-Djava.rmi.server.useCodebaseOnly=false &
+rmiregistry -J-Djava.rmi.server.useCodebaseOnly=false

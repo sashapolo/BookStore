@@ -170,6 +170,7 @@ public class MainAdminFrame extends JFrame {
 
     private void modifyBookButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_modifyBookButtonActionPerformed
         final String isbn = JOptionPane.showInputDialog(this, "Type book isbn");
+        if (isbn == null) return;
         if (!Isbn.isValid(isbn)) {
             JOptionPane.showMessageDialog(this, "Wrong isbn format", "Error", JOptionPane.INFORMATION_MESSAGE);
             return;

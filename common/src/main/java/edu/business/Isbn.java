@@ -38,25 +38,24 @@ public final class Isbn {
         String tmp = isbn.replace("-", "");
         if (tmp.length() == 10) {
             tmp = toIsbn13(tmp);
-        } else if (tmp.length() != 13) {
-            throw new IllegalArgumentException("Trying to create 13-digit ISBN from non 13-digit number");
         }
-
         if (!isValid(tmp)) {
-            throw new IllegalArgumentException("Invalid 13-digit ISBN number");
+            throw new IllegalArgumentException("Invalid isbn");
         }
         this.isbn = tmp;
     }
 
     public static boolean isValid(final String isbn) {
+        final int length = isbn.length();
+        if (length != 13 && length != 10) return false;
+
         int check = 0;
         final char[] digits = isbn.toCharArray();
-        final int isbnLength = isbn.length();
-        for (int i = 1; i < isbnLength; i += 2) {
+        for (int i = 1; i < length; i += 2) {
             check += digits[i] - '0';
         }
         check *= 3;
-        for (int i = 0; i < isbnLength; i += 2) {
+        for (int i = 0; i < length; i += 2) {
             check += digits[i] - '0';
         }
         return check % 10 == 0;

@@ -14,11 +14,12 @@ public class User implements Serializable {
     private final int id;
     private final String login;
     private final int password;
-    private transient Credentials credentials;
+    private final Credentials credentials;
 
     protected User(final int id, final String login,
          final int password, final Credentials credentials) {
         assert login != null;
+        assert credentials != null;
 
         this.id = id;
         this.login = login;
@@ -53,24 +54,6 @@ public class User implements Serializable {
     public final String getEmail() {
         assert credentials != null;
         return credentials.getEmail();
-    }
-
-    private void readObject(final ObjectInputStream inputStream)
-            throws ClassNotFoundException, IOException {
-        inputStream.defaultReadObject();
-
-        final String name = (String) inputStream.readObject();
-        final String secondName = (String) inputStream.readObject();
-        final String email = (String) inputStream.readObject();
-        credentials = new Credentials(name, secondName, email);
-    }
-
-    private void writeObject(final ObjectOutputStream outputStream) throws IOException {
-        outputStream.defaultWriteObject();
-
-        outputStream.writeObject(credentials.getName());
-        outputStream.writeObject(credentials.getSecondName());
-        outputStream.writeObject(credentials.getEmail());
     }
 
     private void readObjectNoData() throws InvalidObjectException {

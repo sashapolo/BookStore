@@ -49,7 +49,7 @@ public class AuthFrame extends JFrame {
         javax.swing.JButton enterButton = new javax.swing.JButton();
         javax.swing.JButton registerButton = new javax.swing.JButton();
 
-        setDefaultCloseOperation(javax.swing.WindowConstants.DO_NOTHING_ON_CLOSE);
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
         loginLabel.setText("Login");
 
