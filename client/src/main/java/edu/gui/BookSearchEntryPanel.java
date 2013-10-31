@@ -198,7 +198,7 @@ public class BookSearchEntryPanel extends JPanel {
     private void viewGoogleButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewGoogleButtonActionPerformed
         final GoogleBook b;
         try {
-            b = service.getGoogleBook(book.getIsbn());
+            b = service.getGoogleBook(book);
         } catch (ServiceException e) {
             JOptionPane.showMessageDialog(this, e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             return;

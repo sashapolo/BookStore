@@ -6,11 +6,15 @@
 
 package edu.business;
 
+import java.io.Serializable;
+
 /**
  *
  * @author alexander
  */
-public final class GoogleBook {
+public final class GoogleBook implements Serializable {
+    private static final long serialVersionUID = -2257856215807987965L;
+
     private final String name;
     private final String author;
     private final String publisher;
@@ -45,6 +49,4 @@ public final class GoogleBook {
     public double getRating() {
         return rating;
     }
-    
-    
 }

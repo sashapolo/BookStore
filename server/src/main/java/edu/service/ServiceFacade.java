@@ -111,7 +111,8 @@ public final class ServiceFacade implements BookStoreService {
     }
 
     @Override
-    public GoogleBook getGoogleBook(final Isbn isbn) throws ServiceException {
+    public GoogleBook getGoogleBook(final Book book) throws ServiceException {
+        final Isbn isbn = book.getIsbn();
         try {
             final Request request = new Request(isbn);
             final JsonBookObject b = new JsonBookObject(executeRequest(request));

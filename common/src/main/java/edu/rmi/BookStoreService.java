@@ -58,5 +58,5 @@ public interface BookStoreService extends Remote {
 
     void createOrder(final Customer user) throws RemoteException;
     
-    GoogleBook getGoogleBook(final Isbn isbn) throws ServiceException, RemoteException;
+    GoogleBook getGoogleBook(final Book book) throws ServiceException, RemoteException;
 }
