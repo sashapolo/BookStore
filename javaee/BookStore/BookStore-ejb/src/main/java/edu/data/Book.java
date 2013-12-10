@@ -13,6 +13,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Temporal;
 import javax.validation.Valid;
@@ -26,8 +28,18 @@ import org.hibernate.validator.constraints.NotEmpty;
  * @author alexander
  */
 @Entity
+@NamedQueries({
+    @NamedQuery(name = Book.FIND_ALL, query = "SELECT b FROM Book b"),
+    @NamedQuery(name = Book.FIND_BY_TITLE, 
+            query = "SELECT b FROM Book b WHERE b.title = :title"),
+    @NamedQuery(name = Book.FIND_BY_ISBN, 
+            query = "SELECT b FROM Book b WHERE b.isbn = :isbn")
+})
 public class Book implements Serializable {
     private static final long serialVersionUID = 1L;
+    public static final String FIND_ALL = "Book.findAll";
+    public static final String FIND_BY_TITLE = "Book.findByTitle";
+    public static final String FIND_BY_ISBN = "Book.findByIsbn";
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -57,7 +69,6 @@ public class Book implements Serializable {
     protected Book() {}
     
     private Book(Builder builder) {
-        id = builder.id;
         isbn = builder.isbn;
         title = builder.title;
         author = builder.author;
@@ -70,7 +81,6 @@ public class Book implements Serializable {
     }
     
     public static class Builder {
-        private Long id = 0L;
         private final Isbn isbn;
         private final String title;
         private final Author author;
@@ -85,11 +95,6 @@ public class Book implements Serializable {
             this.isbn = isbn;
             this.title = title;
             this.author = author;
-        }
-        
-        public Builder id(final Long id) {
-            this.id = id;
-            return this;
         }
         
         public Builder genre(final String genre) {

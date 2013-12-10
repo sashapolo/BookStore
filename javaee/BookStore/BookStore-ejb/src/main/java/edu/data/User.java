@@ -7,11 +7,15 @@
 package edu.data;
 
 import java.io.Serializable;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -35,13 +39,48 @@ public class User implements Serializable {
     @Embedded
     @NotNull @Valid
     private Credentials credentials;
+    @OneToMany
+    @NotNull @Valid
+    private List<BookOrder> orders;
+    private Discount discount;
 
     protected User() {}
     
-    public User(final String login, final int password, final Credentials credentials) {
-        this.login = login;
-        this.password = password;
-        this.credentials = credentials;
+    private User(final Builder builder) {
+        this.login = builder.login;
+        this.password = builder.password;
+        this.credentials = builder.credentials;
+        this.orders = builder.orders;
+        this.discount = builder.discount;
+    }
+    
+    public static class Builder {
+        private String login;
+        private int password;
+        private Credentials credentials;
+        private List<BookOrder> orders = new LinkedList<>();
+        private Discount discount = new Discount();
+        
+        public Builder(final String login, final int password, 
+                final Credentials credentials) {
+            this.login = login;
+            this.password = password;
+            this.credentials = credentials;
+        }
+        
+        public Builder orders(final List<BookOrder> orders) {
+            this.orders = new LinkedList<>(orders);
+            return this;
+        }
+        
+        public Builder discount(final Discount discount) {
+            this.discount = discount;
+            return this;
+        }
+        
+        public User build() {
+            return new User(this);
+        }
     }
     
     public Long getId() {
@@ -66,5 +105,9 @@ public class User implements Serializable {
 
     public String getLastName() {
         return credentials.getLastName();
+    }
+    
+    public List<BookOrder> getOrders() {
+        return Collections.unmodifiableList(orders);
     }
 }
