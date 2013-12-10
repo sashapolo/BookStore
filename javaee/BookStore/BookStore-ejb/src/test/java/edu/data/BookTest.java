@@ -68,7 +68,8 @@ public class BookTest {
     public void testInvalidParameters() {
         final Isbn isbn = new Isbn("9583161484100");
         final Author author = new Author(new Credentials("Brian", "May"));
-        final Book book = new Book.Builder(isbn, "abc", author).discount(new Discount(101)).price(-10)
+        final Book book = new Book.Builder(isbn, "abc", author)
+                .discount(new Discount(101)).price(-10)
                 .publicationDate(new GregorianCalendar(3000, 0, 1)).build();
         
         final Set<ConstraintViolation<Book>> violations = validator.validate(book);
@@ -80,13 +81,16 @@ public class BookTest {
         final Isbn isbn = new Isbn("9583161484100");
         final Author author = new Author(new Credentials("Brian", "May"));
         
-        Book book = new Book.Builder(isbn, "abc", author).discount(new Discount(95)).price(65).build();
+        Book book = new Book.Builder(isbn, "abc", author)
+                .discount(new Discount(95)).price(65).build();
         assertEquals(65.0 * 5 / 100, book.getPrice(), 1e-15);
         
-        book = new Book.Builder(isbn, "abc", author).discount(new Discount(0)).price(65).build();
+        book = new Book.Builder(isbn, "abc", author)
+                .discount(new Discount(0)).price(65).build();
         assertEquals(65, book.getPrice(), 1e-15);
         
-        book = new Book.Builder(isbn, "abc", author).discount(new Discount(100)).price(65).build();
+        book = new Book.Builder(isbn, "abc", author)
+                .discount(new Discount(100)).price(65).build();
         assertEquals(0, book.getPrice(), 1e-15);
     }
 }

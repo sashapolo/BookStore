@@ -54,16 +54,22 @@ public class BookOrderTest {
     
     @Test
     public void testInvalid() {
-        final Isbn isbn = new Isbn("9783161484100");
+        final Isbn isbn = new Isbn("9583161484100");
         final Author author = new Author(new Credentials("Brian", "May"));
-        final Book book = new Book.Builder(isbn, "foo", author).price(99.9).build();
+        final Book book = new Book.Builder(isbn, null, author).price(99.9).build();
         final List<BookOrderEntry> entries = new LinkedList<>();
         entries.add(new BookOrderEntry(book, 3));
-        entries.add(null);
-        entries.add(null);
         final BookOrder order = new BookOrder(entries);
         
         final Set<ConstraintViolation<BookOrder>> violations = validator.validate(order);
         assertEquals(2, violations.size());
+    }
+    
+    @Test(expected = NullPointerException.class)
+    public void testNullEntry() {
+        final List<BookOrderEntry> entries = new LinkedList<>();
+        entries.add(null);
+        entries.add(null);
+        final BookOrder order = new BookOrder(entries);
     }
 }

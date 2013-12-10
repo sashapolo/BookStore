@@ -43,7 +43,7 @@ public class BookOrder implements Serializable {
     @Min(0)
     private double price;
     @Temporal(javax.persistence.TemporalType.DATE)
-    @NotNull @Past 
+    @NotNull 
     private Calendar dateCreated;
     @NotNull @Valid
     private Discount discount;
@@ -84,6 +84,9 @@ public class BookOrder implements Serializable {
     private void calculatePrice() {
         price = 0;
         for (final BookOrderEntry entry : entries) {
+            if (entry == null) {
+                throw new NullPointerException("One of the entries is null");
+            }
             price += entry.getPrice();
         }
     }
