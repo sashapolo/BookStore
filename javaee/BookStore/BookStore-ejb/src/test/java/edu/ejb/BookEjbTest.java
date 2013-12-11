@@ -75,7 +75,7 @@ public class BookEjbTest {
             final Isbn isbn = new Isbn("9783161484100");
             Book book = new Book.Builder(isbn, "foo", author).build();
 
-            book = bookEjb.createBook(book);
+            book = bookEjb.create(book);
             Assert.assertNotNull(book.getId());
             book = bookEjb.findByIsbn(isbn);
             Assert.assertEquals("foo", book.getTitle());
@@ -94,9 +94,9 @@ public class BookEjbTest {
             final Book book3 = new Book.Builder(new Isbn("85-359-0277-5"), 
                     "barbar", author).build();
 
-            bookEjb.createBook(book1);
-            bookEjb.createBook(book2);
-            bookEjb.createBook(book3);
+            bookEjb.create(book1);
+            bookEjb.create(book2);
+            bookEjb.create(book3);
 
             final List<Book> books = bookEjb.fuzzyFind("fo");
             Assert.assertEquals(2, books.size());

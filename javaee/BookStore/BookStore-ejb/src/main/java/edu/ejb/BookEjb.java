@@ -23,7 +23,7 @@ import javax.validation.constraints.NotNull;
 @Stateless
 @LocalBean
 public class BookEjb {
-    @PersistenceContext(unitName = "BookStorePU")
+    @PersistenceContext
     private EntityManager em;
     
     public List<Book> findAll() {
@@ -46,16 +46,16 @@ public class BookEjb {
         return query.getResultList();
     }
     
-    public @NotNull Book createBook(@NotNull final Book book) {
+    public @NotNull Book create(@NotNull final Book book) {
         em.persist(book);
         return book;
     }
     
-    public @NotNull Book updateBook(@NotNull final Book book) {
+    public @NotNull Book update(@NotNull final Book book) {
         return em.merge(book);
     }
     
-    public void deleteBook(@NotNull final Book book) {
+    public void delete(@NotNull final Book book) {
         em.remove(em.merge(book));
     }
 }
