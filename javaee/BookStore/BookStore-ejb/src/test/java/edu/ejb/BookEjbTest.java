@@ -34,30 +34,26 @@ import org.junit.runner.RunWith;
  */
 @RunWith(Arquillian.class)
 public class BookEjbTest {
-    private static Author author;
+    private Author author;
     
     @EJB
     private BookEjb bookEjb;
     @PersistenceContext
-    EntityManager em;
+    private EntityManager em;
     @Inject
-    UserTransaction utx;
-    
+    private UserTransaction utx;
     
     @Deployment
     public static JavaArchive createTestArchive() {
         JavaArchive archive = ShrinkWrap.create(JavaArchive.class)
-                .addPackage(BookEjb.class.getPackage())
-                .addClass(Author.class)
-                .addClass(Book.class)
-                .addClass(Publisher.class)
+                .addClasses(Book.class, Author.class, Publisher.class)
                 .addAsResource("test-persistence.xml", "META-INF/persistence.xml")
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
         return archive;
     }
     
     @Before
-    public void initDatabase() throws Exception {
+    public void init() throws Exception {
         utx.begin();
         em.joinTransaction();
         author = new Author(new Credentials("Brian", "May"));
@@ -74,7 +70,7 @@ public class BookEjbTest {
 
             book = bookEjb.createBook(book);
             Assert.assertNotNull(book.getId());
-            book = bookEjb.findByIsbn(isbn);
+            book = bookEjb.findByIsbn(isbn).get(0);
             Assert.assertEquals("foo", book.getTitle());
         } catch(EJBException e) {
             throw e.getCause();
@@ -95,7 +91,7 @@ public class BookEjbTest {
             bookEjb.createBook(book2);
             bookEjb.createBook(book3);
 
-            final List<Book> books = bookEjb.fuzzyFind("fo");
+            final List<Book> books = bookEjb.fuzzyFind("fO");
             Assert.assertEquals(2, books.size());
             Assert.assertTrue(books.get(0).getTitle().equals("bazfoo") ||
                               books.get(0).getTitle().equals("foobarbaz"));

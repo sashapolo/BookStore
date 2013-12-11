@@ -7,6 +7,7 @@
 package edu.data;
 
 import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -26,7 +27,7 @@ public class Author implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @Embedded
+    @Embedded @Column(unique = true)
     @NotNull @Valid
     private Credentials credentials;
 
