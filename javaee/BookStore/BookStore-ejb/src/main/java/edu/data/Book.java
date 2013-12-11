@@ -8,6 +8,8 @@ package edu.data;
 
 import java.io.Serializable;
 import java.util.Calendar;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -33,24 +35,27 @@ import org.hibernate.validator.constraints.NotEmpty;
     @NamedQuery(name = Book.FIND_BY_TITLE, 
             query = "SELECT b FROM Book b WHERE b.title = :title"),
     @NamedQuery(name = Book.FIND_BY_ISBN, 
-            query = "SELECT b FROM Book b WHERE b.isbn = :isbn")
+            query = "SELECT b FROM Book b WHERE b.isbn = :isbn"),
+    @NamedQuery(name = Book.FUZZY_FIND,
+            query = "SELECT b FROM Book b WHERE b.title LIKE :str")
 })
 public class Book implements Serializable {
     private static final long serialVersionUID = 1L;
     public static final String FIND_ALL = "Book.findAll";
     public static final String FIND_BY_TITLE = "Book.findByTitle";
     public static final String FIND_BY_ISBN = "Book.findByIsbn";
+    public static final String FUZZY_FIND = "Book.fuzzyFind";
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
     @Embedded 
-    @NotNull @Valid
+    @NotNull @Valid @Column(unique = true)
     private Isbn isbn;
     @NotEmpty
     private String title;
     @OneToOne
-    @NotNull
+    @NotNull 
     private Author author;
     @NotNull
     private String genre;
