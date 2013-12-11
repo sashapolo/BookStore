@@ -23,6 +23,7 @@ import org.jboss.arquillian.junit.Arquillian;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.JavaArchive;
+import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -34,35 +35,37 @@ import org.junit.runner.RunWith;
  */
 @RunWith(Arquillian.class)
 public class BookEjbTest {
-    private static Author author;
+    private Author author;
     
     @EJB
     private BookEjb bookEjb;
     @PersistenceContext
-    EntityManager em;
+    private EntityManager em;
     @Inject
-    UserTransaction utx;
+    private UserTransaction utx;
     
     
     @Deployment
     public static JavaArchive createTestArchive() {
         JavaArchive archive = ShrinkWrap.create(JavaArchive.class)
-                .addPackage(BookEjb.class.getPackage())
-                .addClass(Author.class)
-                .addClass(Book.class)
-                .addClass(Publisher.class)
+                .addClasses(Author.class, Book.class, Publisher.class, BookEjb.class)
                 .addAsResource("test-persistence.xml", "META-INF/persistence.xml")
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
         return archive;
     }
     
     @Before
-    public void initDatabase() throws Exception {
+    public void init() throws Exception {
         utx.begin();
         em.joinTransaction();
         author = new Author(new Credentials("Brian", "May"));
         em.persist(author);
-        utx.commit();
+        
+    }
+    
+    @After
+    public void clear() throws Exception {
+        utx.rollback();
         em.clear();
     }
     

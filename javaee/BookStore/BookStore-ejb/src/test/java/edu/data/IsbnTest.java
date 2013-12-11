@@ -7,32 +7,35 @@
 package edu.data;
 
 import java.util.Set;
+import javax.annotation.Resource;
 import javax.validation.ConstraintViolation;
-import javax.validation.Validation;
 import javax.validation.Validator;
-import javax.validation.ValidatorFactory;
-import org.junit.AfterClass;
+import org.jboss.arquillian.container.test.api.Deployment;
+import org.jboss.arquillian.junit.Arquillian;
+import org.jboss.shrinkwrap.api.ShrinkWrap;
+import org.jboss.shrinkwrap.api.asset.EmptyAsset;
+import org.jboss.shrinkwrap.api.spec.JavaArchive;
 import static org.junit.Assert.assertEquals;
-import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 
 /**
  *
  * @author alexander
  */
+@RunWith(Arquillian.class)
 public class IsbnTest {
-    private static ValidatorFactory vf;
-    private static Validator validator;
     
-    @BeforeClass
-    public static void init() {
-        vf = Validation.buildDefaultValidatorFactory();
-        validator = vf.getValidator();
-    }
+    @Resource
+    private Validator validator;
     
-    @AfterClass
-    public static void close() {
-        vf.close();
+    @Deployment
+    public static JavaArchive createTestArchive() {
+        JavaArchive archive = ShrinkWrap.create(JavaArchive.class)
+                .addClasses(Isbn.class)
+                .addAsResource("test-persistence.xml", "META-INF/persistence.xml")
+                .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
+        return archive;
     }
     
     @Test
