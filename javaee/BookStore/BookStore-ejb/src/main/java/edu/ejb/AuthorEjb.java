@@ -34,6 +34,12 @@ public class AuthorEjb {
         return em.find(Author.class, id);
     }
     
+    public List<Author> findByCredentials(@NotNull final String name, 
+            @NotNull final String secondName) {
+        //TODO
+        return null;
+    }
+    
     public @NotNull Author create(@NotNull final Author author) {
         em.persist(author);
         return author;

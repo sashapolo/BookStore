@@ -36,7 +36,7 @@ import org.hibernate.validator.constraints.NotEmpty;
     @NamedQuery(name = Book.FIND_BY_ISBN, 
             query = "SELECT b FROM Book b WHERE b.isbn = :isbn"),
     @NamedQuery(name = Book.FUZZY_FIND,
-            query = "SELECT b FROM Book b WHERE b.title LIKE :str")
+            query = "SELECT b FROM Book b WHERE UPPER(b.title) LIKE :str")
 })
 public class Book implements Serializable {
     private static final long serialVersionUID = 1L;

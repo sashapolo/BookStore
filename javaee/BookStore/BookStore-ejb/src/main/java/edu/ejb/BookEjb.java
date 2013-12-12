@@ -9,11 +9,13 @@ package edu.ejb;
 import edu.data.Book;
 import edu.data.Isbn;
 import java.util.List;
+import javax.annotation.Resource;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
+import javax.validation.Validator;
 import javax.validation.constraints.NotNull;
 
 /**
@@ -25,6 +27,8 @@ import javax.validation.constraints.NotNull;
 public class BookEjb {
     @PersistenceContext
     private EntityManager em;
+    @Resource
+    private Validator v;
     
     public List<Book> findAll() {
         final TypedQuery<Book> query = 
@@ -32,17 +36,21 @@ public class BookEjb {
         return query.getResultList();
     }
     
-    public Book findByIsbn(@NotNull final Isbn isbn) {
+    public List<Book> findByIsbn(@NotNull final Isbn isbn) {
         final TypedQuery<Book> query = 
                 em.createNamedQuery(Book.FIND_BY_ISBN, Book.class);
         query.setParameter("isbn", isbn);
-        return query.getSingleResult();
+        return query.getResultList();
     }
     
     public List<Book> fuzzyFind(@NotNull final String search) {
+        final Isbn isbn = new Isbn(search);
+        if (v.validate(isbn).isEmpty()) {
+            return findByIsbn(isbn);
+        }
         final TypedQuery<Book> query = 
                 em.createNamedQuery(Book.FUZZY_FIND, Book.class);
-        query.setParameter("str", "%" + search + "%");
+        query.setParameter("str", "%" + search.toUpperCase() + "%");
         return query.getResultList();
     }
     

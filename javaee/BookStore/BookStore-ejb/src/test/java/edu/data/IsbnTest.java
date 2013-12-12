@@ -33,7 +33,6 @@ public class IsbnTest {
     public static JavaArchive createTestArchive() {
         JavaArchive archive = ShrinkWrap.create(JavaArchive.class)
                 .addClasses(Isbn.class)
-                .addAsResource("test-persistence.xml", "META-INF/persistence.xml")
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
         return archive;
     }

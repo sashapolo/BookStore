@@ -59,7 +59,6 @@ public class BookEjbTest {
         em.joinTransaction();
         author = new Author(new Credentials("Brian", "May"));
         em.persist(author);
-        
     }
     
     @After
@@ -76,7 +75,7 @@ public class BookEjbTest {
 
             book = bookEjb.create(book);
             Assert.assertNotNull(book.getId());
-            book = bookEjb.findByIsbn(isbn);
+            book = bookEjb.findByIsbn(isbn).get(0);
             Assert.assertEquals("foo", book.getTitle());
         } catch(EJBException e) {
             throw e.getCause();
@@ -97,10 +96,14 @@ public class BookEjbTest {
             bookEjb.create(book2);
             bookEjb.create(book3);
 
-            final List<Book> books = bookEjb.fuzzyFind("fo");
+            List<Book> books = bookEjb.fuzzyFind("fO");
             Assert.assertEquals(2, books.size());
             Assert.assertTrue(books.get(0).getTitle().equals("bazfoo") ||
                               books.get(0).getTitle().equals("foobarbaz"));
+            
+            books = bookEjb.fuzzyFind("85-359-0277-5");
+            Assert.assertEquals(1, books.size());
+            Assert.assertEquals("barbar", books.get(0).getTitle());
         } catch(EJBException e) {
             throw e.getCause();
         }
