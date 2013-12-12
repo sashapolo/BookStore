@@ -44,7 +44,6 @@ public class BookEjbTest {
     @Inject
     private UserTransaction utx;
     
-    
     @Deployment
     public static JavaArchive createTestArchive() {
         JavaArchive archive = ShrinkWrap.create(JavaArchive.class)
