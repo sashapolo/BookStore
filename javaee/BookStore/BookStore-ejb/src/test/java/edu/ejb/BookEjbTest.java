@@ -46,7 +46,7 @@ public class BookEjbTest {
     @Deployment
     public static JavaArchive createTestArchive() {
         JavaArchive archive = ShrinkWrap.create(JavaArchive.class)
-                .addClasses(Book.class, Author.class, Publisher.class)
+                .addClasses(Author.class, Book.class, Publisher.class, BookEjb.class)
                 .addAsResource("test-persistence.xml", "META-INF/persistence.xml")
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
         return archive;
@@ -58,7 +58,11 @@ public class BookEjbTest {
         em.joinTransaction();
         author = new Author(new Credentials("Brian", "May"));
         em.persist(author);
-        utx.commit();
+    }
+    
+    @After
+    public void clear() throws Exception {
+        utx.rollback();
         em.clear();
     }
     
@@ -68,7 +72,7 @@ public class BookEjbTest {
             final Isbn isbn = new Isbn("9783161484100");
             Book book = new Book.Builder(isbn, "foo", author).build();
 
-            book = bookEjb.createBook(book);
+            book = bookEjb.create(book);
             Assert.assertNotNull(book.getId());
             book = bookEjb.findByIsbn(isbn).get(0);
             Assert.assertEquals("foo", book.getTitle());
@@ -87,14 +91,18 @@ public class BookEjbTest {
             final Book book3 = new Book.Builder(new Isbn("85-359-0277-5"), 
                     "barbar", author).build();
 
-            bookEjb.createBook(book1);
-            bookEjb.createBook(book2);
-            bookEjb.createBook(book3);
+            bookEjb.create(book1);
+            bookEjb.create(book2);
+            bookEjb.create(book3);
 
-            final List<Book> books = bookEjb.fuzzyFind("fO");
+            List<Book> books = bookEjb.fuzzyFind("fO");
             Assert.assertEquals(2, books.size());
             Assert.assertTrue(books.get(0).getTitle().equals("bazfoo") ||
                               books.get(0).getTitle().equals("foobarbaz"));
+            
+            books = bookEjb.fuzzyFind("85-359-0277-5");
+            Assert.assertEquals(1, books.size());
+            Assert.assertEquals("barbar", books.get(0).getTitle());
         } catch(EJBException e) {
             throw e.getCause();
         }

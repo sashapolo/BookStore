@@ -13,6 +13,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 
@@ -21,8 +23,13 @@ import javax.validation.constraints.NotNull;
  * @author alexander
  */
 @Entity
+@NamedQueries({
+    @NamedQuery(name = Author.FIND_ALL, query = "SELECT a FROM Author a"),
+})
 public class Author implements Serializable {
     private static final long serialVersionUID = 1L;
+    
+    public static final String FIND_ALL = "Author.findAll";
     
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -31,7 +38,7 @@ public class Author implements Serializable {
     @NotNull @Valid
     private Credentials credentials;
 
-    protected Author() { }
+    protected Author() {}
     
     public Author(final Credentials credentials) {
         this.credentials = credentials;

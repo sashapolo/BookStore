@@ -25,10 +25,10 @@ import javax.validation.constraints.NotNull;
 @Stateless
 @LocalBean
 public class BookEjb {
-    @PersistenceContext(unitName = "BookStorePU")
+    @PersistenceContext
     private EntityManager em;
     @Resource
-    private Validator validator;
+    private Validator v;
     
     public List<Book> findAll() {
         final TypedQuery<Book> query = 
@@ -45,8 +45,8 @@ public class BookEjb {
     
     public List<Book> fuzzyFind(@NotNull final String search) {
         final Isbn isbn = new Isbn(search);
-        if (validator.validate(isbn).isEmpty()) {    
-            return findByIsbn(new Isbn(search));
+        if (v.validate(isbn).isEmpty()) {
+            return findByIsbn(isbn);
         }
         final TypedQuery<Book> query = 
                 em.createNamedQuery(Book.FUZZY_FIND, Book.class);
@@ -54,16 +54,16 @@ public class BookEjb {
         return query.getResultList();
     }
     
-    public @NotNull Book createBook(@NotNull final Book book) {
+    public @NotNull Book create(@NotNull final Book book) {
         em.persist(book);
         return book;
     }
     
-    public @NotNull Book updateBook(@NotNull final Book book) {
+    public @NotNull Book update(@NotNull final Book book) {
         return em.merge(book);
     }
     
-    public void deleteBook(@NotNull final Book book) {
+    public void delete(@NotNull final Book book) {
         em.remove(em.merge(book));
     }
 }

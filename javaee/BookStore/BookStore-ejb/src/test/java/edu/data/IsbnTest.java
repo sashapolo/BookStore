@@ -25,14 +25,14 @@ import org.junit.runner.RunWith;
  */
 @RunWith(Arquillian.class)
 public class IsbnTest {
+    
     @Resource
     private Validator validator;
     
     @Deployment
     public static JavaArchive createTestArchive() {
         JavaArchive archive = ShrinkWrap.create(JavaArchive.class)
-                .addClass(Isbn.class)
-                .addAsResource("test-persistence.xml", "META-INF/persistence.xml")
+                .addClasses(Isbn.class)
                 .addAsManifestResource(EmptyAsset.INSTANCE, "beans.xml");
         return archive;
     }
