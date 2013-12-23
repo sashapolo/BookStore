@@ -49,6 +49,9 @@ public class AuthorEjbTest {
         List<Author> authors = aejb.findByCredentials("foo", "");
         Assert.assertEquals(2, authors.size());
         
+        authors = aejb.findByCredentials("", "Jack");
+        Assert.assertEquals(1, authors.size());
+        
         authors = aejb.findByCredentials("foo", "baz");
         Assert.assertEquals(1, authors.size());
     }
