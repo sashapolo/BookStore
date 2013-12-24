@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+    <h:head>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Welcome</title>
+
+        <h:outputStylesheet name="css/bootstrap.min.css"/>
+        <h:outputStylesheet name="css/signin.css"/>
+    </h:head>
+
+    <h:body>
+
+        <div class="container">
+
+            <h:form class="form-signin">
+                <h2 class="form-signin-heading">Please sign in</h2>
+                <h:inputText class="form-control" required="true" p:placeholder="Login"/> 
+                <h:inputSecret class="form-control" required="true" p:placeholder="Password"/>
+                <h:commandButton class="btn btn-lg btn-primary btn-block" type="submit" value="Sign in"/>
+            </h:form>
+
+        </div>
+
+        <h:outputScript name="js/jquery-2.0.3.min.js" />
+        <h:outputScript name="js/bootstrap.min.js" />
+    </h:body>
+</html>
+    
+
+
