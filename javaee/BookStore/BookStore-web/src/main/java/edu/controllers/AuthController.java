@@ -12,10 +12,9 @@ import java.io.Serializable;
 import java.util.Set;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
-import javax.enterprise.context.SessionScoped;
+import javax.enterprise.inject.Model;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
-import javax.inject.Named;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 
@@ -23,9 +22,8 @@ import javax.validation.ConstraintViolationException;
  *
  * @author alexander
  */
-@Named
-@SessionScoped
-public class UserController implements Serializable {
+@Model
+public class AuthController implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
@@ -34,6 +32,7 @@ public class UserController implements Serializable {
 
     private User user;
     private boolean registered = false;
+    private boolean loginExists = false;
 
     public boolean isRegistered() {
         return registered;
@@ -47,10 +46,19 @@ public class UserController implements Serializable {
         return user;
     }
     
+    public boolean isLoginExists() {
+        return loginExists;
+    }
+    
     public String createUser(final String login, final String password, final String name,
             final String secondName, final String lastName, final String email) {
         if (!be.findByLogin(login).isEmpty()) {
-            return "error.xhtml";
+            final FacesContext fc = FacesContext.getCurrentInstance();
+            final FacesMessage msg = new FacesMessage("Already existing login");
+            msg.setSeverity(FacesMessage.SEVERITY_ERROR);
+            fc.addMessage("error", msg);
+            loginExists = true;
+            return "";
         }
 
         try {
@@ -63,8 +71,9 @@ public class UserController implements Serializable {
             final ConstraintViolationException ce = (ConstraintViolationException) e.getCause();
             final Set<ConstraintViolation<?>> violations = ce.getConstraintViolations();
             for (final ConstraintViolation<?> violation : violations) {
-                fc.addMessage("register_form:email", new FacesMessage(FacesMessage.SEVERITY_ERROR, 
-                        "error!", violation.getMessage()));
+                final FacesMessage msg = new FacesMessage(violation.getMessage());
+                msg.setSeverity(FacesMessage.SEVERITY_ERROR);
+                fc.addMessage("register_form:email", msg);
             }
             return "";
         }

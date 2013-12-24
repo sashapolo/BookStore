@@ -7,6 +7,7 @@
 package edu.util;
 
 import java.util.logging.Logger;
+import javax.enterprise.context.RequestScoped;
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.InjectionPoint;
 
@@ -17,6 +18,7 @@ import javax.enterprise.inject.spi.InjectionPoint;
 public class LoggerProducer {
     
     @Produces
+    @RequestScoped
     public Logger createLogger(final InjectionPoint point) {
         return Logger.getLogger(point.getMember().getDeclaringClass().getName());
     }

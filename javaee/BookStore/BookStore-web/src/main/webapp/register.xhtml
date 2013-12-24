@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:composition template="layout.xhtml">
         <ui:define name="title">Registration</ui:define>
         <ui:define name="content">
@@ -11,25 +12,38 @@
                 <h:form class="form" id="register_form">
                     <h2 class="form-heading">Register a new user</h2>
 
-                    <h:message for="login" errorClass="error-message"/>
-                    <h:inputText id="login" class="form-control" required="true" p:placeholder="Login" binding="#{login}"/>
+                    <div class="form-group #{login.valid ? '' : 'has-error'} #{authController.loginExists ? 'has-warning' : ''}">
+                        <h:outputLabel rendered="#{!login.valid}" class="control-label" value="Must not be empty"/>
+                        <h:outputLabel rendered="#{authController.loginExists}" class="control-label" value="Such login already exists"/>
+                        <h:inputText id="login" class="form-control" required="true" p:placeholder="Login" binding="#{login}"/>
+                    </div>
 
-                    <h:message for="password" errorClass="error-message"/>
-                    <h:inputSecret id="password" class="form-control" required="true" p:placeholder="Password" binding="#{password}"/>
+                    <div class="form-group #{!password.valid ? 'has-error' : ''}">
+                        <h:outputLabel rendered="#{!password.valid}" class="control-label" value="Must not be empty"/>
+                        <h:inputSecret id="password" class="form-control" required="true" p:placeholder="Password" binding="#{password}"/>
+                    </div>
 
-                    <h:message for="email" errorClass="error-message"/>
-                    <h:inputText id="email" class="form-control" rendererType="email" required="true" p:placeholder="Email" binding="#{email}"/>
+                    <div class="form-group #{!email.valid ? 'has-error' : ''}">
+                        <h:outputLabel rendered="#{!email.valid}" class="control-label" value="Invalid email"/>
+                        <h:inputText id="email" class="form-control" rendererType="email" required="true" p:placeholder="Email" binding="#{email}">
+                            <f:validator validatorId="edu.validators.EmailValidator"/>
+                        </h:inputText>
+                    </div>
 
-                    <h:message for="name" errorClass="error-message"/>
-                    <h:inputText id="name" class="form-control" required="true" p:placeholder="Name" binding="#{name}"/>
+                    <div class="form-group #{!name.valid ? 'has-error' : ''}">
+                        <h:outputLabel rendered="#{!name.valid}" class="control-label" value="Must not be empty"/>
+                        <h:inputText id="name" class="form-control" required="true" p:placeholder="Name" binding="#{name}"/>
+                    </div>
 
                     <h:inputText class="form-control" p:placeholder="Second name" binding="#{second}"/>
 
-                    <h:message for="last" errorClass="error-message"/>
-                    <h:inputText id="last" class="form-control" required="true" p:placeholder="Last name" binding="#{last}"/>
+                    <div class="form-group #{!last.valid ? 'has-error' : ''}">
+                        <h:outputLabel rendered="#{!last.valid}" class="control-label" value="Must not be empty"/>
+                        <h:inputText id="last" class="form-control gap" required="true" p:placeholder="Last name" binding="#{last}"/>
+                    </div>
 
                     <h:commandButton class="btn btn-lg btn-primary btn-block gap" value="Register!" 
-                                     action="#{userController.createUser(login.value, password.value, name.value, second.value, last.value, email.value)}"/>
+                                     action="#{authController.createUser(login.value, password.value, name.value, second.value, last.value, email.value)}"/>
                     <h:button class="btn btn-lg btn-danger btn-block" value="Cancel" outcome="signin.xhtml"/>
                 </h:form>
             </div>
