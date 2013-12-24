@@ -1,0 +1,39 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
+    <ui:composition template="layout.xhtml">
+        <ui:define name="title">Registration</ui:define>
+        <ui:define name="content">
+            <div class="container">
+                <h:form class="form" id="register_form">
+                    <h2 class="form-heading">Register a new user</h2>
+
+                    <h:message for="login" errorClass="error-message"/>
+                    <h:inputText id="login" class="form-control" required="true" p:placeholder="Login" binding="#{login}"/>
+
+                    <h:message for="password" errorClass="error-message"/>
+                    <h:inputSecret id="password" class="form-control" required="true" p:placeholder="Password" binding="#{password}"/>
+
+                    <h:message for="email" errorClass="error-message"/>
+                    <h:inputText id="email" class="form-control" rendererType="email" required="true" p:placeholder="Email" binding="#{email}"/>
+
+                    <h:message for="name" errorClass="error-message"/>
+                    <h:inputText id="name" class="form-control" required="true" p:placeholder="Name" binding="#{name}"/>
+
+                    <h:inputText class="form-control" p:placeholder="Second name" binding="#{second}"/>
+
+                    <h:message for="last" errorClass="error-message"/>
+                    <h:inputText id="last" class="form-control" required="true" p:placeholder="Last name" binding="#{last}"/>
+
+                    <h:commandButton class="btn btn-lg btn-primary btn-block gap" value="Register!" 
+                                     action="#{userController.createUser(login.value, password.value, name.value, second.value, last.value, email.value)}"/>
+                    <h:button class="btn btn-lg btn-danger btn-block" value="Cancel" outcome="signin.xhtml"/>
+                </h:form>
+            </div>
+        </ui:define>
+    </ui:composition>    
+</html>
+

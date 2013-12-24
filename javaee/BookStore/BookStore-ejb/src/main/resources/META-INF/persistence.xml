@@ -1,12 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
-  <persistence-unit name="BookStorePU" transaction-type="JTA">
-    <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-    <jta-data-source>database</jta-data-source>
-    <exclude-unlisted-classes>false</exclude-unlisted-classes>
-    <properties>
-      <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
-      <property name="eclipselink.logging.level" value="INFO"/>
-    </properties>
-  </persistence-unit>
+    <persistence-unit name="BookStorePU" transaction-type="JTA">
+        <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+        <jta-data-source>jdbc/bookstore-database</jta-data-source>
+        <exclude-unlisted-classes>false</exclude-unlisted-classes>
+        <shared-cache-mode>ALL</shared-cache-mode>
+        <properties>
+            <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.EmbeddedDriver" />
+            <property name="javax.persistence.jdbc.url" value="jdbc:derby:target/databases/bookstore-database;create=true" />
+            <property name="javax.persistence.jdbc.user" value="APP"/>
+            <property name="javax.persistence.jdbc.password" value="APP"/>
+            <property name="eclipselink.ddl-generation" value="drop-and-create-tables" />
+            <property name="eclipselink.target-database" value="Derby"/>
+            <property name="eclipselink.debug" value="OFF"/>
+            <property name="eclipselink.weaving" value="static"/>
+        </properties>
+    </persistence-unit>
 </persistence>

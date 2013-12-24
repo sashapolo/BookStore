@@ -48,4 +48,9 @@ public class Credentials implements Serializable {
     public String getLastName() {
         return lastName;
     }
+    
+    @Override
+    public String toString() {
+        return "{name=" + name + ", secondName=" + secondName + ", lastName=" + lastName + "}";
+    }
 }
