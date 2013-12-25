@@ -10,7 +10,7 @@
         <ui:define name="content">
 
             <div class="container">
-                <h:form class="form">
+                <h:form class="form" id="login_form">
                     <h2 class="form-heading text-center">Welcome to the book store!</h2>
                     
                     <div class="form-group #{login.valid ? '' : 'has-error'}">
@@ -28,7 +28,9 @@
                     </div>
                     
                     <h:commandButton class="btn btn-lg btn-primary btn-block" type="submit" value="Sign in" 
-                                     action="#{authController.authUser(login.value, password.value)}"/>
+                                     action="#{authController.authUser(login.value, password.value)}">
+                        <f:ajax execute="@form" render=":login_form"/>
+                    </h:commandButton>
                     
                     <h:button class="btn btn-lg btn-block btn-default" value="Register" outcome="register"/>
                 </h:form>

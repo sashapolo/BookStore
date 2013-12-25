@@ -49,12 +49,14 @@
                     <div class="form-group #{!last.valid ? 'has-error' : ''}">
                         
                         <h:outputLabel rendered="#{!last.valid}" class="control-label" value="Must not be empty"/>
-                        <h:inputText id="last" class="form-control gap" required="true" p:placeholder="Last name" binding="#{last}"/>
+                        <h:inputText id="last" class="form-control" required="true" p:placeholder="Last name" binding="#{last}"/>
                         
                     </div>
 
                     <h:commandButton class="btn btn-lg btn-primary btn-block gap" value="Register!" 
-                                     action="#{authController.createUser(login.value, password.value, name.value, second.value, last.value, email.value)}"/>
+                                     action="#{authController.createUser(login.value, password.value, name.value, second.value, last.value, email.value)}">
+                        <f:ajax execute="@form" render=":register_form"/>
+                    </h:commandButton>
                     <h:button class="btn btn-lg btn-danger btn-block" value="Cancel" outcome="signin"/>
                 </h:form>
             </div>
