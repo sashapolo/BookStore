@@ -27,7 +27,7 @@
                         <h:inputSecret class="form-control" p:placeholder="Password" binding="#{password}"/>
                     </div>
                     
-                    <h:commandButton class="btn btn-lg btn-primary btn-block" type="submit" value="Sign in" 
+                    <h:commandButton class="btn btn-lg btn-primary btn-block" value="Sign in" 
                                      action="#{authController.authUser(login.value, password.value)}">
                         <f:ajax execute="@form" render=":login_form"/>
                     </h:commandButton>
