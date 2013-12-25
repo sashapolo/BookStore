@@ -11,6 +11,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import org.hibernate.validator.constraints.NotEmpty;
 
 /**
@@ -18,7 +20,12 @@ import org.hibernate.validator.constraints.NotEmpty;
  * @author alexander
  */
 @Entity
+@NamedQueries({
+    @NamedQuery(name = Publisher.FIND_ALL, query = "SELECT p FROM Publisher p"),
+})
 public class Publisher implements Serializable {
+    public static final String FIND_ALL = "Publisher.findAll";
+    
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -34,5 +41,9 @@ public class Publisher implements Serializable {
     
     public String getName() {
         return name;
+    }
+    
+    public Long getId() {
+        return id;
     }
 }

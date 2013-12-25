@@ -15,10 +15,10 @@ import javax.enterprise.inject.spi.InjectionPoint;
  *
  * @author alexander
  */
+@RequestScoped
 public class LoggerProducer {
     
     @Produces
-    @RequestScoped
     public Logger createLogger(final InjectionPoint point) {
         return Logger.getLogger(point.getMember().getDeclaringClass().getName());
     }

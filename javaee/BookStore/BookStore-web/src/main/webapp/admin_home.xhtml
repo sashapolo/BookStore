@@ -55,12 +55,15 @@
                     <div class="col-xs-6">
                         <h2>Create a new Publisher</h2>
                         <p>Creates a new book publisher. Obviously.</p>
-                        <h:button class="btn btn-primary" value="View details &raquo;"/>
+                        <button class="btn btn-primary" data-toggle="modal" data-target="#createPublisherModal">
+                            View details &raquo;
+                        </button>
                     </div>
                 </div>
             </div>
             
-            <ui:include src="createBookModal.xhtml"/>
+            <ui:include src="modals/createBookModal.xhtml"/>
+            <ui:include src="modals/createPublisherModal.xhtml"/>
         </ui:define>
     </ui:composition>
 
