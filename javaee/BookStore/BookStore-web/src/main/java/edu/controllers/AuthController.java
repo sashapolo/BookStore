@@ -9,12 +9,14 @@ import edu.data.Credentials;
 import edu.data.User;
 import edu.ejb.UserEjb;
 import java.io.Serializable;
+import java.util.List;
 import java.util.Set;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
-import javax.enterprise.inject.Model;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.inject.Named;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 
@@ -22,24 +24,20 @@ import javax.validation.ConstraintViolationException;
  *
  * @author alexander
  */
-@Model
+@Named
+@SessionScoped
 public class AuthController implements Serializable {
-
     private static final long serialVersionUID = 1L;
 
     @EJB
-    private transient UserEjb be;
+    private transient UserEjb ue;
 
     private User user;
-    private boolean registered = false;
     private boolean loginExists = false;
-
-    public boolean isRegistered() {
-        return registered;
-    }
-
-    public void setRegistered(boolean registered) {
-        this.registered = registered;
+    private boolean passwordCorrect = true;
+    
+    public boolean isPasswordCorrect() {
+        return passwordCorrect;
     }
 
     public User getUser() {
@@ -52,11 +50,9 @@ public class AuthController implements Serializable {
     
     public String createUser(final String login, final String password, final String name,
             final String secondName, final String lastName, final String email) {
-        if (!be.findByLogin(login).isEmpty()) {
-            final FacesContext fc = FacesContext.getCurrentInstance();
-            final FacesMessage msg = new FacesMessage("Already existing login");
-            msg.setSeverity(FacesMessage.SEVERITY_ERROR);
-            fc.addMessage("error", msg);
+        
+        if (!ue.findByLogin(login).isEmpty()) {
+            createContextError("Already existing login");
             loginExists = true;
             return "";
         }
@@ -64,19 +60,40 @@ public class AuthController implements Serializable {
         try {
             final Credentials cred = new Credentials(name, secondName, lastName);
             user = new User.Builder(login, password.hashCode(), cred, email).build();
-            user = be.create(user);
-            registered = true;
+            user = ue.create(user);
         } catch (EJBException e) {
-            final FacesContext fc = FacesContext.getCurrentInstance();
-            final ConstraintViolationException ce = (ConstraintViolationException) e.getCause();
-            final Set<ConstraintViolation<?>> violations = ce.getConstraintViolations();
-            for (final ConstraintViolation<?> violation : violations) {
-                final FacesMessage msg = new FacesMessage(violation.getMessage());
-                msg.setSeverity(FacesMessage.SEVERITY_ERROR);
-                fc.addMessage("register_form:email", msg);
-            }
+            processEjbException(e);
             return "";
         }
-        return "signin.xhtml";
+        return "signin";
+    }
+    
+    public String authUser(final String login, final String password) {
+        user = ue.findByLogin(login).get(0);
+        passwordCorrect = user.getPassword() == password.hashCode();
+        if (!passwordCorrect) {
+            createContextError("Invalid password");
+            return "";
+        }
+        return user.isAdmin() ? "admin_home" : "home"; 
+    }
+    
+    public String logout() {
+        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+        return "signin";
+    }
+    
+    private void processEjbException(final EJBException e) {
+        final ConstraintViolationException ce = (ConstraintViolationException) e.getCause();
+        final Set<ConstraintViolation<?>> violations = ce.getConstraintViolations();
+        for (final ConstraintViolation<?> violation : violations) {
+            createContextError(violation.getMessage());
+        }
+    }
+    
+    private void createContextError(final String message) {
+        final FacesMessage msg = new FacesMessage(message);
+        msg.setSeverity(FacesMessage.SEVERITY_ERROR);
+        FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 }
