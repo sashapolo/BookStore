@@ -18,39 +18,30 @@
                         <h:outputLabel rendered="#{!login.valid}" class="control-label" value="Must not be empty"/>
                         <h:outputLabel rendered="#{authController.loginExists}" class="control-label" value="Such login already exists"/>
                         <h:inputText id="login" class="form-control" required="true" p:placeholder="Login" binding="#{login}"/>
-                        
                     </div>
 
                     <div class="form-group #{!password.valid ? 'has-error' : ''}">
-                        
                         <h:outputLabel rendered="#{!password.valid}" class="control-label" value="Must not be empty"/>
                         <h:inputSecret id="password" class="form-control" required="true" p:placeholder="Password" binding="#{password}"/>
-                        
                     </div>
 
                     <div class="form-group #{!email.valid ? 'has-error' : ''}">
-                        
                         <h:outputLabel rendered="#{!email.valid}" class="control-label" value="Invalid email"/>
                         <h:inputText id="email" class="form-control" rendererType="email" required="true" p:placeholder="Email" binding="#{email}">
                             <f:validator validatorId="edu.validators.EmailValidator"/>
                         </h:inputText>
-                        
                     </div>
 
                     <div class="form-group #{!name.valid ? 'has-error' : ''}">
-                        
                         <h:outputLabel rendered="#{!name.valid}" class="control-label" value="Must not be empty"/>
-                        <h:inputText id="name" class="form-control" required="true" p:placeholder="Name" binding="#{name}"/>
-                        
+                        <h:inputText id="name" class="form-control" required="true" p:placeholder="Name" binding="#{name}"/>                        
                     </div>
 
-                    <h:inputText class="form-control" p:placeholder="Second name" binding="#{second}"/>
+                    <h:inputText class="form-control" style="margin-bottom: 10px" p:placeholder="Second name" binding="#{second}"/>
 
                     <div class="form-group #{!last.valid ? 'has-error' : ''}">
-                        
                         <h:outputLabel rendered="#{!last.valid}" class="control-label" value="Must not be empty"/>
                         <h:inputText id="last" class="form-control" required="true" p:placeholder="Last name" binding="#{last}"/>
-                        
                     </div>
 
                     <h:commandButton class="btn btn-lg btn-primary btn-block gap" value="Register!" 

@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE resources PUBLIC "-//GlassFish.org//DTD GlassFish Application Server 3.1 Resource Definitions//EN" "http://glassfish.org/dtds/glassfish-resources_1_5.dtd">
 <resources>
-  <jdbc-resource enabled="true" jndi-name="jdbc/bookstore-database" object-type="user" pool-name="bookstorePool">
-    <description/>
-  </jdbc-resource>
-  <jdbc-connection-pool allow-non-component-callers="false" 
+    <jdbc-resource enabled="true" jndi-name="jdbc/bookstore-database" object-type="user" pool-name="bookstorePool">
+        <description/>
+    </jdbc-resource>
+    <jdbc-connection-pool allow-non-component-callers="false" 
                         associate-with-thread="false" 
                         connection-creation-retry-attempts="0" 
                         connection-creation-retry-interval-in-seconds="10" 
@@ -30,7 +30,7 @@
                         steady-pool-size="8" 
                         validate-atmost-once-period-in-seconds="0" 
                         wrap-jdbc-objects="false">
-    <property name="databaseName" value="target/databases/bookstore-database"/>
-    <property name="createDatabase" value="create"/>
-  </jdbc-connection-pool>
+        <property name="databaseName" value="target/databases/bookstore-database"/>
+        <property name="createDatabase" value="create"/>
+    </jdbc-connection-pool>
 </resources>
