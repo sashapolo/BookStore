@@ -10,7 +10,6 @@ import edu.data.User;
 import edu.ejb.UserEjb;
 import java.io.Serializable;
 import java.util.Set;
-import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.ejb.EJBException;
 import javax.enterprise.context.SessionScoped;
@@ -75,7 +74,7 @@ public class AuthController implements Serializable {
             createContextError("Invalid password");
             return "";
         }
-        return user.isAdmin() ? "admin_home" : "home"; 
+        return user.isAdmin() ? "admin_home?faces-redirect=true" : "home"; 
     }
     
     public String logout() {

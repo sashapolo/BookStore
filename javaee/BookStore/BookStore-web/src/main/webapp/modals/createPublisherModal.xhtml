@@ -15,17 +15,17 @@
                 <h:form class="form-horizontal">
                     <div class="modal-body">
                         <div class="form-group">
-                            <h:outputLabel for="name" class="col-sm-2 control-label" value="Name"/>
+                            <h:outputLabel for="pubName" class="col-sm-2 control-label" value="Name"/>
                             <div class="col-sm-10">
-                                <h:inputText class="form-control" id="name" binding="#{name}"
-                                             p:placeholder="Name" required="true"/>
+                                <h:inputText class="form-control" id="pubName" required="true" binding="#{pubName}"/>
                             </div>
                         </div>
                     </div>
 
                     <div class="modal-footer">
                         <h:button class="btn btn-default" p:data-dismiss="modal" value="Cancel"/>
-                        <h:commandButton class="btn btn-primary" value="Create" action="#{publisherController.createPublisher(name.value)}"/>
+                        <h:commandButton class="btn btn-primary" value="Create" 
+                                         action="#{publisherController.createPublisher(pubName.value)}"/>
                     </div>
                 </h:form>
             </div>

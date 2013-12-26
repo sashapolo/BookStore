@@ -25,6 +25,10 @@ public class PublisherEjb {
     @PersistenceContext
     private EntityManager em;
     
+    public Publisher findById(@NotNull final Long id) {
+        return em.find(Publisher.class, id);
+    }
+    
     public List<Publisher> findAll() {
         final TypedQuery<Publisher> query = em.createNamedQuery(Publisher.FIND_ALL, Publisher.class);
         return query.getResultList();

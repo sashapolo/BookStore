@@ -25,7 +25,7 @@
             <groupId>edu</groupId>
             <artifactId>BookStore-ejb</artifactId>
             <version>${project.version}</version>
-        </dependency>
+        </dependency> 
     </dependencies>
 
     <build>

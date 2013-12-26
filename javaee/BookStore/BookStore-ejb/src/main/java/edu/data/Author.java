@@ -7,6 +7,7 @@
 package edu.data;
 
 import java.io.Serializable;
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -59,4 +60,28 @@ public class Author implements Serializable {
     public String getLastName() {
         return credentials.getLastName();
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        hash = 29 * hash + Objects.hashCode(this.credentials);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Author other = (Author) obj;
+        if (!Objects.equals(this.credentials, other.credentials)) {
+            return false;
+        }
+        return true;
+    }
+    
+    
 }

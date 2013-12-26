@@ -16,11 +16,10 @@
 
                 <div class="modal-body">
                     <h:form class="form-horizontal">
-
                         <div class="form-group">
                             <h:outputLabel for="title" class="col-sm-2 control-label" value="Title"/>
                             <div class="col-sm-10">
-                                <h:inputText class="form-control" id="title" binding="#{title}"
+                                <h:inputText class="form-control" id="title" binding="#{title}" 
                                              p:placeholder="Title" required="true"/>
                             </div>
                         </div>
@@ -28,11 +27,10 @@
                         <div class="form-group">
                             <h:outputLabel for="author" class="col-sm-2 control-label" value="Author"/>
                             <div class="col-sm-10">
-                                <h:selectOneMenu class="form-control" id="author">
-                                    <f:selectItems value="#{authorController.authorList}"
-                                                   var="author"
-                                                   itemLabel="#{author.name + ' ' + author.secondName}"
-                                                   itemValue="#{author}"/>
+                                <h:selectOneMenu class="form-control" id="author" value="#{bookController.author}">
+                                    <f:selectItems value="#{authorController.authorList}" var="author" 
+                                                   itemLabel="#{author.name} #{author.lastName}"/>
+                                    <f:converter converterId="edu.converters.AuthorConverter"/>
                                 </h:selectOneMenu>
                             </div>
                         </div>
@@ -40,7 +38,7 @@
                         <div class="form-group">
                             <h:outputLabel for="isbn" class="col-sm-2 control-label" value="ISBN"/>
                             <div class="col-sm-10">
-                                <h:inputText class="form-control" id="isbn" binding="#{isbn}"
+                                <h:inputText class="form-control" id="isbn" binding="#{isbn}" 
                                              p:placeholder="ISBN" required="true">
                                     <f:validator validatorId="edu.validators.IsbnValidator"/>
                                 </h:inputText>
@@ -50,20 +48,8 @@
                         <div class="form-group">
                             <h:outputLabel for="genre" class="col-sm-2 control-label" value="Genre"/>
                             <div class="col-sm-10">
-                                <h:inputText class="form-control" id="genre" binding="#{genre}"
+                                <h:inputText class="form-control" id="genre" binding="#{genre}" 
                                              p:placeholder="Genre"/>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <h:outputLabel for="publisher" class="col-sm-2 control-label" value="Publisher"/>
-                            <div class="col-sm-10">
-                                <h:selectOneMenu class="form-control" id="publisher">
-                                    <f:selectItems value="#{publisherController.publisherList}"
-                                                   var="publisher"
-                                                   itemLabel="#{publisher.name}"
-                                                   itemValue="#{publisher}"/>
-                                </h:selectOneMenu>
                             </div>
                         </div>
 
@@ -75,9 +61,20 @@
                         </div>
 
                         <div class="form-group">
+                            <h:outputLabel for="publisher" class="col-sm-2 control-label" value="Publisher"/>
+                            <div class="col-sm-10">
+                                <h:selectOneMenu class="form-control" id="publisher" value="#{bookController.pub}">
+                                    <f:selectItems value="#{publisherController.publisherList}" 
+                                                   var="pub" itemLabel="#{pub.name}"/>
+                                    <f:converter converterId="edu.converters.PublisherConverter"/>
+                                </h:selectOneMenu>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
                             <h:outputLabel for="price" class="col-sm-2 control-label" value="Price"/>
                             <div class="col-sm-10">
-                                <h:inputText class="form-control" id="price" binding="#{price}"
+                                <h:inputText class="form-control" id="price" binding="#{price}" 
                                              p:placeholder="0.0" required="true"/>
                             </div>
                         </div>
@@ -85,16 +82,19 @@
                         <div class="form-group">
                             <h:outputLabel for="desc" class="col-sm-2 control-label" value="Description"/>
                             <div class="col-sm-10">
-                                <h:inputTextarea class="form-control" id="desc" binding="#{desc}"
+                                <h:inputTextarea class="form-control" id="desc" binding="#{desc}" 
                                                  style="height: 200px"/>
                             </div>
                         </div>
-                    </h:form>
-                </div>
 
-                <div class="modal-footer">
-                    <h:button class="btn btn-default" p:data-dismiss="modal" value="Cancel"/>
-                    <h:button class="btn btn-primary" value="Create"/>
+                        <div class="modal-footer">
+                            <h:button class="btn btn-default" p:data-dismiss="modal" value="Cancel"/>
+                            <h:commandButton class="btn btn-primary" value="Create"
+                                             action="#{bookController.createBook(title.value, 
+                                                       isbn.value, genre.value, date.value, 
+                                                       price.value, desc.value)}"/>
+                        </div>
+                    </h:form>
                 </div>
             </div>
         </div>
@@ -102,9 +102,7 @@
 
     <style>
         .datepicker{z-index:1151;}
-    </style>
-
-    <h:outputScript name="js/bootstrap-datepicker.js"/>
+    </style>     
     <script>
         $('.datepicker').datepicker();
     </script>

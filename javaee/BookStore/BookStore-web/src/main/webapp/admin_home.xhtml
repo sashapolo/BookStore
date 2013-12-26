@@ -2,12 +2,14 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:h="http://xmlns.jcp.org/jsf/html">
 
-    <ui:composition template="layout.xhtml">
+    <ui:composition template="resources/layout.xhtml">
         <ui:define name="title">Home</ui:define>
+        <ui:define name="titleContent">
+            <h:outputStylesheet name="css/datepicker.css"/>
+            <h:outputScript name="js/bootstrap-datepicker.js"/>  
+        </ui:define>
         <ui:define name="content">
 
             <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -50,7 +52,9 @@
                         <h2>Create a new Author</h2>
                         <p>An unknown person has written another masterpiece? Get him in our shop now, 
                             add him to the list of the best book writers!</p>
-                        <h:button class="btn btn-primary" value="View details &raquo;"/>
+                        <button class="btn btn-primary" data-toggle="modal" data-target="#createAuthorModal">
+                            View details &raquo;
+                        </button>
                     </div>
                     <div class="col-xs-6">
                         <h2>Create a new Publisher</h2>
@@ -64,6 +68,7 @@
             
             <ui:include src="modals/createBookModal.xhtml"/>
             <ui:include src="modals/createPublisherModal.xhtml"/>
+            <ui:include src="modals/createAuthorModal.xhtml"/>
         </ui:define>
     </ui:composition>
 
