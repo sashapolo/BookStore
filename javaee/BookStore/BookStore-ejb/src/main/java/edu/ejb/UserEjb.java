@@ -6,6 +6,7 @@
 
 package edu.ejb;
 
+import edu.data.Credentials;
 import edu.data.User;
 import java.util.List;
 import javax.ejb.LocalBean;
