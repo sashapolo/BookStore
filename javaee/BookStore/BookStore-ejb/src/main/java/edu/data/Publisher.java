@@ -23,9 +23,12 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Entity
 @NamedQueries({
     @NamedQuery(name = Publisher.FIND_ALL, query = "SELECT p FROM Publisher p"),
+    @NamedQuery(name = Publisher.FIND_BY_NAME, 
+            query = "SELECT p FROM Publisher p WHERE UPPER(p.name) LIKE :name")
 })
 public class Publisher implements Serializable {
     public static final String FIND_ALL = "Publisher.findAll";
+    public static final String FIND_BY_NAME = "Publisher.findByName";
     
     private static final long serialVersionUID = 1L;
     @Id
@@ -34,7 +37,7 @@ public class Publisher implements Serializable {
     @NotEmpty
     private String name;
     
-    protected Publisher() { }
+    public Publisher() {}
     
     public Publisher(final String name) {
         this.name = name;
@@ -48,6 +51,14 @@ public class Publisher implements Serializable {
         return id;
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+    
     @Override
     public int hashCode() {
         int hash = 5;

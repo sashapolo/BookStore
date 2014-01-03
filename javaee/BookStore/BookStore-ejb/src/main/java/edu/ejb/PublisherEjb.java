@@ -10,10 +10,7 @@ import edu.data.Publisher;
 import java.util.List;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
-import javax.validation.constraints.NotNull;
 
 /**
  *
@@ -21,21 +18,23 @@ import javax.validation.constraints.NotNull;
  */
 @Stateless
 @LocalBean
-public class PublisherEjb {
-    @PersistenceContext
-    private EntityManager em;
-    
-    public Publisher findById(@NotNull final Long id) {
-        return em.find(Publisher.class, id);
-    }
-    
+public class PublisherEjb extends DataEjb<Publisher> {
+   
     public List<Publisher> findAll() {
-        final TypedQuery<Publisher> query = em.createNamedQuery(Publisher.FIND_ALL, Publisher.class);
+        final TypedQuery<Publisher> query = 
+                em.createNamedQuery(Publisher.FIND_ALL, Publisher.class);
         return query.getResultList();
     }
     
-    public @NotNull Publisher create(@NotNull final Publisher pub) {
-        em.persist(pub);
-        return pub;
+    public List<Publisher> findByName(final String name) {
+        final TypedQuery<Publisher> query = 
+                em.createNamedQuery(Publisher.FIND_BY_NAME, Publisher.class);
+        query.setParameter("name", "%" + name.toUpperCase() + "%");
+        return query.getResultList();
+    }
+
+    @Override
+    protected Class<Publisher> getGenericClass() {
+        return Publisher.class;
     }
 }

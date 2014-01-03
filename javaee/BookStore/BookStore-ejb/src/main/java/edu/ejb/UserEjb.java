@@ -10,8 +10,6 @@ import edu.data.User;
 import java.util.List;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotNull;
 
@@ -21,10 +19,7 @@ import javax.validation.constraints.NotNull;
  */
 @Stateless
 @LocalBean
-public class UserEjb {
-    @PersistenceContext
-    private EntityManager em;
-    
+public class UserEjb extends DataEjb<User>{
     public List<User> findAll() {
         final TypedQuery<User> query = em.createNamedQuery(User.FIND_ALL, User.class);
         return query.getResultList();
@@ -35,21 +30,9 @@ public class UserEjb {
         query.setParameter("login", login);
         return query.getResultList();
     }
-    
-    public User findById(@NotNull final Long id) {
-        return em.find(User.class, id);
-    }
-    
-    public @NotNull User create(@NotNull final User user) {
-        em.persist(user);
-        return user;
-    }
-    
-    public void delete(@NotNull final User user) {
-        em.remove(em.merge(user));
-    }
-    
-    public @NotNull User update(@NotNull final User user) {
-        return em.merge(user);
+
+    @Override
+    protected Class<User> getGenericClass() {
+        return User.class;
     }
 }

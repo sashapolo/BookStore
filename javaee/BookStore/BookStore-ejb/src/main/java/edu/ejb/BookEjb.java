@@ -12,8 +12,6 @@ import java.util.List;
 import javax.annotation.Resource;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
 import javax.validation.Validator;
 import javax.validation.constraints.NotNull;
@@ -24,9 +22,7 @@ import javax.validation.constraints.NotNull;
  */
 @Stateless
 @LocalBean
-public class BookEjb {
-    @PersistenceContext
-    private EntityManager em;
+public class BookEjb extends DataEjb<Book> {
     @Resource
     private Validator v;
     
@@ -34,10 +30,6 @@ public class BookEjb {
         final TypedQuery<Book> query = 
                 em.createNamedQuery(Book.FIND_ALL, Book.class);
         return query.getResultList();
-    }
-    
-    public Book findById(@NotNull final Long id) {
-        return em.find(Book.class, id);
     }
     
     public List<Book> findByIsbn(@NotNull final Isbn isbn) {
@@ -57,17 +49,9 @@ public class BookEjb {
         query.setParameter("str", "%" + search.toUpperCase() + "%");
         return query.getResultList();
     }
-    
-    public @NotNull Book create(@NotNull final Book book) {
-        em.persist(book);
-        return book;
-    }
-    
-    public @NotNull Book update(@NotNull final Book book) {
-        return em.merge(book);
-    }
-    
-    public void delete(@NotNull final Book book) {
-        em.remove(em.merge(book));
+
+    @Override
+    protected Class<Book> getGenericClass() {
+        return Book.class;
     }
 }
