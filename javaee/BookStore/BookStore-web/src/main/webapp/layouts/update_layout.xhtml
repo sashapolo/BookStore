@@ -1,0 +1,30 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <ui:composition template="admin_layout.xhtml">
+
+        <ui:define name="content">
+            <div class="container" style="margin-top: 50px">
+                <h:form class="form-group">
+                    <div class="col-xs-6 col-xs-offset-3">
+                        <h:inputText p:placeholder="Type ISBN or title to search" class="form-control"
+                                     binding="#{search}"/>
+                    </div>
+                    <h:commandButton class="btn btn-success" value="search">
+                        <ui:insert name="ajax_search"/>
+                    </h:commandButton>
+                </h:form>
+            </div>
+            <div class="container col-xs-6 col-xs-offset-3 well">
+                <h2>Search results:</h2>
+                <ui:insert name="table_content"/>
+            </div>
+        </ui:define>
+        
+    </ui:composition>
+</html>
+

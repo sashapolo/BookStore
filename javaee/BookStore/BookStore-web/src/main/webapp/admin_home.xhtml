@@ -6,10 +6,6 @@
 
     <ui:composition template="layouts/admin_layout.xhtml">
         <ui:define name="title">Home</ui:define>
-        <ui:define name="titleContent">
-            <h:outputStylesheet name="css/datepicker.css"/>
-            <h:outputScript name="js/bootstrap-datepicker.js"/>  
-        </ui:define>
         <ui:define name="content">
 
             <div class="container" style="margin-top: 100px">
@@ -38,7 +34,8 @@
                     </div>
                     <div class="col-xs-6">
                         <h2>Modify an existing user</h2>
-                        <h:button class="btn btn-primary" value="View details &raquo;"/>
+                        <h:button class="btn btn-primary" value="View details &raquo;"
+                                  outcome="modify_user.xhtml"/>
                     </div>
                 </div>
                 <div class="row">

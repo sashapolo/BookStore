@@ -29,8 +29,8 @@ public class AdminInitializer {
         
         final Credentials cred = new Credentials("admin", "admin");
         final int pass = "admin".hashCode();
-        final User admin = new User.Builder("admin", pass, cred, "admin@admin.com")
-                .admin(true).build();
+        final User admin = new User.Builder().login("admin").password(pass).credentials(cred)
+                .email("admin@admin.com").admin(true).build();
         ue.create(admin);
     }
 }

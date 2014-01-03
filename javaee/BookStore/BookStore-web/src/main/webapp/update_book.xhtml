@@ -12,11 +12,6 @@
         </f:metadata>
 
         <ui:define name="title">Home</ui:define>
-        <ui:define name="titleContent">
-            <h:outputStylesheet name="css/datepicker.css"/>
-            <h:outputScript name="js/bootstrap-datepicker.js"/>  
-        </ui:define>
-        
         <ui:define name="content">
 
             <div class="container col-xs-6 col-xs-offset-3" style="margin-top: 50px">
@@ -103,10 +98,12 @@
                     </div>
 
                     <div class="row">
-                        <div class="col-xs-offset-9">
+                        <div class="col-xs-1 col-xs-offset-10">
                             <h:button class="btn btn-default" value="Cancel" 
                                       style="margin-right: 10px"
                                       outcome="modify_book.xhtml"/>
+                        </div>
+                        <div class="col-xs-1">
                             <h:commandButton class="btn btn-primary" value="Update"
                                              action="#{bookController.updateBook()}"/>
                         </div>

@@ -40,16 +40,20 @@ public class UserEjbTest {
     
     @Test 
     public void testInsertValid() {
-        User user = new User.Builder("Mad", 1, new Credentials("Mad", "Jack"), "hello@world.com").build();
+        User user = new User.Builder().login("Mad").password(1)
+                .credentials(new Credentials("Mad", "Jack")).email("hello@world.com").build();
         user = ue.create(user);
         Assert.assertNotNull(user);
     }
     
     @Test(expected = EJBException.class)
     public void testInsertNonUnique() throws Throwable {
-        final User user1 = new User.Builder("foo", 1, new Credentials("a", "b"), "a@b").build();
-        final User user2 = new User.Builder("foo", 1, new Credentials("a", "b"), "abc@b").build();
-        final User user3 = new User.Builder("fo", 1, new Credentials("a", "b"), "a@b").build();
+        final User user1 = new User.Builder().login("foo").password(1)
+                .credentials(new Credentials("a", "b")).email("a@b").build();
+        final User user2 = new User.Builder().login("foo").password(1)
+                .credentials(new Credentials("a", "b")).email("abc@b").build();
+        final User user3 = new User.Builder().login("fo").password(1)
+                .credentials(new Credentials("a", "b")).email("a@b").build();
         
         ue.create(user1);
         ue.create(user2);

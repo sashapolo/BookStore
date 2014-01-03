@@ -58,7 +58,8 @@ public class AuthController implements Serializable {
 
         try {
             final Credentials cred = new Credentials(name, secondName, lastName);
-            user = new User.Builder(login, password.hashCode(), cred, email).build();
+            user = new User.Builder().login(login).password(password.hashCode()).credentials(cred)
+                    .email(email).build();
             user = ue.create(user);
         } catch (EJBException e) {
             processEjbException(e);

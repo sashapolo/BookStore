@@ -5,18 +5,21 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title><ui:insert name="title">Default title</ui:insert></title>
+        <title><ui:insert name="title"/></title>
+        
         <h:outputStylesheet name="css/bootstrap.min.css"/>
+        <h:outputStylesheet name="css/datepicker.css"/>
         <h:outputStylesheet name="css/layout.css"/>
         
         <h:outputScript name="js/jquery-2.0.3.min.js" />
         <h:outputScript name="js/bootstrap.min.js" />
+        <h:outputScript name="js/bootstrap-datepicker.js"/> 
         
-        <ui:insert name="titleContent"></ui:insert>
+        <ui:insert name="titleContent"/>
     </h:head>
 
     <h:body>
-        <ui:insert name="content">Default content</ui:insert>
+        <ui:insert name="main_content"/>
     </h:body>
 
 </html>

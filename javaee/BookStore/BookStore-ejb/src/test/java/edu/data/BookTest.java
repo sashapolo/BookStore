@@ -72,11 +72,10 @@ public class BookTest {
         final Isbn isbn = new Isbn("9583161484100");
         final Author author = new Author(new Credentials("Brian", "May"));
         final Book book = new Book.Builder().isbn(isbn).title("abc").author(author)
-                .discount(new Discount(101)).price(-10)
-                .publicationDate(new GregorianCalendar(3000, 0, 1)).build();
+                .discount(new Discount(101)).price(-10).build();
         
         final Set<ConstraintViolation<Book>> violations = validator.validate(book);
-        assertEquals(4, violations.size());
+        assertEquals(3, violations.size());
     }
     
     @Test

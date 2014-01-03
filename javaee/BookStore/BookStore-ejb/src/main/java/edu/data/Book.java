@@ -62,7 +62,6 @@ public class Book implements Serializable {
     @OneToOne
     private Publisher publisher;
     @Temporal(javax.persistence.TemporalType.DATE)
-    @Past
     private Calendar publicationDate;
     @Min(0)
     private double price;

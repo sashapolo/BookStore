@@ -3,31 +3,19 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 
-    <ui:composition template="layouts/admin_layout.xhtml">
+    <ui:composition template="layouts/update_layout.xhtml">
         <ui:define name="title">Home</ui:define>
-
-        <ui:define name="content">
-
-            <div class="container" style="margin-top: 50px">
-                <h:form class="form-group">
-                    <div class="col-xs-6 col-xs-offset-3">
-                        <h:inputText p:placeholder="Type ISBN or title to search" class="form-control"
-                                     binding="#{search}"/>
-                    </div>
-                    <h:commandButton class="btn btn-success" value="search">
-                        <f:ajax execute="@form" render=":booklist"/>
-                    </h:commandButton>
-                </h:form>
-            </div>
-
-            <div class="container col-xs-6 col-xs-offset-3 well">
-                <h2>Search results:</h2>
+        <ui:define name="ajax_search">
+            <f:ajax execute="@form" render=":booklist"/>
+        </ui:define>
+        
+        <ui:define name="table_content">         
+            
                 <h:dataTable id="booklist" styleClass="table table-striped"
                              headerClass="table-header"
-                             columnClasses="book-col,book-col,book-col,btn-col,btn-col"
+                             columnClasses="three-col,three-col,three-col,btn-col,btn-col"
                              value="#{bookController.findBooks(search.value)}" var="book">
                     <h:column>
                         <f:facet name="header">
@@ -67,7 +55,6 @@
                     </h:column>
                     
                 </h:dataTable>
-            </div>
             
         </ui:define>
 

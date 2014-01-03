@@ -46,7 +46,7 @@ public class BookController {
     }
     
     public String updateBook() {
-        be.update(book);
+        book = be.update(book);
         return "modify_book.xhtml?faces-redirect=true";
     }
     

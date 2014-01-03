@@ -20,18 +20,19 @@ import org.hibernate.validator.constraints.NotEmpty;
 public class Credentials implements Serializable {
     private static final long serialVersionUID = 1L;
     @NotEmpty
-    private String name;
+    private String name = "";
     @NotNull
-    private String secondName;
+    private String secondName = "";
     @NotEmpty
-    private String lastName;
+    private String lastName = "";
 
-    protected Credentials() {}
+    public Credentials() {}
+    
     public Credentials(final String name, final String lastName) {
         this.name = name;
         this.lastName = lastName;
-        this.secondName = "";
     }
+    
     public Credentials(final String name, final String secondName, final String lastName) {
         this.name = name;
         this.secondName = secondName;
@@ -48,6 +49,18 @@ public class Credentials implements Serializable {
 
     public String getLastName() {
         return lastName;
+    }
+    
+    public Credentials setName(final String name) {
+        return new Credentials(name, secondName, lastName);
+    }
+    
+    public Credentials setSecondName(final String secondName) {
+        return new Credentials(name, secondName, lastName);
+    }
+    
+    public Credentials setLastName(final String lastName) {
+        return new Credentials(name, secondName, lastName);
     }
     
     @Override
