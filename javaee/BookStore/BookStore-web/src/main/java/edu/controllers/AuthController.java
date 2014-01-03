@@ -5,19 +5,14 @@
  */
 package edu.controllers;
 
-import edu.data.Credentials;
 import edu.data.User;
 import edu.ejb.UserEjb;
+import edu.util.MessageManager;
 import java.io.Serializable;
-import java.util.Set;
 import javax.ejb.EJB;
-import javax.ejb.EJBException;
 import javax.enterprise.context.SessionScoped;
-import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
-import javax.validation.ConstraintViolation;
-import javax.validation.ConstraintViolationException;
 
 /**
  *
@@ -32,47 +27,21 @@ public class AuthController implements Serializable {
     private transient UserEjb ue;
 
     private User user;
-    private boolean loginExists = false;
-    private boolean passwordCorrect = true;
-    
-    public boolean isPasswordCorrect() {
-        return passwordCorrect;
-    }
 
     public User getUser() {
         return user;
     }
     
-    public boolean isLoginExists() {
-        return loginExists;
-    }
-    
-    public String createUser(final String login, final String password, final String name,
-            final String secondName, final String lastName, final String email) {
-        
-        if (!ue.findByLogin(login).isEmpty()) {
-            createContextError("Already existing login");
-            loginExists = true;
-            return "";
-        }
-
-        try {
-            final Credentials cred = new Credentials(name, secondName, lastName);
-            user = new User.Builder().login(login).password(password.hashCode()).credentials(cred)
-                    .email(email).build();
-            user = ue.create(user);
-        } catch (EJBException e) {
-            processEjbException(e);
-            return "";
-        }
-        return "signin";
+    public void setUser(final User user) {
+        this.user = user;
     }
     
     public String authUser(final String login, final String password) {
-        user = ue.findByLogin(login).get(0);
-        passwordCorrect = user.getPassword() == password.hashCode();
-        if (!passwordCorrect) {
-            createContextError("Invalid password");
+        if (user == null || !user.getLogin().equals(login)) {
+            user = ue.findByLogin(login);
+        }
+        if (user.getPassword() != password.hashCode()) {
+            MessageManager.createContextError("login_form:password", "Invalid password");
             return "";
         }
         return user.isAdmin() ? "admin_home?faces-redirect=true" : "home"; 
@@ -80,20 +49,7 @@ public class AuthController implements Serializable {
     
     public String logout() {
         FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+        user = null;
         return "signin";
-    }
-    
-    private void processEjbException(final EJBException e) {
-        final ConstraintViolationException ce = (ConstraintViolationException) e.getCause();
-        final Set<ConstraintViolation<?>> violations = ce.getConstraintViolations();
-        for (final ConstraintViolation<?> violation : violations) {
-            createContextError(violation.getMessage());
-        }
-    }
-    
-    private void createContextError(final String message) {
-        final FacesMessage msg = new FacesMessage(message);
-        msg.setSeverity(FacesMessage.SEVERITY_ERROR);
-        FacesContext.getCurrentInstance().addMessage(null, msg);
     }
 }

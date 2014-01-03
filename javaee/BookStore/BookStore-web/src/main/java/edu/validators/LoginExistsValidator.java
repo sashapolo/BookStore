@@ -20,16 +20,16 @@ import javax.faces.validator.ValidatorException;
  *
  * @author alexander
  */
-@FacesValidator("edu.validators.LoginValidator")
-public class LoginValidator implements Validator {
+@FacesValidator("edu.validators.LoginExistsValidator")
+public class LoginExistsValidator implements Validator {
     @EJB
     private UserEjb ue;
     
     @Override
     public void validate(FacesContext context, UIComponent component, Object value) throws ValidatorException {
         final User res = ue.findByLogin(value.toString());
-        if (res == null) {
-            final FacesMessage msg = new FacesMessage("Login does not exist");
+        if (res != null) {
+            final FacesMessage msg = new FacesMessage("Login already exists");
             msg.setSeverity(FacesMessage.SEVERITY_ERROR);
             throw new ValidatorException(msg);
         }

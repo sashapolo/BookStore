@@ -32,11 +32,13 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Entity
 @Table(name = "BusinessUser")
 @NamedQueries({
-    @NamedQuery(name = User.FIND_BY_LOGIN, query = "SELECT u FROM User u WHERE UPPER(u.login) LIKE :login"),
-    @NamedQuery(name = User.FIND_ALL, query = "SELECT u FROM User u")
+    @NamedQuery(name = User.FUZZY_FIND, query = "SELECT u FROM User u WHERE UPPER(u.login) LIKE :login"),
+    @NamedQuery(name = User.FIND_ALL, query = "SELECT u FROM User u"),
+    @NamedQuery(name = User.FIND_BY_LOGIN, query = "SELECT u FROM User u WHERE u.login = :login")
 })
 public class User implements Serializable {
     public static final String FIND_BY_LOGIN = "User.findByLogin";
+    public static final String FUZZY_FIND = "User.fuzzyFind";
     public static final String FIND_ALL = "User.findAll";
     
     private static final long serialVersionUID = 1L;
@@ -167,7 +169,7 @@ public class User implements Serializable {
         this.login = login;
     }
 
-    public void setPassword(int password) {
+    public void setPassword(final int password) {
         this.password = password;
     }
 
@@ -194,6 +196,6 @@ public class User implements Serializable {
     @Override
     public String toString() {
         return "{id=" + id + ", login=" + login + ", password=" + password +
-               "credntials=" + credentials + ", email=" + email + "}";
+               ", credentials=" + credentials + ", email=" + email + "}";
     }
 }

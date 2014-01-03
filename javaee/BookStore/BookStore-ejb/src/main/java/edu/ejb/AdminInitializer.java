@@ -25,7 +25,7 @@ public class AdminInitializer {
     
     @PostConstruct
     public void init() {
-        if (!ue.findByLogin("admin").isEmpty()) return;
+        if (ue.findByLogin("admin") != null) return;
         
         final Credentials cred = new Credentials("admin", "admin");
         final int pass = "admin".hashCode();

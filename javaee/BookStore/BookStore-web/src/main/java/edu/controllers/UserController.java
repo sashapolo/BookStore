@@ -8,9 +8,11 @@ package edu.controllers;
 
 import edu.data.User;
 import edu.ejb.UserEjb;
+import edu.util.MessageManager;
 import java.util.List;
 import javax.ejb.EJB;
 import javax.enterprise.inject.Model;
+import javax.inject.Inject;
 
 /**
  *
@@ -21,22 +23,41 @@ public class UserController {
     @EJB
     private UserEjb ue;
     
+    @Inject
+    private AuthController auth;
+    
     private User user = new User.Builder().build();
+    private boolean loginExists = false;    
     
     public User getUser() {
         return user;
+    }
+    
+    public boolean isLoginExists() {
+        return loginExists;
     }
     
     public List<User> findAllUsers() {
         return ue.findAll();
     }
     
-    public List<User> findByLogin(final String login) {
-        return ue.findByLogin(login);
+    public List<User> find(final String search) {
+        return ue.fuzzyFind(search);
     }
     
     public void findById() {
         user = ue.findById(user.getId());
+    }
+    
+    public String registerUser() {
+        if (ue.findByLogin(user.getLogin()) != null) {
+            MessageManager.createContextError("Already existing login");
+            loginExists = true;
+            return "";
+        }
+        user = ue.create(user);
+        auth.setUser(user);
+        return "signin.xhtml?faces-redirect=true";
     }
     
     public void deleteUser(final User user) {

@@ -10,6 +10,7 @@ import edu.data.User;
 import java.util.List;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
+import javax.persistence.NoResultException;
 import javax.persistence.TypedQuery;
 import javax.validation.constraints.NotNull;
 
@@ -25,9 +26,21 @@ public class UserEjb extends DataEjb<User>{
         return query.getResultList();
     }
     
-    public List<User> findByLogin(@NotNull final String login) {
+    public User findByLogin(final String login) {
+        if (login == null) return null;
+        
         final TypedQuery<User> query = em.createNamedQuery(User.FIND_BY_LOGIN, User.class);
-        query.setParameter("login", "%" + login.toUpperCase() + "%");
+        query.setParameter("login", login);
+        try {
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+    
+    public List<User> fuzzyFind(@NotNull final String search) {
+        final TypedQuery<User> query = em.createNamedQuery(User.FUZZY_FIND, User.class);
+        query.setParameter("login", "%" + search.toUpperCase() + "%");
         return query.getResultList();
     }
 
