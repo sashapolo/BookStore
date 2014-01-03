@@ -11,12 +11,16 @@
 
             <div class="container">
                 <h:form class="form" id="login_form">
-                    <h2 class="form-heading text-center">Welcome to the book store!</h2>
+                    <h2 class="form-heading text-center">
+                        Welcome to the book store!
+                    </h2>
                     
                     <div class="form-group #{login.valid ? '' : 'has-error'}">
                         
-                        <h:outputLabel rendered="#{!login.valid}" class="control-label" value="Incorrect login"/>
-                        <h:inputText class="form-control" required="true" p:placeholder="Login" binding="#{login}">
+                        <h:outputLabel rendered="#{!login.valid}" class="control-label" 
+                                       value="Incorrect login"/>
+                        <h:inputText class="form-control" required="true" p:placeholder="Login" 
+                                     binding="#{login}">
                             <f:validator validatorId="edu.validators.LoginValidator"/>
                         </h:inputText>
                     </div>
@@ -24,7 +28,8 @@
                     <div class="form-group #{authController.passwordCorrect ? '' : 'has-error'}">
                         <h:outputLabel rendered="#{!authController.passwordCorrect}" 
                                        class="control-label" value="Incorrect password"/>
-                        <h:inputSecret class="form-control" p:placeholder="Password" binding="#{password}"/>
+                        <h:inputSecret class="form-control" p:placeholder="Password" 
+                                       binding="#{password}"/>
                     </div>
                     
                     <h:commandButton class="btn btn-lg btn-primary btn-block" value="Sign in" 
@@ -32,7 +37,8 @@
                         <f:ajax execute="@form" render=":login_form"/>
                     </h:commandButton>
                     
-                    <h:button class="btn btn-lg btn-block btn-default" value="Register" outcome="register"/>
+                    <h:button class="btn btn-lg btn-block btn-info" value="Register" 
+                              outcome="register"/>
                 </h:form>
             </div>
         

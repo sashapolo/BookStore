@@ -27,7 +27,7 @@ public class UserEjb extends DataEjb<User>{
     
     public List<User> findByLogin(@NotNull final String login) {
         final TypedQuery<User> query = em.createNamedQuery(User.FIND_BY_LOGIN, User.class);
-        query.setParameter("login", login);
+        query.setParameter("login", "%" + login.toUpperCase() + "%");
         return query.getResultList();
     }
 

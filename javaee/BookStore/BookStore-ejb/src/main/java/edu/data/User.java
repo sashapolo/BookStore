@@ -32,7 +32,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 @Entity
 @Table(name = "BusinessUser")
 @NamedQueries({
-    @NamedQuery(name = User.FIND_BY_LOGIN, query = "SELECT u FROM User u WHERE u.login = :login"),
+    @NamedQuery(name = User.FIND_BY_LOGIN, query = "SELECT u FROM User u WHERE UPPER(u.login) LIKE :login"),
     @NamedQuery(name = User.FIND_ALL, query = "SELECT u FROM User u")
 })
 public class User implements Serializable {
