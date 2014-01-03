@@ -43,7 +43,7 @@ public class BookTest {
     public void testValid() {
         final Isbn isbn = new Isbn("9783161484100");
         final Author author = new Author(new Credentials("Brian", "May"));
-        final Book book = new Book.Builder(isbn, "foo", author).build();
+        final Book book = new Book.Builder().isbn(isbn).title("foo").author(author).build();
         
         final Set<ConstraintViolation<Book>> violations = validator.validate(book);
         assertEquals(0, violations.size());
@@ -53,7 +53,7 @@ public class BookTest {
     public void testEmptyTitle() {
         final Isbn isbn = new Isbn("9783161484100");
         final Author author = new Author(new Credentials("Brian", "May"));
-        final Book book = new Book.Builder(isbn, "", author).build();
+        final Book book = new Book.Builder().isbn(isbn).title("").author(author).build();
         
         final Set<ConstraintViolation<Book>> violations = validator.validate(book);
         assertEquals(1, violations.size());
@@ -61,17 +61,17 @@ public class BookTest {
     
     @Test
     public void testNullParameters() {
-        final Book book = new Book.Builder(null, null, null).description(null).build();
+        final Book book = new Book.Builder().build();
         
         final Set<ConstraintViolation<Book>> violations = validator.validate(book);
-        assertEquals(4, violations.size());
+        assertEquals(3, violations.size());
     }
     
     @Test
     public void testInvalidParameters() {
         final Isbn isbn = new Isbn("9583161484100");
         final Author author = new Author(new Credentials("Brian", "May"));
-        final Book book = new Book.Builder(isbn, "abc", author)
+        final Book book = new Book.Builder().isbn(isbn).title("abc").author(author)
                 .discount(new Discount(101)).price(-10)
                 .publicationDate(new GregorianCalendar(3000, 0, 1)).build();
         
@@ -84,15 +84,15 @@ public class BookTest {
         final Isbn isbn = new Isbn("9583161484100");
         final Author author = new Author(new Credentials("Brian", "May"));
         
-        Book book = new Book.Builder(isbn, "abc", author)
+        Book book = new Book.Builder().isbn(isbn).title("abc").author(author)
                 .discount(new Discount(95)).price(65).build();
         assertEquals(65.0 * 5 / 100, book.getPrice(), 1e-15);
         
-        book = new Book.Builder(isbn, "abc", author)
+        book = new Book.Builder().isbn(isbn).title("abc").author(author)
                 .discount(new Discount(0)).price(65).build();
         assertEquals(65, book.getPrice(), 1e-15);
         
-        book = new Book.Builder(isbn, "abc", author)
+        book = new Book.Builder().isbn(isbn).title("abc").author(author)
                 .discount(new Discount(100)).price(65).build();
         assertEquals(0, book.getPrice(), 1e-15);
     }

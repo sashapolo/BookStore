@@ -25,6 +25,14 @@ public class Isbn implements Serializable {
         isbn = "";
     }
     
+    public Isbn(final String isbn) {
+        String tmp = isbn.replace("-", "");
+        if (tmp.length() == 10) {
+            tmp = toIsbn13(tmp);
+        }
+        this.isbn = tmp;
+    }
+    
     private static String toIsbn13(final String isbn) {
         final StringBuilder tmp = new StringBuilder("978");
         tmp.append(isbn.substring(0, 9));
@@ -45,14 +53,6 @@ public class Isbn implements Serializable {
         }
         result %= 10;
         return result == 0 ? '0' : (char) (10 - result + '0');
-    }
-
-    public Isbn(final String isbn) {
-        String tmp = isbn.replace("-", "");
-        if (tmp.length() == 10) {
-            tmp = toIsbn13(tmp);
-        }
-        this.isbn = tmp;
     }
 
     @Override

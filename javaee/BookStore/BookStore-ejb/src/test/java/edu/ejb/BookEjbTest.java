@@ -71,7 +71,7 @@ public class BookEjbTest {
     public void testCreateAndFindBook() throws Throwable {
         try {
             final Isbn isbn = new Isbn("9783161484100");
-            Book book = new Book.Builder(isbn, "foo", author).build();
+            Book book = new Book.Builder().isbn(isbn).title("foo").author(author).build();
 
             book = bookEjb.create(book);
             Assert.assertNotNull(book.getId());
@@ -85,12 +85,12 @@ public class BookEjbTest {
     @Test
     public void testFuzzySearch() throws Throwable {
         try {
-            final Book book1 = new Book.Builder(new Isbn("1-84356-028-3"), 
-                    "foobarbaz", author).build();
-            final Book book2 = new Book.Builder(new Isbn("99921-58-10-7"), 
-                    "bazfoo", author).build();
-            final Book book3 = new Book.Builder(new Isbn("85-359-0277-5"), 
-                    "barbar", author).build();
+            final Book book1 = new Book.Builder().isbn(new Isbn("1-84356-028-3")).title("foobarbaz")
+                    .author(author).build();
+            final Book book2 = new Book.Builder().isbn(new Isbn("99921-58-10-7")).title("bazfoo")
+                    .author(author).build();
+            final Book book3 = new Book.Builder().isbn(new Isbn("85-359-0277-5")).title("barbar")
+                    .author(author).build();
 
             bookEjb.create(book1);
             bookEjb.create(book2);

@@ -26,7 +26,7 @@ public class Credentials implements Serializable {
     @NotEmpty
     private String lastName;
 
-    protected Credentials() { }
+    protected Credentials() {}
     public Credentials(final String name, final String lastName) {
         this.name = name;
         this.lastName = lastName;

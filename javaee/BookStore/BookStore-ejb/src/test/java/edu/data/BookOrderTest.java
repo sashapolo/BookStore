@@ -44,7 +44,7 @@ public class BookOrderTest {
     public void testValid() {
         final Isbn isbn = new Isbn("9783161484100");
         final Author author = new Author(new Credentials("Brian", "May"));
-        final Book book = new Book.Builder(isbn, "foo", author).price(99.9).build();
+        final Book book = new Book.Builder().isbn(isbn).title("foo").author(author).price(99.9).build();
         final List<BookOrderEntry> entries = new LinkedList<>();
         entries.add(new BookOrderEntry(book, 3));
         entries.add(new BookOrderEntry(book, 4));
@@ -59,7 +59,7 @@ public class BookOrderTest {
     public void testInvalid() {
         final Isbn isbn = new Isbn("9583161484100");
         final Author author = new Author(new Credentials("Brian", "May"));
-        final Book book = new Book.Builder(isbn, null, author).price(99.9).build();
+        final Book book = new Book.Builder().isbn(isbn).author(author).price(99.9).build();
         final List<BookOrderEntry> entries = new LinkedList<>();
         entries.add(new BookOrderEntry(book, 3));
         final BookOrder order = new BookOrder(entries);

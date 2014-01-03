@@ -46,3 +46,17 @@ body {
 .error-message {
     color: red;
 }
+
+.btn-col {
+    text-align: center;
+    width: 5%;
+}
+
+.book-col {
+    text-align: center;
+    width: 30%;
+}
+
+.table-header {
+    text-align: center;
+}

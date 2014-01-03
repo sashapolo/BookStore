@@ -4,28 +4,13 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:h="http://xmlns.jcp.org/jsf/html">
 
-    <ui:composition template="resources/layout.xhtml">
+    <ui:composition template="layouts/admin_layout.xhtml">
         <ui:define name="title">Home</ui:define>
         <ui:define name="titleContent">
             <h:outputStylesheet name="css/datepicker.css"/>
             <h:outputScript name="js/bootstrap-datepicker.js"/>  
         </ui:define>
         <ui:define name="content">
-
-            <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-                <div class="container">
-                    <div class="navbar-header">
-                        <a class="navbar-brand" href="#">Administrators page</a>
-                    </div>
-                    <div class="navbar-collapse collapse">
-                        <ul class="nav navbar-nav navbar-right">
-                            <li class="active"><h:link value="Home"/></li>
-                            <li><h:link value="Log out" outcome="#{authController.logout()}"/></li>
-                            <li><h:link value="About"/></li>
-                        </ul>
-                    </div>
-                </div>
-            </div>
 
             <div class="container" style="margin-top: 100px">
                 <div class="row">
@@ -40,14 +25,23 @@
                         <h2>Modify an existing book</h2>
                         <p>Here you can change book's parameters: title, author and even set a new 
                             price! The book can be deleted as well.</p>
-                        <h:button class="btn btn-primary" value="View details &raquo;"/>
+                        <h:button class="btn btn-primary" value="View details &raquo;" 
+                                  outcome="modify_book.xhtml"/>
                     </div>
+                </div>
+                <div class="row">
                     <div class="col-xs-6">
                         <h2>Register a new Administrator</h2>
                         <p>You probably do not want to be alone and moderate all this stuff by 
                             yourself. Help is on the way!</p>
                         <h:button class="btn btn-primary" value="View details &raquo;"/>
                     </div>
+                    <div class="col-xs-6">
+                        <h2>Modify an existing user</h2>
+                        <h:button class="btn btn-primary" value="View details &raquo;"/>
+                    </div>
+                </div>
+                <div class="row">
                     <div class="col-xs-6">
                         <h2>Create a new Author</h2>
                         <p>An unknown person has written another masterpiece? Get him in our shop now, 
@@ -57,11 +51,21 @@
                         </button>
                     </div>
                     <div class="col-xs-6">
+                        <h2>Modify an existing author</h2>
+                        <h:button class="btn btn-primary" value="View details &raquo;"/>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6">
                         <h2>Create a new Publisher</h2>
                         <p>Creates a new book publisher. Obviously.</p>
                         <button class="btn btn-primary" data-toggle="modal" data-target="#createPublisherModal">
                             View details &raquo;
                         </button>
+                    </div>
+                    <div class="col-xs-6">
+                        <h2>Modify an existing publisher</h2>
+                        <h:button class="btn btn-primary" value="View details &raquo;"/>
                     </div>
                 </div>
             </div>

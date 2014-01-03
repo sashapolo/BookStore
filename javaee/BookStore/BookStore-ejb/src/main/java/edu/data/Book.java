@@ -40,6 +40,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 })
 public class Book implements Serializable {
     private static final long serialVersionUID = 1L;
+    
     public static final String FIND_ALL = "Book.findAll";
     public static final String FIND_BY_TITLE = "Book.findByTitle";
     public static final String FIND_BY_ISBN = "Book.findByIsbn";
@@ -70,7 +71,8 @@ public class Book implements Serializable {
     @NotNull
     private String description;
 
-    protected Book() {}
+    protected Book() {
+    }
     
     private Book(Builder builder) {
         isbn = builder.isbn;
@@ -85,20 +87,29 @@ public class Book implements Serializable {
     }
     
     public static class Builder {
-        private final Isbn isbn;
-        private final String title;
-        private final Author author;
+        private Isbn isbn;
+        private String title;
+        private Author author;
         private String genre = "";
-        private Publisher publisher = null;
-        private Calendar publicationDate = null;
+        private Publisher publisher;
+        private Calendar publicationDate = Calendar.getInstance();
         private double price = 0;
         private Discount discount = new Discount();
         private String description = "";
         
-        public Builder(final Isbn isbn, final String title, final Author author) {
+        public Builder isbn(final Isbn isbn) {
             this.isbn = isbn;
+            return this;
+        }
+        
+        public Builder title(final String title) {
             this.title = title;
+            return this;
+        }
+        
+        public Builder author(final Author author) {
             this.author = author;
+            return this;
         }
         
         public Builder genre(final String genre) {
@@ -175,4 +186,46 @@ public class Book implements Serializable {
     public String getDescription() {
         return description;
     }
+
+    public void setId(final Long id) {
+        this.id = id;
+    }
+    
+    public void setIsbn(Isbn isbn) {
+        this.isbn = isbn;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setAuthor(Author author) {
+        this.author = author;
+    }
+
+    public void setGenre(String genre) {
+        this.genre = genre;
+    }
+
+    public void setPublisher(Publisher publisher) {
+        this.publisher = publisher;
+    }
+
+    public void setPublicationDate(Calendar publicationDate) {
+        this.publicationDate = (Calendar) publicationDate.clone();
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public void setDiscount(Discount discount) {
+        this.discount = discount;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+    
+    
 }

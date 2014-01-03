@@ -42,7 +42,7 @@ public class BookOrderEntryTest {
     public void testValid() {
         final Isbn isbn = new Isbn("9783161484100");
         final Author author = new Author(new Credentials("Brian", "May"));
-        final Book book = new Book.Builder(isbn, "foo", author).build();
+        final Book book = new Book.Builder().isbn(isbn).title("foo").author(author).build();
         final BookOrderEntry tester = new BookOrderEntry(book, 1);
         
         final Set<ConstraintViolation<BookOrderEntry>> violations = validator.validate(tester);
@@ -53,7 +53,7 @@ public class BookOrderEntryTest {
     public void testInvalidBook() {
         final Isbn isbn = new Isbn("9783141484100");
         final Author author = new Author(new Credentials("Brian", "May"));
-        final Book book = new Book.Builder(isbn, null, author).build();
+        final Book book = new Book.Builder().isbn(isbn).author(author).build();
         final BookOrderEntry tester = new BookOrderEntry(book, 1);
         
         final Set<ConstraintViolation<BookOrderEntry>> violations = validator.validate(tester);
@@ -64,7 +64,7 @@ public class BookOrderEntryTest {
     public void testInvalidAmount() {
         final Isbn isbn = new Isbn("9783161484100");
         final Author author = new Author(new Credentials("Brian", "May"));
-        final Book book = new Book.Builder(isbn, "foo", author).build();
+        final Book book = new Book.Builder().isbn(isbn).title("foo").author(author).build();
         final BookOrderEntry tester = new BookOrderEntry(book, -3);
         
         final Set<ConstraintViolation<BookOrderEntry>> violations = validator.validate(tester);
@@ -75,7 +75,7 @@ public class BookOrderEntryTest {
     public void testPrice() {
         final Isbn isbn = new Isbn("9783161484100");
         final Author author = new Author(new Credentials("Brian", "May"));
-        final Book book = new Book.Builder(isbn, "foo", author).price(99.9).build();
+        final Book book = new Book.Builder().isbn(isbn).title("foo").author(author).price(99.9).build();
         final BookOrderEntry tester = new BookOrderEntry(book, 3);
         assertEquals(99.9 * 3, tester.getPrice(), 1e-15);
     }

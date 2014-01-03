@@ -8,6 +8,7 @@
          aria-labelledby="createBookModalLabel" aria-hidden="true">
         <div class="modal-dialog">
             <div class="modal-content">
+                
                 <div class="modal-header">
                     <h:button class="close" p:data-dismiss="modal" p:aria-hidden="true"
                               value="&times;"/>
@@ -17,18 +18,22 @@
                 <div class="modal-body">
                     <h:form class="form-horizontal">
                         <div class="form-group">
-                            <h:outputLabel for="title" class="col-sm-2 control-label" value="Title"/>
+                            <h:outputLabel for="title" class="col-sm-2 control-label" 
+                                           value="Title"/>
                             <div class="col-sm-10">
-                                <h:inputText class="form-control" id="title" binding="#{title}" 
+                                <h:inputText class="form-control" id="title" value="#{bookController.book.title}" 
                                              p:placeholder="Title" required="true"/>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <h:outputLabel for="author" class="col-sm-2 control-label" value="Author"/>
+                            <h:outputLabel for="author" class="col-sm-2 control-label" 
+                                           value="Author"/>
                             <div class="col-sm-10">
-                                <h:selectOneMenu class="form-control" id="author" value="#{bookController.author}">
-                                    <f:selectItems value="#{authorController.authorList}" var="author" 
+                                <h:selectOneMenu class="form-control" id="author" 
+                                                 value="#{bookController.book.author}">
+                                    <f:selectItems value="#{authorController.authorList}" 
+                                                   var="author" 
                                                    itemLabel="#{author.name} #{author.lastName}"/>
                                     <f:converter converterId="edu.converters.AuthorConverter"/>
                                 </h:selectOneMenu>
@@ -38,7 +43,8 @@
                         <div class="form-group">
                             <h:outputLabel for="isbn" class="col-sm-2 control-label" value="ISBN"/>
                             <div class="col-sm-10">
-                                <h:inputText class="form-control" id="isbn" binding="#{isbn}" 
+                                <h:inputText class="form-control" id="isbn" 
+                                             value="#{bookController.book.isbn}" 
                                              p:placeholder="ISBN" required="true">
                                     <f:validator validatorId="edu.validators.IsbnValidator"/>
                                 </h:inputText>
@@ -46,24 +52,30 @@
                         </div>
 
                         <div class="form-group">
-                            <h:outputLabel for="genre" class="col-sm-2 control-label" value="Genre"/>
+                            <h:outputLabel for="genre" class="col-sm-2 control-label" 
+                                           value="Genre"/>
                             <div class="col-sm-10">
-                                <h:inputText class="form-control" id="genre" binding="#{genre}" 
+                                <h:inputText class="form-control" id="genre" 
+                                             value="#{bookController.book.genre}" 
                                              p:placeholder="Genre"/>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <h:outputLabel for="date" class="col-sm-2 control-label" value="Publication date"/>
+                            <h:outputLabel for="date" class="col-sm-2 control-label" 
+                                           value="Publication date"/>
                             <div class="col-sm-10">
-                                <h:inputText class="form-control datepicker" id="date" binding="#{date}"/>
+                                <h:inputText class="form-control datepicker" id="date" 
+                                             value="#{bookController.book.publicationDate}"/>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <h:outputLabel for="publisher" class="col-sm-2 control-label" value="Publisher"/>
+                            <h:outputLabel for="publisher" class="col-sm-2 control-label" 
+                                           value="Publisher"/>
                             <div class="col-sm-10">
-                                <h:selectOneMenu class="form-control" id="publisher" value="#{bookController.pub}">
+                                <h:selectOneMenu class="form-control" id="publisher" 
+                                                 value="#{bookController.book.publisher}">
                                     <f:selectItems value="#{publisherController.publisherList}" 
                                                    var="pub" itemLabel="#{pub.name}"/>
                                     <f:converter converterId="edu.converters.PublisherConverter"/>
@@ -72,30 +84,34 @@
                         </div>
 
                         <div class="form-group">
-                            <h:outputLabel for="price" class="col-sm-2 control-label" value="Price"/>
+                            <h:outputLabel for="price" class="col-sm-2 control-label" 
+                                           value="Price"/>
                             <div class="col-sm-10">
-                                <h:inputText class="form-control" id="price" binding="#{price}" 
+                                <h:inputText class="form-control" id="price" 
+                                             value="#{bookController.book.price}" 
                                              p:placeholder="0.0" required="true"/>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <h:outputLabel for="desc" class="col-sm-2 control-label" value="Description"/>
+                            <h:outputLabel for="desc" class="col-sm-2 control-label" 
+                                           value="Description"/>
                             <div class="col-sm-10">
-                                <h:inputTextarea class="form-control" id="desc" binding="#{desc}" 
+                                <h:inputTextarea class="form-control" id="desc" 
+                                                 value="#{bookController.book.description}" 
                                                  style="height: 200px"/>
                             </div>
                         </div>
 
                         <div class="modal-footer">
-                            <h:button class="btn btn-default" p:data-dismiss="modal" value="Cancel"/>
+                            <h:button class="btn btn-default" p:data-dismiss="modal" 
+                                      value="Cancel"/>
                             <h:commandButton class="btn btn-primary" value="Create"
-                                             action="#{bookController.createBook(title.value, 
-                                                       isbn.value, genre.value, date.value, 
-                                                       price.value, desc.value)}"/>
+                                             action="#{bookController.createBook()}"/>
                         </div>
                     </h:form>
                 </div>
+                
             </div>
         </div>
     </div>

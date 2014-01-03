@@ -36,6 +36,10 @@ public class BookEjb {
         return query.getResultList();
     }
     
+    public Book findById(@NotNull final Long id) {
+        return em.find(Book.class, id);
+    }
+    
     public List<Book> findByIsbn(@NotNull final Isbn isbn) {
         final TypedQuery<Book> query = 
                 em.createNamedQuery(Book.FIND_BY_ISBN, Book.class);
