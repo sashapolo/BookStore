@@ -3,8 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
     <ui:composition template="/layouts/layout.xhtml">
         <ui:define name="title">Home</ui:define>
         <ui:define name="navbar_header">
@@ -16,13 +15,13 @@
                 <h:form class="navbar-form">
                     <div class="col-sm-10">
                         <h:inputText p:placeholder="Type ISBN or title to search" 
-                                     class="form-control" binding="#{searchStr}"/>
+                                     class="form-control" value="#{searchBean.searchStr}"/>
                     </div>
-                    <h:button class="btn btn-success" value="search" outcome="search">
-                        <f:param name="search_str" value="#{searchStr.value}"/>
-                    </h:button>
+                    <h:commandButton class="btn btn-success" action="#{searchBean.search()}" 
+                                     value="search"/>
                 </h:form>
             </div>
+            
             <h:form>
                 <ul class="nav navbar-nav navbar-right">
                     <li class="#{active}">

@@ -6,8 +6,7 @@
       xmlns:f="http://java.sun.com/jsf/core">
     <ui:composition template="/layouts/user_layout.xhtml">
         <f:metadata>
-            <f:viewParam name="search_str" value="#{bookSearchController.searchStr}"/>
-            <f:viewAction action="#{bookSearchController.search()}"/>
+            <f:viewParam name="search" value="#{bookSearchController.searchStr}"/>
         </f:metadata>
 
         <ui:define name="content">
@@ -16,7 +15,7 @@
                 <h:dataTable id="booklist" styleClass="table table-striped"
                              headerClass="table-header"
                              columnClasses="three-col,three-col,three-col,three-col,btn-col"
-                             value="#{bookSearchController.bookList}" var="book">
+                             value="#{bookSearchController.search()}" var="book">
                     <h:column>
                         <f:facet name="header">
                             <h:outputText value="Title"/>
@@ -42,7 +41,7 @@
                         <f:facet name="header">
                             <h:outputText value="Price"/>
                         </f:facet>
-                        <h:outputText value="#{book.price}"/>
+                        <h:outputText value="#{book.price} $"/>
                     </h:column>
 
                     <h:column>

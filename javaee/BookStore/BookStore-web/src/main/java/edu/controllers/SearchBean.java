@@ -6,27 +6,16 @@
 
 package edu.controllers;
 
-import edu.data.Book;
-import edu.ejb.BookEjb;
-import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javax.ejb.EJB;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import javax.enterprise.inject.Model;
-import javax.inject.Inject;
 
 /**
  *
  * @author alexander
  */
 @Model
-public class BookSearchController {
-    @EJB
-    private BookEjb be;
-    
-    @Inject
-    private Logger logger;
-    
+public class SearchBean {
     private String searchStr;
 
     public String getSearchStr() {
@@ -37,8 +26,7 @@ public class BookSearchController {
         this.searchStr = searchStr;
     }
     
-    public List<Book> search() {
-        logger.log(Level.INFO, "searching for {0}", searchStr);
-        return be.fuzzyFind(searchStr == null ? "" : searchStr);
+    public String search() throws UnsupportedEncodingException {
+        return "search?faces-redirect=true&search=" + URLEncoder.encode(searchStr, "UTF-8");
     }
 }
