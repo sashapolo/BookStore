@@ -7,42 +7,42 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:composition template="/layouts/layout.xhtml">
         <ui:define name="title">Home</ui:define>
-        <ui:define name="main_content">
-
-            <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-                <div class="container">
-                    <div class="navbar-header">
-                        <h:link class="navbar-brand" value="Welcome, #{authController.user.name}!" 
-                                outcome="/user_pages/home"/>
+        <ui:define name="navbar_header">
+            <h:link class="navbar-brand" value="Welcome, #{authController.user.name}!" 
+                    outcome="/user_pages/home"/>
+        </ui:define>
+        <ui:define name="navbar_content">
+            <div class="col-sm-7">
+                <h:form class="navbar-form">
+                    <div class="col-sm-10">
+                        <h:inputText p:placeholder="Type ISBN or title to search" 
+                                     class="form-control" binding="#{searchStr}"/>
                     </div>
-                    <div class="navbar-collapse collapse">
-                        <div class="col-sm-8">
-                            <h:form class="navbar-form">
-                                <div class="col-sm-10">
-                                    <h:inputText p:placeholder="Type ISBN or title to search" 
-                                                 class="form-control" binding="#{searchStr}"/>
-                                </div>
-                                <h:button class="btn btn-success" value="search" outcome="search">
-                                    <f:param name="search_str" value="#{searchStr.value}"/>
-                                </h:button>
-                            </h:form>
-                        </div>
-                        <h:form>
-                            <ul class="nav navbar-nav navbar-right">
-                                <li class="active">
-                                    <h:link value="Home" outcome="/user_pages/home"/>
-                                </li>
-                                <li>
-                                    <h:commandLink value="Log out" action="#{authController.logout()}"/>
-                                </li>
-                                <li><h:link value="About"/></li>
-                            </ul>
-                        </h:form>
-                    </div>
-                </div>
+                    <h:button class="btn btn-success" value="search" outcome="search">
+                        <f:param name="search_str" value="#{searchStr.value}"/>
+                    </h:button>
+                </h:form>
             </div>
-
-            <ui:insert name="content"/>
+            <h:form>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="#{active}">
+                        <h:link value="Home" outcome="/user_pages/home"/>
+                    </li>
+                    <li class="dropdown">
+                        <h:link class="dropdown-toggle" p:data-toggle="dropdown">
+                            Options
+                            <b class="caret"/>
+                        </h:link>
+                        <ul class="dropdown-menu">
+                            <li><h:link value="Change account data"/></li>
+                        </ul>
+                    </li>
+                    <li>
+                        <h:commandLink value="Log out" action="#{authController.logout()}"/>
+                    </li>
+                    <li><h:link value="About"/></li>
+                </ul>
+            </h:form>
         </ui:define>
     </ui:composition>  
 </html>

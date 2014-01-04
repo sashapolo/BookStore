@@ -6,20 +6,39 @@
     <h:head>
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title><ui:insert name="title"/></title>
-        
+
         <h:outputStylesheet name="css/bootstrap.min.css"/>
         <h:outputStylesheet name="css/datepicker.css"/>
         <h:outputStylesheet name="css/layout.css"/>
-        
+
         <h:outputScript name="js/jquery-2.0.3.min.js" />
         <h:outputScript name="js/bootstrap.min.js" />
         <h:outputScript name="js/bootstrap-datepicker.js"/> 
-        
+
         <ui:insert name="titleContent"/>
     </h:head>
 
     <h:body>
-        <ui:insert name="main_content"/>
+        <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+            <div class="container">
+                <div class="navbar-header">
+                    <ui:insert name="navbar_header">
+                        <h:link class="navbar-brand" value="Welcome to the BookStore!"/>
+                    </ui:insert>
+                </div>
+                <div class="navbar-collapse collapse">
+                    <ui:insert name="navbar_content">
+                        <h:form>
+                            <ul class="nav navbar-nav navbar-right">
+                                <li><h:link value="About"/></li>
+                            </ul>
+                        </h:form>
+                    </ui:insert>
+                </div>
+            </div>
+        </div>
+        
+        <ui:insert name="content"/>
     </h:body>
 
 </html>

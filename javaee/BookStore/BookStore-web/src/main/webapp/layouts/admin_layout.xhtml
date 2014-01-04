@@ -5,29 +5,24 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <ui:composition template="layout.xhtml">
 
-        <ui:define name="main_content">
-            <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
-                <div class="container">
-                    <div class="navbar-header">
-                        <h:link class="navbar-brand" value="Administrators page!" 
-                                outcome="/admin_pages/admin_home"/>
-                    </div>
-                    <div class="navbar-collapse collapse">
-                        <h:form>
-                            <ul class="nav navbar-nav navbar-right">
-                                <li class="active">
-                                    <h:link value="Home" outcome="/admin_pages/admin_home"/>
-                                </li>
-                                <li>
-                                    <h:commandLink value="Log out" action="#{authController.logout()}"/>
-                                </li>
-                                <li><h:link value="About"/></li>
-                            </ul>
-                        </h:form>
-                    </div>
-                </div>
+        <ui:define name="navbar_header">
+            <h:link class="navbar-brand" value="Administrators page" 
+                    outcome="/admin_pages/admin_home"/>
+        </ui:define>
+        <ui:define name="navbar_content">
+            <div class="navbar-collapse collapse">
+                <h:form>
+                    <ul class="nav navbar-nav navbar-right">
+                        <li class="active">
+                            <h:link value="Home" outcome="/admin_pages/admin_home"/>
+                        </li>
+                        <li>
+                            <h:commandLink value="Log out" action="#{authController.logout()}"/>
+                        </li>
+                        <li><h:link value="About"/></li>
+                    </ul>
+                </h:form>
             </div>
-            <ui:insert name="content"/>
         </ui:define>
 
     </ui:composition>
