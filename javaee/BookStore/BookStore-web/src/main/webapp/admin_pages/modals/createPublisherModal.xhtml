@@ -2,7 +2,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <ui:composition template="/layouts/modal_layout.xhtml">
 
@@ -15,14 +14,15 @@
                 <div class="form-group">
                     <h:outputLabel for="pubName" class="col-sm-2 control-label" value="Name"/>
                     <div class="col-sm-10">
-                        <h:inputText class="form-control" id="pubName" required="true" binding="#{pubName}"/>
+                        <h:inputText class="form-control" id="pubName" required="true" 
+                                     binding="#{pubName}"/>
                     </div>
                 </div>
             </h:form>
         </ui:define>
         <ui:define name="modal_footer">
             <h:form class="form-horizontal">
-                <h:button class="btn btn-default" p:data-dismiss="modal" value="Cancel"/>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 <h:commandButton class="btn btn-primary" value="Create" 
                                  action="#{publisherController.createPublisher(pubName.value)}"/>
             </h:form>

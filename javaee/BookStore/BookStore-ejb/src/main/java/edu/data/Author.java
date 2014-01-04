@@ -37,9 +37,9 @@ public class Author implements Serializable {
     private Long id;
     @Embedded @Column(unique = true)
     @NotNull @Valid
-    private Credentials credentials;
+    private Credentials credentials = new Credentials();
 
-    protected Author() {}
+    public Author() {}
     
     public Author(final Credentials credentials) {
         this.credentials = credentials;
@@ -61,6 +61,22 @@ public class Author implements Serializable {
         return credentials.getLastName();
     }
 
+    public void setId(Long id) {
+        this.id = id;
+    }
+    
+    public void setName(final String name) {
+        credentials = credentials.setName(name);
+    }
+    
+    public void setLastName(final String name) {
+        credentials = credentials.setLastName(name);
+    }
+    
+    public void setSecondName(final String name) {
+        credentials = credentials.setSecondName(name);
+    }
+    
     @Override
     public int hashCode() {
         int hash = 3;

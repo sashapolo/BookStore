@@ -9,7 +9,6 @@ package edu.ejb;
 import edu.data.Author;
 import edu.data.Author_;
 import edu.data.Credentials_;
-import java.util.Collections;
 import java.util.List;
 import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
@@ -33,23 +32,27 @@ public class AuthorEjb extends DataEjb<Author> {
         return query.getResultList();
     }
     
-    public List<Author> findByCredentials(@NotNull final String name, 
-            @NotNull final String lastName) {
+    public List<Author> findByCredentials(@NotNull String name, @NotNull String lastName) {
         final CriteriaBuilder cb = em.getCriteriaBuilder();
-        final CriteriaQuery<Author> query = cb.createQuery(Author.class);
+        CriteriaQuery<Author> query = cb.createQuery(Author.class);
         final Root<Author> root = query.from(Author.class);
         
-        final Expression<String> n = root.get(Author_.credentials).get(Credentials_.name);
-        final Expression<String> l = root.get(Author_.credentials).get(Credentials_.lastName);
+        name = "%" + name.toUpperCase() + "%";
+        lastName = "%" + lastName.toUpperCase() + "%";
         
-        if (!name.isEmpty() && !lastName.isEmpty()) {
-            query.select(root).where(cb.and(cb.like(n, name), cb.like(l, lastName)));
-        } else if (name.isEmpty()) {
-            query.select(root).where(cb.like(l, lastName));
-        } else if (lastName.isEmpty()) {
-            query.select(root).where(cb.like(n, name));
+        Expression<String> n = root.get(Author_.credentials).get(Credentials_.name);
+        Expression<String> l = root.get(Author_.credentials).get(Credentials_.lastName);
+        
+        n = cb.upper(n);
+        l = cb.upper(l);
+        query = query.select(root);
+        
+        if (name.isEmpty() && !lastName.isEmpty()) {
+            query.where(cb.like(l, lastName));
+        } else if (lastName.isEmpty() && !name.isEmpty()) {
+            query.where(cb.like(n, name));
         } else {
-            return Collections.emptyList();
+            query.where(cb.and(cb.like(n, name), cb.like(l, lastName)));
         }
         
         return em.createQuery(query).getResultList();

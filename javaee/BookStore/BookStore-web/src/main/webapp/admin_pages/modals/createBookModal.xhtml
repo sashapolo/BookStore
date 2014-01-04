@@ -104,8 +104,7 @@
         
         <ui:define name="modal_footer">
             <h:form class="form-horizontal">
-                <h:button class="btn btn-default" p:data-dismiss="modal" 
-                          value="Cancel"/>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 <h:commandButton class="btn btn-primary" value="Create"
                                  action="#{bookController.createBook()}"/>
             </h:form>

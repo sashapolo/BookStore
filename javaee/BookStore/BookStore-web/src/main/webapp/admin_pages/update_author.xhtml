@@ -1,0 +1,60 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <ui:composition template="/layouts/admin_layout.xhtml">
+        <f:metadata>
+            <f:viewParam name="authorId" value="#{authorController.author.id}"/>
+            <f:viewAction action="#{authorController.findById}"/>
+        </f:metadata>
+
+        <ui:define name="title">Home</ui:define>
+        <ui:define name="content">
+
+            <div class="container" style="margin-top: 50px">
+                <h:form class="form-horizontal">
+
+                    <div class="form-group">
+                        <h:outputLabel for="name" class="col-sm-2 control-label" value="Name"/>
+                        <div class="col-sm-8">
+                            <h:inputText class="form-control" id="name" 
+                                         value="#{authorController.author.name}" 
+                                         required="true"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <h:outputLabel for="second" class="col-sm-2 control-label" value="Second name"/>
+                        <div class="col-sm-8">
+                            <h:inputText class="form-control" id="second" 
+                                         value="#{authorController.author.secondName}"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <h:outputLabel for="last" class="col-sm-2 control-label" value="Last name"/>
+                        <div class="col-sm-8">
+                            <h:inputText class="form-control" id="last" 
+                                         value="#{authorController.author.lastName}" 
+                                         required="true"/>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <div class="col-sm-2 col-sm-offset-8">
+                            <h:button class="btn btn-default" value="Cancel" 
+                                      style="margin-right: 10px"
+                                      outcome="/admin_pages/modify_author"/>
+                            <h:commandButton class="btn btn-primary" value="Update"
+                                             action="#{authorController.updateAuthor()}"/>
+                        </div>
+                    </div>
+                </h:form>
+            </div>
+
+        </ui:define>
+    </ui:composition>
+</html>
+
