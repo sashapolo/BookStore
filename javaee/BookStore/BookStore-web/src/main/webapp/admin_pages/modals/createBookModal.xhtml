@@ -3,124 +3,123 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
-    <div class="modal fade" id="createBookModal" tabindex="-1" role="dialog"
-         aria-labelledby="createBookModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                
-                <div class="modal-header">
-                    <h:button class="close" p:data-dismiss="modal" p:aria-hidden="true"
-                              value="&times;"/>
-                    <h4 class="modal-title" id="createBookModalLabel">Create new book</h4>
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <ui:composition template="/layouts/modal_layout.xhtml">
+        <ui:param name="modalId" value="createBookModal"/>
+        <ui:param name="modalLabelId" value="createBookModalLabel"/>
+
+        <ui:define name="modal_header">Create a new book</ui:define>
+        
+        <ui:define name="modal_body">
+            <h:form class="form-horizontal">
+                <div class="form-group">
+                    <h:outputLabel for="title" class="col-sm-2 control-label" 
+                                   value="Title"/>
+                    <div class="col-sm-10">
+                        <h:inputText class="form-control" id="title" 
+                                     value="#{bookController.book.title}" 
+                                     p:placeholder="Title" required="true"/>
+                    </div>
                 </div>
 
-                <div class="modal-body">
-                    <h:form class="form-horizontal">
-                        <div class="form-group">
-                            <h:outputLabel for="title" class="col-sm-2 control-label" 
-                                           value="Title"/>
-                            <div class="col-sm-10">
-                                <h:inputText class="form-control" id="title" value="#{bookController.book.title}" 
-                                             p:placeholder="Title" required="true"/>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <h:outputLabel for="author" class="col-sm-2 control-label" 
-                                           value="Author"/>
-                            <div class="col-sm-10">
-                                <h:selectOneMenu class="form-control" id="author" 
-                                                 value="#{bookController.book.author}">
-                                    <f:selectItems value="#{authorController.authorList}" 
-                                                   var="author" 
-                                                   itemLabel="#{author.name} #{author.lastName}"/>
-                                    <f:converter converterId="edu.converters.AuthorConverter"/>
-                                </h:selectOneMenu>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <h:outputLabel for="isbn" class="col-sm-2 control-label" value="ISBN"/>
-                            <div class="col-sm-10">
-                                <h:inputText class="form-control" id="isbn" 
-                                             value="#{bookController.book.isbn}" 
-                                             p:placeholder="ISBN" required="true">
-                                    <f:validator validatorId="edu.validators.IsbnValidator"/>
-                                </h:inputText>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <h:outputLabel for="genre" class="col-sm-2 control-label" 
-                                           value="Genre"/>
-                            <div class="col-sm-10">
-                                <h:inputText class="form-control" id="genre" 
-                                             value="#{bookController.book.genre}" 
-                                             p:placeholder="Genre"/>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <h:outputLabel for="date" class="col-sm-2 control-label" 
-                                           value="Publication date"/>
-                            <div class="col-sm-10">
-                                <h:inputText class="form-control datepicker" id="date" 
-                                             value="#{bookController.book.publicationDate}"/>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <h:outputLabel for="publisher" class="col-sm-2 control-label" 
-                                           value="Publisher"/>
-                            <div class="col-sm-10">
-                                <h:selectOneMenu class="form-control" id="publisher" 
-                                                 value="#{bookController.book.publisher}">
-                                    <f:selectItems value="#{publisherController.publisherList}" 
-                                                   var="pub" itemLabel="#{pub.name}"/>
-                                    <f:converter converterId="edu.converters.PublisherConverter"/>
-                                </h:selectOneMenu>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <h:outputLabel for="price" class="col-sm-2 control-label" 
-                                           value="Price"/>
-                            <div class="col-sm-10">
-                                <h:inputText class="form-control" id="price" 
-                                             value="#{bookController.book.price}" 
-                                             p:placeholder="0.0" required="true"/>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <h:outputLabel for="desc" class="col-sm-2 control-label" 
-                                           value="Description"/>
-                            <div class="col-sm-10">
-                                <h:inputTextarea class="form-control" id="desc" 
-                                                 value="#{bookController.book.description}" 
-                                                 style="height: 200px"/>
-                            </div>
-                        </div>
-
-                        <div class="modal-footer">
-                            <h:button class="btn btn-default" p:data-dismiss="modal" 
-                                      value="Cancel"/>
-                            <h:commandButton class="btn btn-primary" value="Create"
-                                             action="#{bookController.createBook()}"/>
-                        </div>
-                    </h:form>
+                <div class="form-group">
+                    <h:outputLabel for="author" class="col-sm-2 control-label" 
+                                   value="Author"/>
+                    <div class="col-sm-10">
+                        <h:selectOneMenu class="form-control" id="author" 
+                                         value="#{bookController.book.author}">
+                            <f:selectItems value="#{authorController.authorList}" 
+                                           var="author" 
+                                           itemLabel="#{author.name} #{author.lastName}"/>
+                            <f:converter converterId="edu.converters.AuthorConverter"/>
+                        </h:selectOneMenu>
+                    </div>
                 </div>
-                
-            </div>
-        </div>
-    </div>
 
-    <style>
-        .datepicker{z-index:1151;}
-    </style>     
-    <script>
-        $('.datepicker').datepicker();
-    </script>
+                <div class="form-group">
+                    <h:outputLabel for="isbn" class="col-sm-2 control-label" value="ISBN"/>
+                    <div class="col-sm-10">
+                        <h:inputText class="form-control" id="isbn" 
+                                     value="#{bookController.book.isbn}" 
+                                     p:placeholder="ISBN" required="true">
+                            <f:validator validatorId="edu.validators.IsbnValidator"/>
+                        </h:inputText>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <h:outputLabel for="genre" class="col-sm-2 control-label" 
+                                   value="Genre"/>
+                    <div class="col-sm-10">
+                        <h:inputText class="form-control" id="genre" 
+                                     value="#{bookController.book.genre}" 
+                                     p:placeholder="Genre"/>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <h:outputLabel for="date" class="col-sm-2 control-label" 
+                                   value="Publication date"/>
+                    <div class="col-sm-10">
+                        <h:inputText class="form-control datepicker" id="date" 
+                                     value="#{bookController.book.publicationDate}"/>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <h:outputLabel for="publisher" class="col-sm-2 control-label" 
+                                   value="Publisher"/>
+                    <div class="col-sm-10">
+                        <h:selectOneMenu class="form-control" id="publisher" 
+                                         value="#{bookController.book.publisher}">
+                            <f:selectItems value="#{publisherController.publisherList}" 
+                                           var="pub" itemLabel="#{pub.name}"/>
+                            <f:converter converterId="edu.converters.PublisherConverter"/>
+                        </h:selectOneMenu>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <h:outputLabel for="price" class="col-sm-2 control-label" 
+                                   value="Price"/>
+                    <div class="col-sm-10">
+                        <h:inputText class="form-control" id="price" 
+                                     value="#{bookController.book.price}" 
+                                     p:placeholder="0.0" required="true"/>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <h:outputLabel for="desc" class="col-sm-2 control-label" 
+                                   value="Description"/>
+                    <div class="col-sm-10">
+                        <h:inputTextarea class="form-control" id="desc" 
+                                         value="#{bookController.book.description}" 
+                                         style="height: 200px"/>
+                    </div>
+                </div>
+            </h:form>
+        </ui:define>
+        
+        <ui:define name="modal_footer">
+            <h:form class="form-horizontal">
+                <h:button class="btn btn-default" p:data-dismiss="modal" 
+                          value="Cancel"/>
+                <h:commandButton class="btn btn-primary" value="Create"
+                                 action="#{bookController.createBook()}"/>
+            </h:form>
+        </ui:define>
+        
+        <ui:define name="additional">
+            <style>
+                .datepicker{z-index:1151;}
+            </style>     
+            <script>
+                $('.datepicker').datepicker();
+            </script>
+        </ui:define>
+        
+    </ui:composition>
 </html>
 

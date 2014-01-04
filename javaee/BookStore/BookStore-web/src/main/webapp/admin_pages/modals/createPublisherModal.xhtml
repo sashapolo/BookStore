@@ -2,34 +2,32 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:p="http://xmlns.jcp.org/jsf/passthrough">
-    <div class="modal fade" id="createPublisherModal" tabindex="-1" role="dialog"
-         aria-labelledby="createPublisherModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h:button class="close" p:data-dismiss="modal" p:aria-hidden="true" value="&times;"/>
-                    <h4 class="modal-title" id="createPublisherModalLabel">Create new publisher</h4>
+      xmlns:p="http://xmlns.jcp.org/jsf/passthrough"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <ui:composition template="/layouts/modal_layout.xhtml">
+
+        <ui:param name="modalId" value="createPublisherModal"/>
+        <ui:param name="modalLabelId" value="createPublisherModalLabel"/>
+
+        <ui:define name="modal_header">Create a new publisher</ui:define>
+        <ui:define name="modal_body">
+            <h:form class="form-horizontal">
+                <div class="form-group">
+                    <h:outputLabel for="pubName" class="col-sm-2 control-label" value="Name"/>
+                    <div class="col-sm-10">
+                        <h:inputText class="form-control" id="pubName" required="true" binding="#{pubName}"/>
+                    </div>
                 </div>
+            </h:form>
+        </ui:define>
+        <ui:define name="modal_footer">
+            <h:form class="form-horizontal">
+                <h:button class="btn btn-default" p:data-dismiss="modal" value="Cancel"/>
+                <h:commandButton class="btn btn-primary" value="Create" 
+                                 action="#{publisherController.createPublisher(pubName.value)}"/>
+            </h:form>
+        </ui:define>
 
-                <h:form class="form-horizontal">
-                    <div class="modal-body">
-                        <div class="form-group">
-                            <h:outputLabel for="pubName" class="col-sm-2 control-label" value="Name"/>
-                            <div class="col-sm-10">
-                                <h:inputText class="form-control" id="pubName" required="true" binding="#{pubName}"/>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="modal-footer">
-                        <h:button class="btn btn-default" p:data-dismiss="modal" value="Cancel"/>
-                        <h:commandButton class="btn btn-primary" value="Create" 
-                                         action="#{publisherController.createPublisher(pubName.value)}"/>
-                    </div>
-                </h:form>
-            </div>
-        </div>
-    </div>
+    </ui:composition>
 </html>
 
