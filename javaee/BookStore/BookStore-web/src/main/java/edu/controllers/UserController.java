@@ -65,6 +65,7 @@ public class UserController {
     
     public String updateUser() {
         user = ue.update(user);
-        return "/admin_pages/modify_user?faces-redirect=true";
+        return auth.getUser().isAdmin() ? "/admin_pages/modify_user?faces-redirect=true" 
+                : "/user_pages/home?faces-redirect=true";
     }
 }
