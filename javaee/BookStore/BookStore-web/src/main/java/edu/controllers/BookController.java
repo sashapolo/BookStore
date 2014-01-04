@@ -33,6 +33,10 @@ public class BookController {
         return book;
     }
     
+    public void setBook(final Book book) {
+        this.book = book;
+    }
+    
     public void createBook() {
         be.create(book);
     }

@@ -9,19 +9,26 @@
             <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
                 <div class="container">
                     <div class="navbar-header">
-                        <a class="navbar-brand" href="admin_home.xhtml">Administrators page</a>
+                        <h:link class="navbar-brand" value="Administrators page!" 
+                                outcome="/admin_pages/admin_home"/>
                     </div>
                     <div class="navbar-collapse collapse">
-                        <ul class="nav navbar-nav navbar-right">
-                            <li class="active"><h:link value="Home" outcome="admin_home.xhtml"/></li>
-                            <li><h:link value="Log out" outcome="#{authController.logout()}"/></li>
-                            <li><h:link value="About"/></li>
-                        </ul>
+                        <h:form>
+                            <ul class="nav navbar-nav navbar-right">
+                                <li class="active">
+                                    <h:link value="Home" outcome="/admin_pages/admin_home"/>
+                                </li>
+                                <li>
+                                    <h:commandLink value="Log out" action="#{authController.logout()}"/>
+                                </li>
+                                <li><h:link value="About"/></li>
+                            </ul>
+                        </h:form>
                     </div>
                 </div>
             </div>
             <ui:insert name="content"/>
         </ui:define>
-        
+
     </ui:composition>
 </html>

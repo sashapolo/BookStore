@@ -9,9 +9,11 @@ import edu.data.User;
 import edu.ejb.UserEjb;
 import edu.util.MessageManager;
 import java.io.Serializable;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.faces.context.FacesContext;
+import javax.inject.Inject;
 import javax.inject.Named;
 
 /**
@@ -25,6 +27,9 @@ public class AuthController implements Serializable {
 
     @EJB
     private transient UserEjb ue;
+    
+    @Inject
+    private transient Logger logger;
 
     private User user;
 
@@ -44,10 +49,11 @@ public class AuthController implements Serializable {
             MessageManager.createContextError("login_form:password", "Invalid password");
             return "";
         }
-        return user.isAdmin() ? "/admin_pages/admin_home?faces-redirect=true" : "/user_pages/home"; 
+        return user.isAdmin() ? "/admin_pages/admin_home?faces-redirect=true" : "/user_pages/home?faces-redirect=true"; 
     }
     
     public String logout() {
+        logger.info("logging out");
         FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
         user = null;
         return "/signin";
