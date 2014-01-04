@@ -27,14 +27,9 @@ public class UserController {
     private AuthController auth;
     
     private User user = new User.Builder().build();
-    private boolean loginExists = false;    
     
     public User getUser() {
         return user;
-    }
-    
-    public boolean isLoginExists() {
-        return loginExists;
     }
     
     public List<User> findAllUsers() {
@@ -49,15 +44,19 @@ public class UserController {
         user = ue.findById(user.getId());
     }
     
+    public void createAdmin() {
+        user.setAdmin(true);
+        user = ue.create(user);
+    }
+    
     public String registerUser() {
         if (ue.findByLogin(user.getLogin()) != null) {
-            MessageManager.createContextError("Already existing login");
-            loginExists = true;
+            MessageManager.createContextError("register_form:login", "Already existing login");
             return "";
         }
         user = ue.create(user);
         auth.setUser(user);
-        return "signin.xhtml?faces-redirect=true";
+        return "/signin?faces-redirect=true";
     }
     
     public void deleteUser(final User user) {
@@ -66,6 +65,6 @@ public class UserController {
     
     public String updateUser() {
         user = ue.update(user);
-        return "modify_user.xhtml?faces-redirect=true";
+        return "/admin_pages/modify_user?faces-redirect=true";
     }
 }

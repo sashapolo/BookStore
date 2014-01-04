@@ -59,6 +59,6 @@ public class PublisherController {
     
     public String updatePublisher() {
         pe.update(pub);
-        return "modify_publisher.xhtml?faces-redirect=true";
+        return "/admin_pages/modify_publisher?faces-redirect=true";
     }
 }

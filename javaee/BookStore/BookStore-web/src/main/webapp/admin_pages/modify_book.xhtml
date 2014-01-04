@@ -5,7 +5,7 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 
-    <ui:composition template="layouts/update_layout.xhtml">
+    <ui:composition template="/layouts/update_layout.xhtml">
         <ui:define name="title">Home</ui:define>
         <ui:define name="ajax_search">
             <f:ajax execute="@form" render=":booklist"/>
@@ -41,7 +41,7 @@
                     <h:column>
                         <h:form>
                             <h:button class="btn btn-primary" value="update" 
-                                      outcome="update_book.xhtml">
+                                      outcome="/admin_pages/update_book">
                                 <f:param name="bookId" value="#{book.id}"/>
                             </h:button>
                         </h:form>

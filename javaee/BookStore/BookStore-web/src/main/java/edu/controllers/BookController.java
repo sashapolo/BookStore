@@ -47,7 +47,7 @@ public class BookController {
     
     public String updateBook() {
         book = be.update(book);
-        return "modify_book.xhtml?faces-redirect=true";
+        return "/admin_pages/modify_book?faces-redirect=true";
     }
     
     public void findById() {

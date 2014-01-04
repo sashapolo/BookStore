@@ -44,12 +44,12 @@ public class AuthController implements Serializable {
             MessageManager.createContextError("login_form:password", "Invalid password");
             return "";
         }
-        return user.isAdmin() ? "admin_home?faces-redirect=true" : "home"; 
+        return user.isAdmin() ? "/admin_pages/admin_home?faces-redirect=true" : "/user_pages/home"; 
     }
     
     public String logout() {
         FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
         user = null;
-        return "signin";
+        return "/signin";
     }
 }

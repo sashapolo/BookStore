@@ -5,7 +5,7 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://java.sun.com/jsf/core">
 
-    <ui:composition template="layouts/admin_layout.xhtml">
+    <ui:composition template="/layouts/admin_layout.xhtml">
         <f:metadata>
             <f:viewParam name="bookId" value="#{bookController.book.id}"/>
             <f:viewAction action="#{bookController.findById}"/>
@@ -14,7 +14,7 @@
         <ui:define name="title">Home</ui:define>
         <ui:define name="content">
 
-            <div class="container col-xs-6 col-xs-offset-3" style="margin-top: 50px">
+            <div class="container" style="margin-top: 50px">
                 <h:form class="form-horizontal">
                     <div class="form-group">
                         <h:outputLabel for="title" class="col-sm-2 control-label" value="Title"/>
@@ -97,13 +97,11 @@
                         </div>
                     </div>
 
-                    <div class="row">
-                        <div class="col-xs-1 col-xs-offset-10">
+                    <div class="form-group">
+                        <div class="col-sm-2 col-sm-offset-8">
                             <h:button class="btn btn-default" value="Cancel" 
                                       style="margin-right: 10px"
-                                      outcome="modify_book.xhtml"/>
-                        </div>
-                        <div class="col-xs-1">
+                                      outcome="/admin_pages/modify_book"/>
                             <h:commandButton class="btn btn-primary" value="Update"
                                              action="#{bookController.updateBook()}"/>
                         </div>

@@ -173,6 +173,10 @@ public class User implements Serializable {
         this.password = password;
     }
 
+    public void setAdmin(boolean isadmin) {
+        this.isadmin = isadmin;
+    }
+    
     public void setEmail(String email) {
         this.email = email;
     }
