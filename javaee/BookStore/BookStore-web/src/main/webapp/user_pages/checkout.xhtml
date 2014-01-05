@@ -3,65 +3,57 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:f="http://java.sun.com/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
     <ui:composition template="/layouts/user_layout.xhtml">
-        <f:metadata>
-            <f:viewParam name="search" value="#{bookSearchController.searchStr}"/>
-        </f:metadata>
+        <ui:param name="active" value="active"/>
 
         <ui:define name="content">
             <div class="container" style="margin-top: 50px">
                 <div class="col-md-8 col-md-offset-2">
-                    <h:button value="Check out!" class="btn btn-success btn-lg btn-block"
-                              style="margin-bottom: 10px" outcome="/user_pages/checkout"/>
                     <div class="well">
-                        <h2>Search results:</h2>
+                        <h2>Cart:</h2>
                         <h:dataTable id="booklist" styleClass="table table-striped"
                                      headerClass="table-header"
                                      columnClasses="three-col,three-col,three-col,three-col,btn-col"
-                                     value="#{bookSearchController.search()}" var="book">
+                                     value="#{cartController.cart}" var="bookEntry">
                             <h:column>
                                 <f:facet name="header">
                                     <h:outputText value="Title"/>
                                 </f:facet>
-                                <h:outputText value="#{book.title}"/>
+                                <h:outputText value="#{bookEntry.book.title}"/>
                             </h:column>
 
                             <h:column>
                                 <f:facet name="header">
                                     <h:outputText value="Author"/>
                                 </f:facet>
-                                <h:outputText value="#{book.author.name} #{book.author.lastName}"/>
+                                <h:outputText value="#{bookEntry.book.author.name} #{bookEntry.book.author.lastName}"/>
                             </h:column>
 
                             <h:column>
                                 <f:facet name="header">
                                     <h:outputText value="ISBN"/>
                                 </f:facet>
-                                <h:outputText value="#{book.isbn}"/>
+                                <h:outputText value="#{bookEntry.book.isbn}"/>
                             </h:column>
 
                             <h:column>
                                 <f:facet name="header">
                                     <h:outputText value="Price"/>
                                 </f:facet>
-                                <h:outputText value="#{book.price} $"/>
+                                <h:outputText value="#{bookEntry.book.price} $"/>
                             </h:column>
 
                             <h:column>
-                                <button class="btn btn-primary" data-toggle="modal" 
-                                        data-target="#viewBookModal" 
-                                        onclick="#{bookController.setBook(book)}">
-                                    View &raquo;
-                                </button>
+                                <h:form>
+                                    <h:button class="btn btn-danger" value="delete"/>
+                                </h:form>
                             </h:column>
 
                         </h:dataTable>
                     </div>
                 </div>
             </div>
-
-            <ui:include src="/user_pages/modals/viewBookModal.xhtml"/>
         </ui:define>
     </ui:composition>  
 </html>
