@@ -49,7 +49,8 @@ public class AuthController implements Serializable {
             MessageManager.createContextError("login_form:password", "Invalid password");
             return "";
         }
-        return user.isAdmin() ? "/admin_pages/admin_home?faces-redirect=true" : "/user_pages/home?faces-redirect=true"; 
+        return user.isAdmin() ? "/admin_pages/admin_home?faces-redirect=true" 
+                : "/user_pages/home?faces-redirect=true"; 
     }
     
     public String logout() {

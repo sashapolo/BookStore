@@ -80,6 +80,9 @@ public class Publisher implements Serializable {
         }
         return true;
     }
-    
-    
+
+    @Override
+    public String toString() {
+        return "Publisher{" + "name=" + name + '}';
+    }
 }

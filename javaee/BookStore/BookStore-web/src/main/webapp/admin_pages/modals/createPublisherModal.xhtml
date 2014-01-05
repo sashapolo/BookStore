@@ -10,22 +10,18 @@
 
         <ui:define name="modal_header">Create a new publisher</ui:define>
         <ui:define name="modal_body">
-            <h:form class="form-horizontal">
-                <div class="form-group">
-                    <h:outputLabel for="pubName" class="col-sm-2 control-label" value="Name"/>
-                    <div class="col-sm-10">
-                        <h:inputText class="form-control" id="pubName" required="true" 
-                                     binding="#{pubName}"/>
-                    </div>
+            <div class="form-group">
+                <h:outputLabel for="pubName" class="col-sm-2 control-label" value="Name"/>
+                <div class="col-sm-10">
+                    <h:inputText class="form-control" id="pubName" required="true" 
+                                 binding="#{pubName}"/>
                 </div>
-            </h:form>
+            </div>
         </ui:define>
         <ui:define name="modal_footer">
-            <h:form class="form-horizontal">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                <h:commandButton class="btn btn-primary" value="Create" 
-                                 action="#{publisherController.createPublisher(pubName.value)}"/>
-            </h:form>
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <h:commandButton class="btn btn-primary" value="Create" 
+                             action="#{publisherController.createPublisher(pubName.value)}"/>
         </ui:define>
 
     </ui:composition>

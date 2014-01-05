@@ -98,6 +98,11 @@ public class Author implements Serializable {
         }
         return true;
     }
+
+    @Override
+    public String toString() {
+        return "Author{" + credentials.getName() + credentials.getLastName() + '}';
+    }
     
     
 }
