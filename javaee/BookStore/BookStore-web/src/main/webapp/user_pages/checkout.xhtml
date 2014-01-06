@@ -12,7 +12,7 @@
                 <div class="col-md-8 col-md-offset-2">
                     <div class="well">
                         <h2>Cart:</h2>
-                        <h:dataTable id="booklist" styleClass="table table-striped"
+                        <h:dataTable id="entrylist" styleClass="table table-striped"
                                      headerClass="table-header"
                                      columnClasses="three-col,three-col,three-col,three-col,btn-col"
                                      value="#{cartController.cart}" var="bookEntry">
@@ -46,7 +46,8 @@
 
                             <h:column>
                                 <h:form>
-                                    <h:button class="btn btn-danger" value="delete"/>
+                                    <h:commandButton class="btn btn-danger" value="delete"
+                                                     action="#{cartController.deleteEntry(bookEntry)}"/>
                                 </h:form>
                             </h:column>
 

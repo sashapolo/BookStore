@@ -1,18 +1,72 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
     <ui:composition template="/layouts/user_layout.xhtml">
-        <ui:param name="active" value="active"/>
+        <f:metadata>
+            <f:viewParam name="search" value="#{userSearchBookController.searchStr}"/>
+        </f:metadata>
 
         <ui:define name="content">
-            <div class="container">
+            <div class="container" style="margin-top: 50px">
                 <div class="col-md-8 col-md-offset-2">
-                    <h:button value="Check out!" class="btn btn-success btn-lg btn-block" 
-                              style="margin-top: 50px" outcome="/user_pages/checkout"/>
+                    <h:button value="Check out!" class="btn btn-success btn-lg btn-block"
+                              style="margin-bottom: 10px" outcome="/user_pages/checkout"/>
+                    <h:messages styleClass="alert alert-danger"/>
+                    <div class="well">
+                        <h2>Search results:</h2>
+                        <h:dataTable id="booklist" styleClass="table table-striped"
+                                     headerClass="table-header"
+                                     columnClasses="three-col,three-col,three-col,three-col,btn-col"
+                                     value="#{userSearchBookController.bookList}" var="book">
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Title"/>
+                                </f:facet>
+                                <h:outputText value="#{book.title}"/>
+                            </h:column>
+
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Author"/>
+                                </f:facet>
+                                <h:outputText value="#{book.author.name} #{book.author.lastName}"/>
+                            </h:column>
+
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputText value="ISBN"/>
+                                </f:facet>
+                                <h:outputText value="#{book.isbn}"/>
+                            </h:column>
+
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Price"/>
+                                </f:facet>
+                                <h:outputText value="#{book.price} $"/>
+                            </h:column>
+
+                            <h:column>
+                                <h:form>
+                                    <p:commandButton styleClass="btn btn-primary" 
+                                                     oncomplete="$('#viewBookModal').modal('show');
+                                                                 return false;"
+                                                     update=":viewBookForm"
+                                                     value="View &raquo;"
+                                                     action="#{userSearchBookController.view(book)}"/> 
+                                </h:form>
+                            </h:column>
+
+                        </h:dataTable>
+                    </div>
                 </div>
             </div>
+
+            <ui:include src="/user_pages/modals/viewBookModal.xhtml"/>
         </ui:define>
     </ui:composition>  
 </html>

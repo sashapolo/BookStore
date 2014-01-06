@@ -7,6 +7,7 @@
 package edu.data;
 
 import java.io.Serializable;
+import java.util.Objects;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -55,4 +56,28 @@ public class BookOrderEntry implements Serializable {
     public double getPrice() {
         return book.getPrice() * amount;
     }
+
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 37 * hash + Objects.hashCode(this.book);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final BookOrderEntry other = (BookOrderEntry) obj;
+        if (!Objects.equals(this.book, other.book)) {
+            return false;
+        }
+        return true;
+    }
+    
+    
 }

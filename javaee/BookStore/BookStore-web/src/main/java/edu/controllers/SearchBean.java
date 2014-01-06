@@ -27,6 +27,6 @@ public class SearchBean {
     }
     
     public String search() throws UnsupportedEncodingException {
-        return "search?faces-redirect=true&search=" + URLEncoder.encode(searchStr, "UTF-8");
+        return "home?faces-redirect=true&search=" + URLEncoder.encode(searchStr, "UTF-8");
     }
 }

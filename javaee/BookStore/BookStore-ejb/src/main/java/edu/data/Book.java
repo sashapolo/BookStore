@@ -8,6 +8,7 @@ package edu.data;
 
 import java.io.Serializable;
 import java.util.Calendar;
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
@@ -225,6 +226,28 @@ public class Book implements Serializable {
         this.description = description;
     }
 
+    @Override
+    public int hashCode() {
+        int hash = 7;
+        hash = 53 * hash + Objects.hashCode(this.isbn);
+        return hash;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null) {
+            return false;
+        }
+        if (getClass() != obj.getClass()) {
+            return false;
+        }
+        final Book other = (Book) obj;
+        if (!Objects.equals(this.isbn, other.isbn)) {
+            return false;
+        }
+        return true;
+    }
+    
     @Override
     public String toString() {
         return "Book{" + "id=" + id + ", isbn=" + isbn + ", title=" + title + ", author=" + author 

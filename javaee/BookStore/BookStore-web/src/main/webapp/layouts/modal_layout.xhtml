@@ -10,17 +10,17 @@
             <div class="modal-content">
                 
                 <div class="modal-header">
-                    <h:button class="close" p:data-dismiss="modal" p:aria-hidden="true"
-                              value="&times;"/>
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <h4 class="modal-title" id="#{modalLabelId}">
                         <ui:insert name="modal_header"/>
                     </h4>
                 </div>
-                <h:form class="form-horizontal">
+                <h:form class="form-horizontal" id="#{modalFormId == null ? 'modalFormId'.concat(modalLabelId) : modalFormId}">
                     <div class="modal-body">
                         <ui:insert name="modal_body"/>
                     </div>
                     <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                         <ui:insert name="modal_footer"/>
                     </div>
                 </h:form>

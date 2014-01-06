@@ -8,12 +8,15 @@ package edu.controllers;
 
 import edu.data.Book;
 import edu.data.BookOrderEntry;
+import edu.ejb.StockEjb;
+import edu.util.MessageManager;
 import java.io.Serializable;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.ejb.EJB;
 import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.inject.Named;
@@ -27,17 +30,31 @@ import javax.inject.Named;
 public class CartController implements Serializable {
     private static final long serialVersionUID = 1L;
     
+    @EJB
+    private StockEjb se;
+    
     @Inject
     private transient Logger logger;
     
     private List<BookOrderEntry> cart = new LinkedList<>();
     
     public void addEntry(final Book book) {
+        final int amount = se.findByBook(book).getAmount();
+        if (amount == 0) {
+            MessageManager.createContextError("Sorry, no books left :(");
+            return;
+        }
         logger.log(Level.INFO, "adding {0} to cart", book);
         cart.add(new BookOrderEntry(book, 1));
     }
     
     public List<BookOrderEntry> getCart() {
         return Collections.unmodifiableList(cart);
+    }
+    
+    public void deleteEntry(final BookOrderEntry entry) {
+        logger.log(Level.INFO, "removing entry: {0}", entry.getBook().getTitle());
+        final boolean res = cart.remove(entry);
+        logger.log(Level.INFO, "result: {0}", res);
     }
 }

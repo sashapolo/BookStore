@@ -6,6 +6,7 @@
     <ui:composition template="/layouts/modal_layout.xhtml">
         <ui:param name="modalId" value="viewBookModal"/>
         <ui:param name="modalLabelId" value="viewBookModalLabel"/>
+        <ui:param name="modalFormId" value="viewBookForm"/>
 
         <ui:define name="modal_header">Book</ui:define>
 
@@ -14,7 +15,7 @@
                 <h:outputLabel for="title" class="col-sm-2 control-label" value="Title"/>
                 <div class="col-sm-10">
                     <h:outputText class="form-control" id="title" 
-                                  value="#{bookController.book.title}"/>
+                                  value="#{userSearchBookController.book.title}"/>
                 </div>
             </div>
 
@@ -22,7 +23,8 @@
                 <h:outputLabel for="author" class="col-sm-2 control-label" value="Author"/>
                 <div class="col-sm-10">
                     <h:outputText class="form-control" id="author" 
-                                  value="#{bookController.book.author.name} #{bookController.book.author.lastName}"/>
+                                  value="#{userSearchBookController.book.author.name} 
+                                  #{userSearchBookController.book.author.lastName}"/>
                 </div>
             </div>
 
@@ -30,7 +32,7 @@
                 <h:outputLabel for="isbn" class="col-sm-2 control-label" value="ISBN"/>
                 <div class="col-sm-10">
                     <h:outputText class="form-control" id="isbn" 
-                                  value="#{bookController.book.isbn}"/>
+                                  value="#{userSearchBookController.book.isbn}"/>
                 </div>
             </div>
 
@@ -38,7 +40,7 @@
                 <h:outputLabel for="genre" class="col-sm-2 control-label" value="Genre"/>
                 <div class="col-sm-10">
                     <h:outputText class="form-control" id="genre" 
-                                  value="#{bookController.book.genre}"/>
+                                  value="#{userSearchBookController.book.genre}"/>
                 </div>
             </div>
 
@@ -47,7 +49,7 @@
                                value="Publication date"/>
                 <div class="col-sm-10">
                     <h:outputText class="form-control" id="date" 
-                                  value="#{bookController.book.publicationDate}"/>
+                                  value="#{userSearchBookController.book.publicationDate}"/>
                 </div>
             </div>
 
@@ -56,7 +58,7 @@
                                value="Publisher"/>
                 <div class="col-sm-10">
                     <h:outputText class="form-control" id="publisher" 
-                                  value="#{bookController.book.publisher.name}"/>
+                                  value="#{userSearchBookController.book.publisher.name}"/>
                 </div>
             </div>
 
@@ -64,16 +66,15 @@
                 <h:outputLabel for="price" class="col-sm-2 control-label" value="Price"/>
                 <div class="col-sm-10">
                     <h:outputText class="form-control" id="price" 
-                                  value="#{bookController.book.price}"/>
+                                  value="#{userSearchBookController.book.price}"/>
                 </div>
             </div>
 
             <div class="form-group">
-                <h:outputLabel for="desc" class="col-sm-2 control-label" 
-                               value="Description"/>
+                <h:outputLabel for="desc" class="col-sm-2 control-label" value="Description"/>
                 <div class="col-sm-10">
                     <h:inputTextarea class="form-control" id="desc" 
-                                     value="#{bookController.book.description}"
+                                     value="#{userSearchBookController.book.description}"
                                      disabled="true"
                                      style="height: 200px"/>
                 </div>
@@ -83,15 +84,14 @@
                 <h:outputLabel for="amount" class="col-sm-2 control-label" value="Amount"/>
                 <div class="col-sm-10">
                     <h:outputText class="form-control" id="amount" 
-                                  value="#{bookController.amount}"/>
+                                  value="#{userSearchBookController.amount}"/>
                 </div>
             </div>
         </ui:define>
+        
         <ui:define name="modal_footer">
-            <h:button class="btn btn-default" value="Cancel" style="margin-right: 10px"/>
             <h:commandButton class="btn btn-success" value="Add to cart" 
-                             disabled="#{bookController.amount == 0}"
-                             action="#{cartController.addEntry(bookController.book)}"/>
+                             action="#{cartController.addEntry(userSearchBookController.book)}"/>
         </ui:define>
     </ui:composition>
 </html>
