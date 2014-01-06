@@ -18,18 +18,16 @@
                 <h:form class="form-horizontal">
                     <ui:include src="/forms/createBookForm.xhtml"/>
 
-                    <div class="form-group">
-                        <div class="col-sm-2 col-sm-offset-8">
-                            <h:button class="btn btn-default" value="Cancel" 
-                                      style="margin-right: 10px"
-                                      outcome="/admin_pages/modify_book"/>
-                            <h:commandButton class="btn btn-primary" value="Update"
-                                             action="#{bookController.updateBook()}"/>
-                        </div>
+                    <div class="col-sm-10 text-right">
+                        <h:button class="btn btn-default" value="Cancel" 
+                                  style="margin-right: 10px"
+                                  outcome="/admin_pages/modify_book"/>
+                        <h:commandButton class="btn btn-primary" value="Update"
+                                         action="#{bookController.updateBook()}"/>
                     </div>
                 </h:form>
             </div>
-    
+
             <script>
                 $('.datepicker').datepicker();
             </script>
