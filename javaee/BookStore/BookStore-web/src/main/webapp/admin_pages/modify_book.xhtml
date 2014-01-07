@@ -15,7 +15,7 @@
             
                 <h:dataTable id="booklist" styleClass="table table-striped"
                              headerClass="table-header"
-                             columnClasses="three-col,three-col,three-col,btn-col,btn-col"
+                             columnClasses="three-col,three-col,three-col,btn-col"
                              value="#{bookController.findBooks(search.value)}" var="book">
                     <h:column>
                         <f:facet name="header">
@@ -44,13 +44,6 @@
                                       outcome="/admin_pages/update_book">
                                 <f:param name="bookId" value="#{book.id}"/>
                             </h:button>
-                        </h:form>
-                    </h:column>
-                    
-                    <h:column>
-                        <h:form>
-                            <h:commandButton class="btn btn-danger" value="delete" 
-                                             action="#{bookController.deleteBook(book)}"/>
                         </h:form>
                     </h:column>
                     

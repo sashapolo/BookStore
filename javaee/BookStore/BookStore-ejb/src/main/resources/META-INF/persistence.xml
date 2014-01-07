@@ -10,7 +10,7 @@
             <property name="javax.persistence.jdbc.url" value="jdbc:derby:target/databases/bookstore-database;create=true"/>
             <property name="javax.persistence.jdbc.user" value="APP"/>
             <property name="javax.persistence.jdbc.password" value="APP"/>
-            <property name="eclipselink.ddl-generation" value="create-tables"/>
+            <property name="eclipselink.ddl-generation" value="drop-and-create-tables"/>
             <property name="eclipselink.target-database" value="Derby"/>
             <property name="eclipselink.debug" value="OFF"/>
             <property name="eclipselink.weaving" value="static"/>
