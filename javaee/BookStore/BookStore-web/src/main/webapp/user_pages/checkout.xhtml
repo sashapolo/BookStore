@@ -10,6 +10,7 @@
         <ui:define name="content">
             <div class="container" style="margin-top: 50px">
                 <div class="col-md-8 col-md-offset-2">
+                    <h:messages styleClass="alert alert-danger"/>
                     <div class="well">
                         <h2>Cart:</h2>
                         <h:dataTable id="entrylist" styleClass="table table-striped"
@@ -27,7 +28,8 @@
                                 <f:facet name="header">
                                     <h:outputText value="Author"/>
                                 </f:facet>
-                                <h:outputText value="#{bookEntry.book.author.name} #{bookEntry.book.author.lastName}"/>
+                                <h:outputText value="#{bookEntry.book.author.name} 
+                                              #{bookEntry.book.author.lastName}"/>
                             </h:column>
 
                             <h:column>
@@ -55,8 +57,13 @@
                     </div>
                     
                     <h:form styleClass="pull-right">
+                        <div class="form-group">
+                            <h:outputLabel for="price" value="Price:" style="margin-right: 10px"/>
+                            <h:outputText id="price" value="#{cartController.price} $"/>
+                        </div>
                         <h:button styleClass="btn btn-default" style="margin-right: 10px" value="Cancel" outcome="home"/>
-                        <h:commandButton styleClass="btn btn-success" value="Confirm"/>
+                        <h:commandButton styleClass="btn btn-success" value="Confirm"
+                                         action="#{orderController.createOrder()}"/>
                     </h:form>
                 </div>
             </div>

@@ -34,10 +34,12 @@ import org.hibernate.validator.constraints.NotEmpty;
 @NamedQueries({
     @NamedQuery(name = User.FUZZY_FIND, query = "SELECT u FROM User u WHERE UPPER(u.login) LIKE :login"),
     @NamedQuery(name = User.FIND_ALL, query = "SELECT u FROM User u"),
-    @NamedQuery(name = User.FIND_BY_LOGIN, query = "SELECT u FROM User u WHERE u.login = :login")
+    @NamedQuery(name = User.FIND_BY_LOGIN, query = "SELECT u FROM User u WHERE u.login = :login"),
+    @NamedQuery(name = User.FIND_BY_EMAIL, query = "SELECT u FROM User u WHERE u.email = :email")
 })
 public class User implements Serializable {
     public static final String FIND_BY_LOGIN = "User.findByLogin";
+    public static final String FIND_BY_EMAIL = "User.findByEmail";
     public static final String FUZZY_FIND = "User.fuzzyFind";
     public static final String FIND_ALL = "User.findAll";
     
@@ -195,6 +197,10 @@ public class User implements Serializable {
     
     public void setSecondName(final String name) {
         credentials = credentials.setSecondName(name);
+    }
+    
+    public void addOrder(final BookOrder order) {
+        orders.add(order);
     }
     
     @Override

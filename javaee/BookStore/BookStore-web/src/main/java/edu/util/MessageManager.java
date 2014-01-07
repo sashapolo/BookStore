@@ -7,6 +7,7 @@
 package edu.util;
 
 import javax.faces.application.FacesMessage;
+import javax.faces.application.FacesMessage.Severity;
 import javax.faces.context.FacesContext;
 
 /**
@@ -14,18 +15,28 @@ import javax.faces.context.FacesContext;
  * @author alexander
  */
 public class MessageManager {
-    public static void createContextError(final String message) {
+    public static void error(final String message) {
+        createMsg(null, message, FacesMessage.SEVERITY_ERROR);
+    }
+    
+    public static void error(final String id, final String message) {
+        createMsg(id, message, FacesMessage.SEVERITY_ERROR);
+    }
+    
+    public static void info(final String message) {
+        createMsg(null, message, FacesMessage.SEVERITY_INFO);
+    }
+    
+    public static void info(final String id, final String message) {
+        createMsg(id, message, FacesMessage.SEVERITY_INFO);
+    }
+    
+    private static void createMsg(final String id, final String message, final Severity severity) {
         final FacesMessage msg = new FacesMessage(message);
-        msg.setSeverity(FacesMessage.SEVERITY_ERROR);
-        FacesContext.getCurrentInstance().addMessage(null, msg);
-    }  
-    public static void createContextError(final String id, final String message) {
-        final FacesMessage msg = new FacesMessage(message);
-        msg.setSeverity(FacesMessage.SEVERITY_ERROR);
+        msg.setSeverity(severity);
         FacesContext.getCurrentInstance().addMessage(id, msg);
-    }  
+    }
 
     private MessageManager() {
     }
-
 }

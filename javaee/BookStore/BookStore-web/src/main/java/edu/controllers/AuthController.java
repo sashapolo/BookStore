@@ -46,7 +46,7 @@ public class AuthController implements Serializable {
             user = ue.findByLogin(login);
         }
         if (user.getPassword() != password.hashCode()) {
-            MessageManager.createContextError("login_form:password", "Invalid password");
+            MessageManager.error("login_form:password", "Invalid password");
             return "";
         }
         return user.isAdmin() ? "/admin_pages/admin_home?faces-redirect=true" 

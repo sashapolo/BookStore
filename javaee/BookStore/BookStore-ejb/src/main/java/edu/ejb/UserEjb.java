@@ -38,6 +38,18 @@ public class UserEjb extends DataEjb<User>{
         }
     }
     
+    public User findByEmail(final String email) {
+        if (email == null) return null;
+        
+        final TypedQuery<User> query = em.createNamedQuery(User.FIND_BY_EMAIL, User.class);
+        query.setParameter("email", email);
+        try {
+            return query.getSingleResult();
+        } catch (NoResultException e) {
+            return null;
+        }
+    }
+    
     public List<User> fuzzyFind(@NotNull final String search) {
         final TypedQuery<User> query = em.createNamedQuery(User.FUZZY_FIND, User.class);
         query.setParameter("login", "%" + search.toUpperCase() + "%");

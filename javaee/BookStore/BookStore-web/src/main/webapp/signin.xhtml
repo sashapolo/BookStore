@@ -6,7 +6,10 @@
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
       xmlns:f="http://java.sun.com/jsf/core">
     <ui:composition template="/layouts/layout.xhtml">
-     
+        <f:metadata>
+            <f:viewParam name="registered" value="#{registered}"/>
+        </f:metadata>
+        
         <ui:define name="title">Welcome!</ui:define>
         <ui:define name="content">
 
@@ -40,7 +43,7 @@
                 </h:form>
             </div>
         
-            <ui:component rendered="#{authController.user != null}">
+            <ui:component rendered="#{registered}">
                 <div class="alert alert-success col-xs-6 col-xs-offset-3 text-center">
                     <strong>Well done!</strong> You have successfully registered.
                 </div>    

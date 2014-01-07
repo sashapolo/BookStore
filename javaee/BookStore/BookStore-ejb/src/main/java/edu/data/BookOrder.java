@@ -11,6 +11,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.GregorianCalendar;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -35,7 +36,7 @@ public class BookOrder implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    @OneToMany
+    @OneToMany(cascade = CascadeType.PERSIST)
     @NotEmpty @Valid
     private List<BookOrderEntry> entries;
     @Transient
@@ -43,7 +44,7 @@ public class BookOrder implements Serializable {
     private double price;
     @Temporal(javax.persistence.TemporalType.DATE)
     @NotNull 
-    private Calendar dateCreated;
+    private Calendar dateCreated = new GregorianCalendar();
     @NotNull @Valid
     private Discount discount;
     
@@ -51,14 +52,12 @@ public class BookOrder implements Serializable {
     
     public BookOrder(final List<BookOrderEntry> entries, final Discount discount) {
         this.entries = entries;
-        this.dateCreated = new GregorianCalendar();
         this.discount = discount;
         calculatePrice();
     }
     
     public BookOrder(final List<BookOrderEntry> entries) {
         this.entries = entries;
-        this.dateCreated = new GregorianCalendar();
         this.discount = new Discount();
         calculatePrice();
     }

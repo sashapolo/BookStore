@@ -51,12 +51,16 @@ public class UserController {
     
     public String registerUser() {
         if (ue.findByLogin(user.getLogin()) != null) {
-            MessageManager.createContextError("register_form:login", "Already existing login");
+            MessageManager.error("register_form:login", "Already existing login");
+            return "";
+        }
+        if (ue.findByEmail(user.getEmail()) != null) {
+            MessageManager.error("register_form:email", "This email is already registered");
             return "";
         }
         user = ue.create(user);
         auth.setUser(user);
-        return "/signin?faces-redirect=true";
+        return "/signin?registered=true&faces-redirect=true";
     }
     
     public void deleteUser(final User user) {
