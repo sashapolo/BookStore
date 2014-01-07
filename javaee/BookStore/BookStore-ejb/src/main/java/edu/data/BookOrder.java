@@ -38,7 +38,7 @@ public class BookOrder implements Serializable {
     private Long id;
     @OneToMany(cascade = CascadeType.PERSIST)
     @NotEmpty @Valid
-    private List<BookOrderEntry> entries;
+    private List<BookOrderEntry> entries = Collections.emptyList();
     @Transient
     @Min(0)
     private double price;
@@ -48,7 +48,7 @@ public class BookOrder implements Serializable {
     @NotNull @Valid
     private Discount discount;
     
-    protected BookOrder() { }
+    public BookOrder() {}
     
     public BookOrder(final List<BookOrderEntry> entries, final Discount discount) {
         this.entries = entries;

@@ -62,7 +62,6 @@ public class UserSearchBookController implements Serializable {
     }
     
     public void view(final Book book) {
-        logger.info("displaying id " + book.getTitle());
         this.book = book;
         stock = se.findByBook(book);
     }

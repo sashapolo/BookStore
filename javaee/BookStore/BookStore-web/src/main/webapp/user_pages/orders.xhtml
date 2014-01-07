@@ -1,0 +1,54 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+    <ui:composition template="/layouts/user_layout.xhtml">
+
+        <ui:define name="title">Home</ui:define>
+        <ui:define name="content">
+
+            <div class="container" style="margin-top: 50px">
+                <div class="col-md-8 col-md-offset-2">
+                    <div class="well">
+                        <h2>Your orders:</h2>
+                        <h:dataTable id="entrylist" styleClass="table table-striped"
+                                     headerClass="table-header"
+                                     value="#{orderController.orders}" var="order"
+                                     style="text-align: center">
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Date created"/>
+                                </f:facet>
+                                <h:outputText value="#{order.dateCreated}"/>
+                            </h:column>
+
+                            <h:column>
+                                <f:facet name="header">
+                                    <h:outputText value="Price"/>
+                                </f:facet>
+                                <h:outputText value="#{order.price}"/>
+                            </h:column>
+
+                            <h:column>
+                                <h:form>
+                                    <p:commandButton styleClass="btn btn-primary" 
+                                                     oncomplete="$('#viewOrderModal').modal('show');
+                                                     return false;"
+                                                     update=":viewOrderForm"
+                                                     value="View &raquo;"
+                                                     action="#{orderController.setOrder(order)}"/> 
+                                </h:form>
+                            </h:column>
+
+                        </h:dataTable>
+                    </div>
+                </div>
+            </div>
+            <ui:include src="/user_pages/modals/viewOrderModal.xhtml"/>
+        </ui:define>
+    </ui:composition>
+</html>
+

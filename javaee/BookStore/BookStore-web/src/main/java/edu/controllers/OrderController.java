@@ -12,6 +12,7 @@ import edu.data.Stock;
 import edu.data.User;
 import edu.ejb.OrderEjb;
 import edu.ejb.StockEjb;
+import edu.ejb.UserEjb;
 import edu.util.MessageManager;
 import java.util.List;
 import javax.ejb.EJB;
@@ -28,11 +29,15 @@ public class OrderController {
     private OrderEjb oe;
     @EJB
     private StockEjb stock;
+    @EJB
+    private UserEjb ue;
     
     @Inject
     private CartController cc;
     @Inject
     private AuthController ac;
+    
+    private BookOrder order = new BookOrder();
     
     public String createOrder() {
         final List<BookOrderEntry> cart = cc.getCart();
@@ -46,13 +51,26 @@ public class OrderController {
             stock.update(s);
         }
         
-        BookOrder order = new BookOrder(cart);
+        order = new BookOrder(cart);
         order = oe.create(order);
 
         final User user = ac.getUser();
         user.addOrder(order);
+        ac.setUser(ue.update(user));
         
         cc.emptyCart();
         return "/user_pages/home?success=true&faces-redirect=true";
+    }
+    
+    public List<BookOrder> getOrders() {
+        return ac.getUser().getOrders();
+    } 
+    
+    public void setOrder(final BookOrder order) {
+        this.order = order;
+    }
+    
+    public List<BookOrderEntry> getOrderEntries() {
+        return order.getEntries();
     }
 }
