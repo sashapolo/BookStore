@@ -31,7 +31,7 @@ public class CartController implements Serializable {
     private static final long serialVersionUID = 1L;
     
     @EJB
-    private StockEjb se;
+    private transient StockEjb se;
     
     @Inject
     private transient Logger logger;
